@@ -206,7 +206,7 @@ export default {
       this.showDialogUpdate = false;
 
     },
-    async confirm() {
+    confirm() {
       // await axios.delete(`http://localhost:3001/user/1`);
       this.showDialogDelete = false;
       this.showDialogUpdate = false;

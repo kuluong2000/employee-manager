@@ -1,5 +1,6 @@
 <template>
-  <div v-show="show" class="overlay">
+  <transition name="fade" mode="out-in">
+  <div key='5' v-show="show" class="overlay" >
 
 
     <div class="dialog">
@@ -19,6 +20,7 @@
     </div>
 
   </div>
+  </transition>
 </template>
 
 <script>
@@ -84,7 +86,8 @@ export default {
   margin-top: 2.5rem;
   max-width: 100%;
   width: 25rem;
-}
+  animation: transitionIn 0.4s;
+  }
 .dialog__content {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -185,5 +188,26 @@ export default {
   background-color: rgba(252, 165, 165, var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgba(153, 27, 27, var(--tw-text-opacity));
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s
+}
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active in <2.1.8 */
+
+{
+  opacity: 0
+}
+@keyframes transitionIn{
+  from{
+    transform: translateY(-100px);
+  }
+
+  to{
+    transform: translateY(0);
+  }
 }
 </style>

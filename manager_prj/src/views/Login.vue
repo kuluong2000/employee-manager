@@ -246,11 +246,10 @@ export default {
       if(res.data.length > 0){
         // let resEm = await axios.get(`http://localhost:3001/employee?email=${this.user.email}`)
         // this.$store.dispatch('actionSetUserInfo', `${resEm.data[0].lastName} ${resEm.data[0].firstName}`);
-        // this.$store.dispatch('actionSetImageInfo', `${resEm.data[0].imgUrl}`);
+        setTimeout(() => this.$store.dispatch('actionSetDialog', true), 200)
         // console.log(resEm.status)
         localStorage.setItem('user-info', JSON.stringify(res.data[0]))
         this.$router.push('/')
-        setTimeout(() => alert('Đăng nhập thành công'), 100)
       }else{
         this.showDialog = true;
       }
