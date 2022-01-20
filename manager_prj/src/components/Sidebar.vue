@@ -18,7 +18,8 @@
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
           />
         </v-avatar>
-        <h3 class="white--text">{{ lastName }} {{ firstName }}</h3>
+        <h3 class="white--text" v-if="lastName && firstName">{{ lastName }} {{ firstName }}</h3>
+        <h3 class="white--text" v-else>Người dùng mới</h3>
       </div>
     </v-img>
     <v-divider></v-divider>

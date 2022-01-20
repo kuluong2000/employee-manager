@@ -7,7 +7,7 @@
       "email": "havi@gmail.com",
       "password": "12345678",
       "imgUrl": "https://anhdep123.com/wp-content/uploads/2021/02/anh-gai-mang.jpg",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl"
     },
@@ -18,7 +18,7 @@
       "email": "luongtran@gmail.com",
       "password": "12345678",
       "imgUrl": "https://scontent-hkg4-1.xx.fbcdn.net/v/t1.6435-9/35407432_1700232523425097_3176969785384632320_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=8bfeb9&_nc_ohc=E1mz9EyIj1sAX-2pM-O&_nc_ht=scontent-hkg4-1.xx&oh=00_AT9O1Cgk_Xc3Qf70TA_Ztu4JUTwfLZwsxf6Ko88jOCgjpg&oe=620B29CA",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl"
     },
@@ -40,7 +40,7 @@
       "email": "thuydung@gmail.com",
       "password": "12345678",
       "imgUrl": "https://scontent.fdad3-1.fna.fbcdn.net/v/t1.6435-1/p200x200/151778157_1539984789525563_4813197712401079979_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=7206a8&_nc_ohc=yQ0q9IPQHJkAX8BoyZu&_nc_ht=scontent.fdad3-1.fna&oh=00_AT_Sjs2FHQDOiabeaFKJBLk8quNr4H80m4Qm0O11xdUzxA&oe=620E17AE",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl"
     },
@@ -51,7 +51,7 @@
       "email": "hieuvo@gmail.com",
       "password": "12345678",
       "imgUrl": "https://scontent.fdad3-3.fna.fbcdn.net/v/t39.30808-6/260544044_1234598287031408_1119554743030111798_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=2Ag0Uer5dg8AX_TOvAZ&_nc_ht=scontent.fdad3-3.fna&oh=00_AT8UDm9JWcB7okzVW7W4WAgIuoSvFFIzauCab7-SoeUa3w&oe=61EC42A0",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl"
     },
@@ -92,7 +92,7 @@
       "lastName": "Hồ Lê Anh",
       "email": "anhtuan@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 9
@@ -102,7 +102,7 @@
       "lastName": "Phạm Hoàng",
       "email": "hoangyen@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 10
@@ -112,7 +112,7 @@
       "lastName": "Nguyễn Hữu",
       "email": "huuduc@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 11
@@ -122,7 +122,7 @@
       "lastName": "Võ Duy",
       "email": "huuduc@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 12
@@ -132,7 +132,7 @@
       "lastName": "Trịnh Duy",
       "email": "duyson@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 13
@@ -142,7 +142,7 @@
       "lastName": "Thái Văn",
       "email": "vanhuy@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 14
@@ -152,7 +152,7 @@
       "lastName": "Nguyễn Văn",
       "email": "vanthanh@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 15
@@ -162,7 +162,7 @@
       "lastName": "Mai Văn",
       "email": "vankhai@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 16
@@ -172,7 +172,7 @@
       "lastName": "Đinh Hồng",
       "email": "hongphong@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 17
@@ -182,7 +182,7 @@
       "lastName": "Nguyễn Duy",
       "email": "duyviet@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 18
@@ -192,7 +192,7 @@
       "lastName": "Nguyễn Ngọc Tiến",
       "email": "tiendat@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 19
@@ -202,7 +202,7 @@
       "lastName": "Trương Quang",
       "email": "quangdieu@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 20
@@ -213,7 +213,7 @@
       "email": "tiennguyen@gmail.com",
       "password": "12345678",
       "imgUrl": "https://scontent.fdad3-4.fna.fbcdn.net/v/t31.18172-8/29060052_107261353454011_5911763762069294837_o.jpg?_nc_cat=104&ccb=1-5&_nc_sid=174925&_nc_ohc=Vqqs0RSFRdwAX9pBWFN&_nc_ht=scontent.fdad3-4.fna&oh=00_AT8zmmQQXHZ4t-WZL9pi0P6EEyy_1n3B8t8YWG3kqxqVNw&oe=620C1C4B",
-      "role": "employee",
+      "role": "Nhân Viên",
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 21
@@ -228,6 +228,39 @@
       "position_id": "",
       "depart_id": "",
       "id": 22
+    },
+    {
+      "firstName": "",
+      "lastName": "",
+      "email": "test1@gmail.com",
+      "password": "12345678",
+      "role": "Trưởng Phòng",
+      "facilities_id": "",
+      "position_id": "",
+      "depart_id": "",
+      "id": 23
+    },
+    {
+      "firstName": "Anh",
+      "lastName": "Quách Hoàng",
+      "email": "hoanganh@gmail.com",
+      "password": "12345678",
+      "role": "Nhân Viên",
+      "facilities_id": "",
+      "position_id": "",
+      "depart_id": "",
+      "id": 24
+    },
+    {
+      "firstName": "",
+      "lastName": "",
+      "email": "vanvu@gmail.com",
+      "password": "12345678",
+      "role": "Giám đốc CSVC",
+      "facilities_id": "",
+      "position_id": "",
+      "depart_id": "",
+      "id": 25
     }
   ],
   "departments": [
@@ -509,45 +542,39 @@
   ],
   "user": [
     {
-      "id": 1,
-      "email": "admin@gmail.com",
-      "password": "12345678",
-      "role": "admin"
-    },
-    {
       "id": 2,
       "email": "luongtran@gmail.com",
       "password": "12345678",
-      "role": "admin"
+      "role": "Admin"
     },
     {
       "id": 3,
       "email": "sydung@gmail.com",
       "password": "12345678",
-      "role": "admin"
+      "role": "Admin"
     },
     {
       "id": 4,
       "email": "thuydung@gmail.com",
       "password": "12345678",
-      "role": "admin"
+      "role": "Admin"
     },
     {
       "id": 5,
       "email": "hieuvo@gmail.com",
       "password": "12345678",
-      "role": "admin"
+      "role": "Giám đốc CSVC"
     },
     {
       "id": 6,
       "email": "cason@gmail.com",
       "password": "12345678",
-      "role": "department"
+      "role": "Trưởng Phòng"
     },
     {
       "email": "havi@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "id": 7
     },
     {
@@ -559,92 +586,98 @@
     {
       "email": "maichi@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "id": 9
     },
     {
       "email": "anhtuan@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Trưởng Phòng",
       "id": 10
     },
     {
       "email": "hoangyen@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Trưởng Phòng",
       "id": 11
     },
     {
       "email": "huuduc@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Trưởng Phòng",
       "id": 12
     },
     {
       "email": "duyson@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Trưởng Phòng",
       "id": 13
     },
     {
       "email": "vanhuy@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Trưởng Phòng",
       "id": 14
     },
     {
       "email": "vanthanh@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Nhân Viên",
       "id": 15
     },
     {
       "email": "vankhai@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Nhân Viên",
       "id": 16
     },
     {
       "email": "hongphong@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Nhân Viên",
       "id": 17
     },
     {
       "email": "duyviet@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Nhân Viên",
       "id": 18
     },
     {
       "email": "tiendat@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Nhân Viên",
       "id": 19
     },
     {
       "email": "quangdieu@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Nhân Viên",
       "id": 20
     },
     {
       "email": "tiennguyen@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Nhân Viên",
       "id": 21
     },
     {
       "email": "maichi@gmail.com",
       "password": "12345678",
-      "role": "employee",
+      "role": "Nhân Viên",
       "id": 22
     },
     {
       "email": "ngoctran@gmail.com",
       "password": "12345678",
-      "role": "",
+      "role": "Nhân Viên",
       "id": 23
+    },
+    {
+      "email": "hoanganh@gmail.com",
+      "password": "12345678",
+      "role": "Nhân Viên",
+      "id": 26
     }
   ]
 }

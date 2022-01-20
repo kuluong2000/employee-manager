@@ -75,7 +75,8 @@
                 />
               </v-avatar>
             </v-badge>
-            <span class="ml-3">{{ lastName }} {{ firstName }}</span>
+            <span class="ml-3" v-if="lastName && firstName">{{ lastName }} {{ firstName }}</span>
+            <span class="ml-3" v-else>Người dùng mới</span>
           </v-chip>
         </span>
       </template>
@@ -93,7 +94,8 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{ lastName }} {{ firstName }}</v-list-item-title>
+            <v-list-item-title v-if="lastName && lastName">{{ lastName }} {{ firstName }}</v-list-item-title>
+            <v-list-item-title v-else>Người dùng mới</v-list-item-title>
             <v-list-item-subtitle>Logged In</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

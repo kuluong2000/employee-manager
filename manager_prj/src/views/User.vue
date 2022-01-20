@@ -18,7 +18,13 @@
             </v-card-title>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="green" dark v-bind="attrs" v-on="on" class="ms-5 my-4">
+                <v-btn
+                  color="green"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  class="ms-5 my-4"
+                >
                   New Item
                 </v-btn>
               </template>
@@ -50,20 +56,31 @@
                         ></v-text-field>
                       </v-col> -->
                       <v-col cols="12">
-                        <v-text-field label="Email*" required></v-text-field>
+                        <v-text-field
+                          label="Email*"
+                          required
+                          v-model="user.email"
+                        ></v-text-field>
                       </v-col>
                       <v-col cols="12">
                         <v-text-field
                           label="Password*"
                           type="password"
                           required
+                          v-model="user.password"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
                         <v-select
-                          :items="['Nhân Viên', 'Trưởng Phòng', 'Giám đốc CSVC', 'Admin']"
+                          :items="[
+                            'Nhân Viên',
+                            'Trưởng Phòng',
+                            'Giám đốc CSVC',
+                            'Admin',
+                          ]"
                           label="Chức Vụ"
                           required
+                          v-model="user.role"
                         ></v-select>
                       </v-col>
                       <!-- <v-col cols="12" sm="6">
@@ -92,7 +109,7 @@
                   <v-btn color="blue darken-1" text @click="dialog = false">
                     Đóng
                   </v-btn>
-                  <v-btn color="blue darken-1" text @click="dialog = false">
+                  <v-btn color="blue darken-1" text @click="createUser">
                     Cập nhật
                   </v-btn>
                 </v-card-actions>
@@ -112,16 +129,26 @@
                 lastIcon: 'mdi-arrow-collapse-right',
               }"
             >
-              <template v-slot:[`item.actions`]="">
+              <template v-slot:[`item.actions`]="{ item }">
                 <v-btn class="ma-2" color="primary" dark>
                   Detail
                   <v-icon dark right> mdi-eye </v-icon>
                 </v-btn>
-                <v-btn class="ma-2" color="orange darken-2" dark @click="showDialogUpdate = true">
+                <v-btn
+                  class="ma-2"
+                  color="orange darken-2"
+                  dark
+                  @click="showDialogUpdate = true"
+                >
                   Update
                   <v-icon dark right> mdi-pencil </v-icon>
                 </v-btn>
-                <v-btn class="ma-2" color="red" dark  @click="showDialogDelete = true">
+                <v-btn
+                  class="ma-2"
+                  color="red"
+                  dark
+                  @click="handleRow(item)"
+                >
                   Delete
                   <v-icon dark right> mdi-pencil </v-icon>
                 </v-btn>
@@ -143,24 +170,52 @@
         </v-col>
       </v-row>
     </v-container>
-    <popup :show="showDialogDelete"
-          :cancel="cancel"
-          :confirm="confirm"
-          text="Có! Mình muốn xóa ^^"
-          title="Thông báo!"
-          textCancel="Không nha :v"
-          description="Bạn có muốn xóa dữ liệu này không ???"></popup>
-    <popup :show="showDialogUpdate"
-          :cancel="cancel"
-          :confirm="confirm"
-          text="Ok! Mình sẽ vào lại sau"
-          title="Thông báo!"
-          description="Chức năng này hiện tại vẫn chưa cập nhật???"></popup>
+    <popup
+      :show="showDialogDelete"
+      :cancel="cancel"
+      :confirm="handleDelete"
+      text="Có! Mình muốn xóa ^^"
+      title="Thông báo!"
+      textCancel="Không nha :v"
+      description="Bạn có muốn xóa dữ liệu này không ???"
+    ></popup>
+    <popup
+      :show="showDialogUpdate"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Ok! Mình sẽ vào lại sau"
+      title="Thông báo!"
+      description="Chức năng này hiện tại vẫn chưa cập nhật???"
+    ></popup>
+    <popup
+      :show="showDialogCreateRequired"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Ok! Mình sẽ kiểm tra lại"
+      title="Thông báo!"
+      description="Vui lòng điền đầy đủ thông tin nhân viên!!"
+    ></popup>
+    <popup
+      :show="showDialogCreateSuccess"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Thêm dữ liệu thành công!!"
+    ></popup>
+    <popup
+      :show="showDialogDeleteSuccess"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Xoá dữ liệu thành công!!"
+    ></popup>
   </div>
 </template>
 <script>
 import axios from "axios";
-import Popup from '../components/Popup.vue';
+import Popup from "../components/Popup.vue";
 export default {
   components: { Popup },
   data() {
@@ -193,25 +248,81 @@ export default {
           sortable: false,
         },
       ],
+      user: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        role: "",
+        facilities_id: "",
+        position_id: "",
+        depart_id: "",
+      },
+      deleteId: 0,
       account: [],
       search: "",
       dialog: false,
       showDialogDelete: false,
       showDialogUpdate: false,
+      showDialogCreateRequired: false,
+      showDialogCreateSuccess: false,
+      showDialogDeleteSuccess: false,
     };
   },
   methods: {
+    handleRow(item) {
+      this.deleteId = item.id;
+      this.showDialogDelete = true;
+    },
+    async handleDelete() {
+      await axios.delete(`http://localhost:3001/user/${this.deleteId}`);
+      this.showDialogDelete = false;
+      this.showDialogDeleteSuccess = true;
+      setTimeout(() => window.location.reload(), 1000)
+    },
     cancel() {
       this.showDialogDelete = false;
       this.showDialogUpdate = false;
-
+      this.showDialogCreateRequired = false;
+      this.showDialogCreateSuccess = false;
     },
     confirm() {
-      // await axios.delete(`http://localhost:3001/user/1`);
       this.showDialogDelete = false;
       this.showDialogUpdate = false;
-      // window.location.reload();
-      // alert('Xóa thành công')
+      this.showDialogCreateRequired = false;
+      this.showDialogCreateSuccess = false;
+      this.showDialogDeleteSuccess = false
+    },
+    async createUser() {
+      if (
+        this.user.email.length == "" ||
+        this.user.password == "" ||
+        this.user.role == ""
+      ) {
+        this.showDialogCreateRequired = true;
+        this.dialog = false;
+      } else {
+        let res = await axios.post(`http://localhost:3001/user`, {
+          email: this.user.email,
+          password: this.user.password,
+          role: this.user.role,
+        });
+        let res2 = await axios.post(`http://localhost:3001/employee`, {
+          firstName: this.user.firstName,
+          lastName: this.user.lastName,
+          email: this.user.email,
+          password: this.user.password,
+          role: this.user.role,
+          facilities_id: this.user.facilities_id,
+          position_id: this.user.position_id,
+          depart_id: this.user.depart_id,
+        });
+        console.log(res);
+        console.log(res2);
+        this.dialog = false;
+        this.showDialogCreateSuccess = true;
+        setTimeout(() => window.location.reload(), 400)
+      }
     },
   },
   async mounted() {
