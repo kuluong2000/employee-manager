@@ -6,10 +6,16 @@
       src="https://pdp.edu.vn/wp-content/uploads/2021/04/hinh-nen-cong-nghe-1.jpg"
     >
       <div class="text-center">
-        <v-avatar class="mb-2" color="grey darken-1" size="77">
+        <v-avatar class="mb-2" color="grey darken-1" size="77" v-if="imgUrl">
           <v-img
             aspect-ratio="30"
             :src="imgUrl"
+          />
+        </v-avatar>
+        <v-avatar class="mb-2" color="grey darken-1" size="77" v-else>
+          <v-img
+            aspect-ratio="30"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
           />
         </v-avatar>
         <h3 class="white--text">{{ lastName }} {{ firstName }}</h3>

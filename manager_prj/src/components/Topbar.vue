@@ -64,9 +64,14 @@
         <span style="cursor: pointer" v-bind="attrs" v-on="on">
           <v-chip link>
             <v-badge dot bottom color="green" offset-y="10" offset-x="10">
-              <v-avatar size="40">
+              <v-avatar size="40" v-if="imgUrl">
                 <v-img
                   :src="imgUrl"
+                />
+              </v-avatar>
+              <v-avatar size="40" v-else>
+                <v-img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
                 />
               </v-avatar>
             </v-badge>
@@ -76,9 +81,14 @@
       </template>
       <v-list width="250" class="py-0">
         <v-list-item two-line>
-          <v-list-item-avatar>
+          <v-list-item-avatar v-if="imgUrl">
             <img style="object-fit: cover;"
               :src="imgUrl"
+            />
+          </v-list-item-avatar>
+          <v-list-item-avatar v-else>
+            <img style="object-fit: cover;"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
             />
           </v-list-item-avatar>
 
