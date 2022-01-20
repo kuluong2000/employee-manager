@@ -136,7 +136,11 @@
                         <br />
                         first onboarding experiance
                       </h5>
-                      <v-row align="center" justify="center" v-on:keyup.enter="signup">
+                      <v-row
+                        align="center"
+                        justify="center"
+                        v-on:keyup.enter="signup"
+                      >
                         <v-col cols="12" sm="8">
                           <v-row>
                             <v-col cols="12" sm="6">
@@ -324,7 +328,15 @@ export default {
       }
     },
     async signup() {
-      if (this.userSignUp.firstName !== "" || this.userSignUp.lastName !== "" || this.userSignUp.email !== "" || this.userSignUp.password !== "" || this.userSignUp.passwordConfirm !== "") {
+      if (
+        this.userSignUp.firstName == "" ||
+        this.userSignUp.lastName == "" ||
+        this.userSignUp.email == "" ||
+        this.userSignUp.password == "" ||
+        this.userSignUp.passwordConfirm == ""
+      ) {
+        this.showDialogSignUp = true;
+      } else {
         if (this.userSignUp.password === this.userSignUp.passwordConfirm) {
           let res = await axios.post(`http://localhost:3001/user`, {
             email: this.userSignUp.email,
@@ -345,11 +357,9 @@ export default {
           console.log(res2);
           this.showDialogSuccess = true;
           this.step = 1;
-        }else{
+        } else {
           this.showDialogPassword = true;
         }
-      } else {
-        this.showDialogSignUp = true;
       }
     },
     cancel() {
