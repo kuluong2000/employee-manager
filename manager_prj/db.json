@@ -217,6 +217,17 @@
       "depart_id": "FAC9",
       "position_id": "epl",
       "id": 21
+    },
+    {
+      "firstName": "Trân",
+      "lastName": "Võ Ngọc",
+      "email": "ngoctran@gmail.com",
+      "password": "12345678",
+      "role": "",
+      "facilities_id": "",
+      "position_id": "",
+      "depart_id": "",
+      "id": 22
     }
   ],
   "departments": [
@@ -622,6 +633,18 @@
       "password": "12345678",
       "role": "",
       "id": 21
+    },
+    {
+      "email": "maichi@gmail.com",
+      "password": "12345678",
+      "role": "employee",
+      "id": 22
+    },
+    {
+      "email": "ngoctran@gmail.com",
+      "password": "12345678",
+      "role": "",
+      "id": 23
     }
   ]
 }

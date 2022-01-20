@@ -136,7 +136,7 @@
                         <br />
                         first onboarding experiance
                       </h5>
-                      <v-row align="center" justify="center">
+                      <v-row align="center" justify="center" v-on:keyup.enter="signup">
                         <v-col cols="12" sm="8">
                           <v-row>
                             <v-col cols="12" sm="6">
@@ -250,6 +250,30 @@
       text="Ok! Mình sẽ kiểm tra lại"
       description="Email hoặc mật khẩu không đúng!!!"
     ></popup>
+    <popup
+      :show="showDialogSignUp"
+      :cancel="cancel"
+      :confirm="confirm"
+      title="Thông báo?"
+      text="Ok! Mình sẽ kiểm tra lại"
+      description="Vui lòng điền đầy đủ thông tin !!!"
+    ></popup>
+    <popup
+      :show="showDialogPassword"
+      :cancel="cancel"
+      :confirm="confirm"
+      title="Thông báo?"
+      text="Ok! Mình sẽ kiểm tra lại"
+      description="Kiểm tra lại mật khẩu vừa nhập !!!"
+    ></popup>
+    <popup
+      :show="showDialogSuccess"
+      :cancel="cancel"
+      :confirm="confirm"
+      title="Thông báo?"
+      text="OKE ^^"
+      description="Đăng ký thành công !!!"
+    ></popup>
   </div>
 </template>
 
@@ -277,6 +301,9 @@ export default {
         depart_id: "",
       },
       showDialog: false,
+      showDialogSignUp: false,
+      showDialogPassword: false,
+      showDialogSuccess: false,
     };
   },
   methods: {
@@ -296,41 +323,48 @@ export default {
         this.showDialog = true;
       }
     },
-    submit() {
-      console.log("hello");
-    },
     async signup() {
-      if (this.userSignUp.password === this.userSignUp.passwordConfirm) {
-        let res = await axios.post(`http://localhost:3001/user`, {
-          email: this.userSignUp.email,
-          password: this.userSignUp.password,
-          role: this.userSignUp.role,
-        });
-        let res2 = await axios.post(`http://localhost:3001/employee`, {
-          firstName: this.userSignUp.firstName,
-          lastName: this.userSignUp.lastName,
-          email: this.userSignUp.email,
-          password: this.userSignUp.password,
-          role: this.userSignUp.role,
-          facilities_id: this.userSignUp.facilities_id,
-          position_id: this.userSignUp.position_id,
-          depart_id: this.userSignUp.depart_id,
-        });
-        console.log(res);
-        console.log(res2);
-        alert("Đăng ký thành công");
-        this.step = 1;
+      if (this.userSignUp.firstName !== "" || this.userSignUp.lastName !== "" || this.userSignUp.email !== "" || this.userSignUp.password !== "" || this.userSignUp.passwordConfirm !== "") {
+        if (this.userSignUp.password === this.userSignUp.passwordConfirm) {
+          let res = await axios.post(`http://localhost:3001/user`, {
+            email: this.userSignUp.email,
+            password: this.userSignUp.password,
+            role: this.userSignUp.role,
+          });
+          let res2 = await axios.post(`http://localhost:3001/employee`, {
+            firstName: this.userSignUp.firstName,
+            lastName: this.userSignUp.lastName,
+            email: this.userSignUp.email,
+            password: this.userSignUp.password,
+            role: this.userSignUp.role,
+            facilities_id: this.userSignUp.facilities_id,
+            position_id: this.userSignUp.position_id,
+            depart_id: this.userSignUp.depart_id,
+          });
+          console.log(res);
+          console.log(res2);
+          this.showDialogSuccess = true;
+          this.step = 1;
+        }else{
+          this.showDialogPassword = true;
+        }
       } else {
-        alert("Vui lòng kiểm tra lại mật khẩu đã nhập!!!");
+        this.showDialogSignUp = true;
       }
     },
     cancel() {
       console.log("cancel");
       this.showDialog = false;
+      this.showDialogSignUp = false;
+      this.showDialogPassword = false;
+      this.showDialogSuccess = false;
     },
     confirm() {
       console.log("confirm");
       this.showDialog = false;
+      this.showDialogSignUp = false;
+      this.showDialogPassword = false;
+      this.showDialogSuccess = false;
     },
   },
   props: {
