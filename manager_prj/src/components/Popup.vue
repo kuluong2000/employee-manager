@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" mode="out-in">
-  <div key='5' v-show="show" class="overlay" >
+  <div key='5' v-show="show" class="overlay">
 
 
     <div class="dialog">
