@@ -11,15 +11,32 @@
 </template>
 
 <script>
-import Sidebar from "./components/Sidebar";
-import Topbar from "./components/Topbar";
+// import { mapActions } from "vuex";
+import Sidebar from "@/components/Sidebar";
+import Topbar from "@/components/Topbar";
 export default {
-  name: "App",
+  name: "Layout",
   components: { Topbar, Sidebar },
   data: () => ({
     cards: ["Today", "Yesterday"],
     drawer: null,
   }),
-  methods: {},
+  // async mounted() {
+  //   await this.loadNameUser();
+  // },
+  // methods: {
+  //       ...mapActions(["actionSetUserInfo","actionSetImageInfo"]),
+  //   async loadNameUser() {
+  //     const meAuth = JSON.parse(localStorage.getItem("user-info"));
+  //     if (meAuth && meAuth !== "") {
+  //       let name = `${meAuth.lastName} ${meAuth.firstName}`;
+  //       let url = `${meAuth.imgUrl}`;
+  //       this.actionSetUserInfo(name);
+  //       this.actionSetImageInfo(url);
+  //     }
+  //     //C1
+  //     // this.$store.dispatch('actionSetUserInfo', name) // C2
+  //   },
+  // },
 };
 </script>

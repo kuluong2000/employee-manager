@@ -1,14 +1,13 @@
 <template>
-  <div class="department">
+  <div class="payment">
     <v-container class="container">
       <v-row>
         <v-col cols="12">
           <!-- <h1>employee list</h1> -->
           <v-card>
             <v-card-title>
-              DANH SÁCH PHÒNG BAN
+              DANH SÁCH TIỀN LƯƠNG
               <v-spacer></v-spacer>
-
               <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
@@ -17,21 +16,11 @@
                 hide-details
               ></v-text-field>
             </v-card-title>
-            <v-btn
-              color="green"
-              dark
-              class="mb-2 ms-4"
-              v-bind="attrs"
-              v-on="on"
-            >
-              New Item
-            </v-btn>
             <v-data-table
               :headers="header"
-              :items="department"
+              :items="payment"
               :items-per-page="10"
               class="elevation-1 text-center"
-              :single-select="singleSelect"
               item-key="id"
               show-select
               :search="search"
@@ -56,7 +45,7 @@
                 </v-btn>
               </template>
               <template v-slot:no-data>
-                <v-btn color="primary" @click="initialize"> Reset </v-btn>
+                <v-btn color="primary"> Reset </v-btn>
               </template>
               <!-- <template v-slot:top>
               <v-text-field
@@ -86,18 +75,38 @@ export default {
           align: "center",
         },
         {
-          text: "Mã Phòng Ban",
-          value: "depart_id",
+          text: "Mã Tiền Lương",
+          value: "Payment_ID",
           align: "center",
         },
         {
-          text: "Tên Phòng Ban",
-          value: "depart_name",
+          text: "Email",
+          value: "email",
           align: "center",
         },
         {
-          text: "Địa Chỉ",
-          value: "depart_address",
+          text: "Tên Nhân Viên",
+          value: "firstName",
+          align: "center",
+        },
+        {
+          text: "Tổng Lương",
+          value: "amount",
+          align: "center",
+        },
+        {
+          text: "Mã Chức Vụ",
+          value: "position_id",
+          align: "center",
+        },
+        {
+          text: "Chi Tiết",
+          value: "description",
+          align: "center",
+        },
+        {
+          text: "Ngày Bắt Đầu",
+          value: "innitiated_date",
           align: "center",
         },
         {
@@ -107,15 +116,15 @@ export default {
           sortable: false,
         },
       ],
-      department: [],
+      payment: [],
       search: "",
     };
   },
   async mounted() {
-    const res = await axios.get(`http://localhost:3001/departments`);
+    const res = await axios.get(`http://localhost:3001/payment`);
     if (res.status === 200) {
-      this.department = res.data;
-      console.log(this.department);
+      this.payment = res.data;
+      console.log(this.payment);
     }
   },
 };

@@ -9,38 +9,75 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "dashboard",
+    name: "Layout",
     component: Layout,
+    meta: {
+      requiredAuth: true,
+    },
     children: [
       {
         path: "/",
         component: () => import("../views/Dashboard"),
         name: "Dashboard",
+        meta: {
+          requiredAuth: true,
+        },
+      },
+      {
+        path: "/create",
+        name: "Create",
+        component: () => import("../views/Create"),
+        meta: {
+          requiredAuth: true,
+        },
       },
       {
         path: "/user",
-        name: "dashboard",
+        name: "user",
         component: () => import("../views/User"),
+        meta: {
+          requiredAuth: true,
+        },
       },
       {
         path: "/employee",
-        name: "dashboard",
+        name: "employee",
         component: () => import("../views/Employee"),
+        meta: {
+          requiredAuth: true,
+        },
       },
       {
         path: "/facilities",
-        name: "dashboard",
+        name: "facilities",
         component: () => import("../views/Facilities"),
+        meta: {
+          requiredAuth: true,
+        },
       },
       {
         path: "/department",
-        name: "dashboard",
+        name: "department",
         component: () => import("./../views/Department"),
+        meta: {
+          requiredAuth: true,
+        },
       },
       {
         path: "/position",
-        name: "dashboard",
+        name: "position",
         component: () => import("./../views/Position"),
+        meta: {
+          requiredAuth: true,
+        },
+      },
+      {
+        path: "/payment",
+        name: "payment",
+        component: () => import("./../views/Payment"),
+        meta: {
+          requiredAuth: true,
+        },
       },
     ],
   },
@@ -55,6 +92,19 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta && to.meta.requiredAuth) {
+    const auth = JSON.parse(localStorage.getItem("user-info"));
+    if (auth && auth !== "") {
+      console.log(auth);
+      next();
+    } else {
+      next({ path: "/login" });
+    }
+  }
+  return next();
 });
 
 export default router;

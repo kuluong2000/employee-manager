@@ -24,7 +24,7 @@
                             dense
                             color="blue"
                             autocomplete="false"
-                           class="mt-16"
+                           class="mt-12 mb-1"
                            v-model="user.email"
                            :rules="[requiredEmail]"
                           />
@@ -53,7 +53,7 @@
                                 <span class="caption blue--text float-right">Forgot password</span>
                               </v-col>
                             </v-row>
-                          <v-btn color="blue" dark block tile><router-link to="/">Log in</router-link></v-btn>
+                          <v-btn color="blue" dark block tile @click="login">Sign in</v-btn>
                      
                          <h5
                           class="text-center  grey--text mt-4 mb-3"
@@ -124,6 +124,7 @@
                             color="blue"
                             autocomplete="false"
                            class="mt-4"
+                           v-model="userSignUp.firstName"
                           />
                            </v-col>
                            <v-col cols="12" sm="6">
@@ -134,6 +135,7 @@
                             color="blue"
                             autocomplete="false"
                            class="mt-4"
+                            v-model="userSignUp.lastName"
                           />
                            </v-col>
                            </v-row>
@@ -143,6 +145,7 @@
                             dense
                             color="blue"
                             autocomplete="false"
+                            v-model="userSignUp.email"
                           />
                           <v-text-field
                             label="Password"
@@ -151,7 +154,16 @@
                             color="blue"
                           autocomplete="false"
                            type="password"
-                          
+                            v-model="userSignUp.password"
+                          />
+                          <v-text-field
+                            label="Confirm Password"
+                            outlined
+                            dense
+                            color="blue"
+                          autocomplete="false"
+                           type="password"
+                           v-model="userSignUp.passwordConfirm"
                           />
                             <v-row>
                               <v-col cols="12" sm="7">
@@ -166,7 +178,7 @@
                                 <span class="caption blue--text ml-n4 float-right">Terms &Conditions</span>
                               </v-col>
                             </v-row>
-                          <v-btn color="blue" dark block tile>Sign up</v-btn>
+                          <v-btn color="blue" dark block tile @click="signup">Sign up</v-btn>
                      
                          <h5
                           class="text-center  grey--text mt-4 mb-3"
@@ -193,20 +205,77 @@
           </v-col>
       </v-row>
   </v-container>
+  <popup :show="showDialog"
+          :cancel="cancel"
+          :confirm="confirm"
+          title="Thông báo?"
+          text="Ok! Mình sẽ kiểm tra lại"
+          description="Email hoặc mật khẩu không đúng!!!"></popup>
 </div>
-
 </template>
 
 <script>
-  
+import axios from "axios"
+import Popup from '../components/Popup.vue';
 export default {
-   data: () => ({
+  components: { Popup },
+  data() {
+    return {
     step: 1,
+    requiredEmail: value => value.length > 0 || 'You must input your email',
+    requiredPassword: value => value.length > 0 || 'You must input your password',
     user: {},
-    requiredEmail: v => v.length > 0 || 'You must input your email',
-    requiredPassword: v => v.length > 0 || 'You must input your password'
-
-  }),
+    userSignUp: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      passwordConfirm: '',
+      role: '',
+      facilities_id: '',
+      position_id: '',
+      depart_id: '',
+    },
+    showDialog: false,
+  };
+  },
+  methods:{
+    async login(){
+      let res = await axios.get(`http://localhost:3001/user?email=${this.user.email}&password=${this.user.password}`)
+      console.log(res)
+      if(res.data.length > 0){
+        // let resEm = await axios.get(`http://localhost:3001/employee?email=${this.user.email}`)
+        // this.$store.dispatch('actionSetUserInfo', `${resEm.data[0].lastName} ${resEm.data[0].firstName}`);
+        // this.$store.dispatch('actionSetImageInfo', `${resEm.data[0].imgUrl}`);
+        // console.log(resEm.status)
+        localStorage.setItem('user-info', JSON.stringify(res.data[0]))
+        this.$router.push('/')
+        setTimeout(() => alert('Đăng nhập thành công'), 100)
+      }else{
+        this.showDialog = true;
+      }
+    },
+    async signup(){
+      if(this.userSignUp.password === this.userSignUp.passwordConfirm){
+        let res = await axios.post(`http://localhost:3001/user`, {email: this.userSignUp.email, password: this.userSignUp.password, role: this.userSignUp.role})
+        let res2 = await axios.post(`http://localhost:3001/employee`, {firstName: this.userSignUp.firstName,lastName: this.userSignUp.lastName, email: this.userSignUp.email, password: this.userSignUp.password, role: this.userSignUp.role, facilities_id: this.userSignUp.facilities_id, position_id: this.userSignUp.position_id, depart_id: this.userSignUp.depart_id})
+        console.log(res)
+        console.log(res2)
+        alert('Đăng ký thành công')
+        this.step = 1;
+      }else{
+        alert('Vui lòng kiểm tra lại mật khẩu đã nhập!!!')
+      }
+    },
+    cancel() {
+      console.log('cancel');
+      this.showDialog = false;
+    },
+    confirm() {
+      console.log('confirm');
+      this.showDialog = false;
+    },
+  },
   props: {
     source: String
   } 

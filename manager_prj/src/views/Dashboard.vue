@@ -1,5 +1,4 @@
 <template>
-    <Layout>
         <div class="dashboard">
             <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
                 <h3>Dashboard</h3>
@@ -78,7 +77,6 @@
                 </v-col>
             </v-row>
         </div>
-    </Layout>
 </template>
 
 <script>
@@ -87,11 +85,11 @@
         data() {
             return {
                 activityLog: [
-                    {title: 'Total Products', amount: 50, icon: 'mdi-account', color: 'cyan lighten-3'},
-                    {title: 'Total Customer', amount: 3433, icon: 'mdi-account-group-outline', color: 'green darken-2'},
-                    {title: 'Total Sale', amount: 3433, icon: 'mdi-account-group-outline', color: 'blue-grey darken-1'},
+                    {title: 'Tổng số nhân viên', amount: 50, icon: 'mdi-account', color: 'cyan lighten-3'},
+                    {title: 'Tổng số CSVC', amount: 3433, icon: 'mdi-account-group-outline', color: 'green darken-2'},
+                    {title: 'Tổng số phòng ban', amount: 3433, icon: 'mdi-account-group-outline', color: 'blue-grey darken-1'},
                     {
-                        title: 'Pending Orders',
+                        title: 'Tổng số tài khoản',
                         amount: 3433,
                         icon: 'mdi-account-group-outline',
                         color: 'deep-orange darken-1'
@@ -198,8 +196,9 @@
         methods: {
             onButtonClick(item) {
                 console.log('click on ' + item.no)
-            }
-        }
+            },
+
+        },
 
     }
 </script>
