@@ -254,9 +254,11 @@ export default {
         email: "",
         password: "",
         role: "",
-        facilities_id: "",
         position_id: "",
         depart_id: "",
+        depart_name: "",
+        address: "",
+        imgUrl: "",
       },
       deleteId: 0,
       account: [],
@@ -313,9 +315,11 @@ export default {
           email: this.user.email,
           password: this.user.password,
           role: this.user.role,
-          facilities_id: this.user.facilities_id,
           position_id: this.user.position_id,
           depart_id: this.user.depart_id,
+          depart_name: this.user.depart_name,
+          address: this.user.address,
+          imgUrl: this.user.imgUrl,
         });
         console.log(res);
         console.log(res2);

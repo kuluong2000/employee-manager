@@ -74,14 +74,14 @@ export default {
           value: "id",
           align: "center",
         },
-                {
+        {
           text: "Mã Chức Vụ",
           value: "position_id",
           align: "center",
         },
                         {
           text: "Tên Chức Vụ",
-          value: "title",
+          value: "role",
           align: "center",
         },
         {

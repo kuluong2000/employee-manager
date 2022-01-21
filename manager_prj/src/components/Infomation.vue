@@ -5,13 +5,20 @@
         <h1 class="px-5 py-7 text-center">Thông Tin Nhân Viên</h1>
         <v-row align="center" justify="center" class="">
           <v-col cols="12" sm="4" class="text-center">
-            <v-avatar class="mb-2" color="grey darken-1" size="250">
+            <v-avatar class="mb-2" color="grey darken-1" size="250" v-if="this.imgLink">
               <v-img
                 aspect-ratio="30"
                 :src="this.imgLink"
               />
             </v-avatar>
-            <h2 class="black--text mt-2 mb-6">{{this.lastName}} {{this.firstName}}</h2>
+            <v-avatar class="mb-2" color="grey darken-1" size="250" v-else>
+              <v-img
+                aspect-ratio="30"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
+              />
+            </v-avatar>
+            <h2 class="black--text mt-2 mb-6" v-if="this.firstName && this.lastName">{{this.lastName}} {{this.firstName}}</h2>
+            <h2 class="black--text mt-2 mb-6" v-else>Người dùng mới</h2>
             <v-row
               align="center"
               justify="center"
@@ -35,7 +42,7 @@
                 <v-row>
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
-                      :counter="10"
+                      :counter="30"
                       label="Họ"
                       :value="this.lastName"
                       required
@@ -44,7 +51,7 @@
                   </v-col>
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
-                      :counter="10"
+                      :counter="30"
                       label="Tên"
                       :value="this.firstName"
                       required
@@ -77,26 +84,44 @@
 
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
-                      label="Quê quán"
-                      value="Phường Mỹ An, Quận Ngũ Hành Sơn, TP Đà Nẵng"
+                      label="Địa Chỉ"
+                      :value="this.address"
                       required
                     ></v-text-field>
                   </v-col>
 
                   <v-col cols="12" md="12">
-                    <v-text-field
-                      label="Chức vụ"
-                      value="Trưởng Phòng"
-                      required
-                    ></v-text-field>
+                        <v-select
+                          :items="[
+                            'Nhân Viên',
+                            'Trưởng Phòng',
+                            'Giám đốc CSVC',
+                            'Admin',
+                          ]"
+                          label="Chức Vụ"
+                          :value="this.role"
+                          required
+                        ></v-select>
                   </v-col>
 
                   <v-col cols="12" md="12">
-                    <v-text-field
-                      label="Phòng Ban"
-                      value="Phòng Công Nghệ Thông Tin"
-                      required
-                    ></v-text-field>
+                        <v-select
+                          :items="[
+                            'Phòng Marketing',
+                            'Phòng Sales',
+                            'Phòng Nhân Sự',
+                            'Phòng Kế Toán',
+                            'Phòng Kiểm Toán',
+                            'Phòng Kinh Doanh',
+                            'Phòng Công Nghệ Thông Tin',
+                            'Phòng CSKH',
+                            'Phòng Cơ Sở Vật Chất'
+                          ]"
+                          label="Phòng Ban"
+                          :value="this.department"
+                          :menu-props="{ top: true, offsetY: true }"
+                          required
+                        ></v-select>
                   </v-col>
                 </v-row>
               </v-container>
@@ -179,6 +204,9 @@ export default {
       imgLink: "",
       email: "",
       password: "",
+      role: "",
+      department: "",
+      address: "",
     };
   },
   async mounted() {
@@ -196,6 +224,9 @@ export default {
     this.imgLink = index.imgUrl;
     this.email = index.email;
     this.password = index.password;
+    this.role = index.role;
+    this.address = index.address;
+    this.department = index.depart_name;
   },
 };
 </script>

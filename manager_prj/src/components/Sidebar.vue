@@ -3,7 +3,7 @@
     <v-img
       height="140"
       class="pa-4"
-      src="https://pdp.edu.vn/wp-content/uploads/2021/04/hinh-nen-cong-nghe-1.jpg"
+      src="https://timnhaviet.vn/hinh-background-dep/imager_3486.jpg"
     >
       <div class="text-center">
         <v-avatar class="mb-2" color="grey darken-1" size="77" v-if="imgUrl">

@@ -75,12 +75,12 @@ export default {
           align: "center",
         },
         {
-          text: "LASTNAME",
+          text: "Họ",
           value: "lastName",
           align: "center",
         },
         {
-          text: "FIRSTNAME",
+          text: "Tên",
           value: "firstName",
           align: "center",
         },
@@ -90,23 +90,18 @@ export default {
           align: "center",
         },
         {
-          text: "PASSWORD",
-          value: "password",
-          align: "center",
-        },
-        {
-          text: "ROLE",
+          text: "Chức Vụ",
           value: "role",
           align: "center",
         },
         {
-          text: "DEPARTMENT",
-          value: "depart_id",
+          text: "Phòng Ban",
+          value: "depart_name",
           align: "center",
         },
         {
-          text: "POSITION",
-          value: "position_id",
+          text: "Địa Chỉ",
+          value: "address",
           align: "center",
         },
         {

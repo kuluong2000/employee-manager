@@ -299,9 +299,11 @@ export default {
         password: "",
         passwordConfirm: "",
         role: "",
-        facilities_id: "",
         position_id: "",
         depart_id: "",
+        depart_name: "",
+        address: "",
+        imgUrl: "",
       },
       showDialog: false,
       showDialogSignUp: false,
@@ -348,9 +350,11 @@ export default {
             email: this.userSignUp.email,
             password: this.userSignUp.password,
             role: this.userSignUp.role,
-            facilities_id: this.userSignUp.facilities_id,
             position_id: this.userSignUp.position_id,
             depart_id: this.userSignUp.depart_id,
+            depart_name: this.userSignUp.depart_name,
+            address: this.userSignUp.address,
+            imgUrl: this.userSignUp.imgUrl,
           });
           console.log(res);
           console.log(res2);
