@@ -40,6 +40,14 @@ const routes = [
         },
       },
       {
+        path: "/userInfo",
+        name: "userInfo",
+        component: () => import("../components/Infomation"),
+        meta: {
+          requiredAuth: true,
+        },
+      },
+      {
         path: "/employee",
         name: "employee",
         component: () => import("../views/Employee"),

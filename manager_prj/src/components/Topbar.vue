@@ -104,7 +104,7 @@
           link
           v-for="(menu, i) in menus"
           :key="i"
-          @click="logout(menu.action)"
+          @click="listAction(menu.action)"
         >
           <v-list-item-icon>
             <v-icon>{{ menu.icon }}</v-icon>
@@ -136,7 +136,7 @@ export default {
   data() {
     return {
       menus: [
-        { title: "Profile", icon: "mdi-account" },
+        { title: "Profile", icon: "mdi-account", action: "profile" },
         { title: "Change Password", icon: "mdi-key" },
         { title: "Setting", icon: "mdi-cog" },
         { title: "Logout", icon: "mdi-logout", action: "logout" },
@@ -203,9 +203,12 @@ export default {
            console.log(index.firstName);
   },
   methods: {
-    logout(action) {
+    listAction(action) {
       if (action === "logout") {
         this.showDialog = true;
+      }
+      if (action === "profile") {
+        this.$router.push('/userInfo')
       }
     },
     cancel() {

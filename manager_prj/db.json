@@ -70,8 +70,8 @@
       "firstName": "Chi",
       "lastName": "Nguyễn Mai",
       "email": "maichi08@gmail.com",
-      "password": "123456789",
-      "imgUrl": "https://scontent.fdad3-4.fna.fbcdn.net/v/t1.6435-9/131242327_2763170227237913_4435407730173866863_n.jpg?_nc_cat=101&ccb=1-5&_nc_sid=174925&_nc_ohc=ZzgklwWl6BQAX-_Aaoc&_nc_ht=scontent.fdad3-4.fna&oh=00_AT_erqIqsrNHfvTcREOQ9d3URnh9q8NLUr7A183IqmwvTA&oe=620BA922",
+      "password": "12345678",
+      "imgUrl": "https://scontent.fdad3-1.fna.fbcdn.net/v/t1.6435-9/126864550_2745689675652635_8035739956935531249_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=730e14&_nc_ohc=MJxBTES939YAX_jpa8g&_nc_ht=scontent.fdad3-1.fna&oh=00_AT-MJoT8b67XPeJnFEUnqozEKV6bGRsllV2jTZ590vgUog&oe=62100CC9",
       "role": "",
       "position_id": "",
       "depart_id": "",
@@ -617,7 +617,7 @@
       "id": 8
     },
     {
-      "email": "maichi@gmail.com",
+      "email": "maichi08@gmail.com",
       "password": "12345678",
       "role": "Nhân Viên",
       "id": 9

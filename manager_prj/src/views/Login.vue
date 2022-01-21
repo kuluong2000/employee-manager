@@ -290,8 +290,7 @@ export default {
     return {
       step: 1,
       requiredEmail: (value) => value.length > 0 || "You must input your email",
-      requiredPassword: (value) =>
-        value.length > 0 || "You must input your password",
+      requiredPassword: (value) => value.length > 0 || "You must input your password",
       user: {},
       userSignUp: {
         firstName: "",
