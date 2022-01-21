@@ -133,4 +133,12 @@ h1 {
   text-align: center;
   margin: -10px 0 30px;
 }
+.v-data-table >>> td:nth-of-type(8) {
+       max-width: 380px;
+}
+.v-data-table >>> td{
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis;
+}
 </style>

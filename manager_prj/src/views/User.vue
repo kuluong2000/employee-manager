@@ -119,7 +119,7 @@
               :headers="header"
               :items="account"
               :items-per-page="10"
-              class="elevation-1 text-center"
+              class="elevation-1 text-center table-list"
               item-key="id"
               show-select
               :search="search"
