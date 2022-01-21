@@ -261,6 +261,39 @@
       "position_id": "",
       "depart_id": "",
       "id": 25
+    },
+    {
+      "firstName": "",
+      "lastName": "",
+      "email": "test123",
+      "password": "12345678",
+      "role": "Nhân Viên",
+      "facilities_id": "",
+      "position_id": "",
+      "depart_id": "",
+      "id": 26
+    },
+    {
+      "firstName": "",
+      "lastName": "",
+      "email": "test1234",
+      "password": "12345678",
+      "role": "Giám đốc CSVC",
+      "facilities_id": "",
+      "position_id": "",
+      "depart_id": "",
+      "id": 27
+    },
+    {
+      "firstName": "",
+      "lastName": "",
+      "email": "qwe123",
+      "password": "123456789",
+      "role": "Admin",
+      "facilities_id": "",
+      "position_id": "",
+      "depart_id": "",
+      "id": 28
     }
   ],
   "departments": [
@@ -678,6 +711,24 @@
       "password": "12345678",
       "role": "Nhân Viên",
       "id": 26
+    },
+    {
+      "email": "test123",
+      "password": "12345678",
+      "role": "Nhân Viên",
+      "id": 27
+    },
+    {
+      "email": "test1234",
+      "password": "12345678",
+      "role": "Giám đốc CSVC",
+      "id": 28
+    },
+    {
+      "email": "qwe123",
+      "password": "123456789",
+      "role": "Admin",
+      "id": 29
     }
   ]
 }

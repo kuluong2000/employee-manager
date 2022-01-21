@@ -278,7 +278,7 @@ export default {
       await axios.delete(`http://localhost:3001/user/${this.deleteId}`);
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
-      setTimeout(() => window.location.reload(), 1000)
+      setTimeout(() => window.location.reload(), 2000)
     },
     cancel() {
       this.showDialogDelete = false;
@@ -321,7 +321,7 @@ export default {
         console.log(res2);
         this.dialog = false;
         this.showDialogCreateSuccess = true;
-        setTimeout(() => window.location.reload(), 400)
+        setTimeout(() => window.location.reload(), 2000)
       }
     },
   },
