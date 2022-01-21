@@ -150,7 +150,7 @@
                   @click="handleRow(item)"
                 >
                   Delete
-                  <v-icon dark right> mdi-pencil </v-icon>
+                  <v-icon dark right> mdi-delete </v-icon>
                 </v-btn>
               </template>
               <template v-slot:no-data>

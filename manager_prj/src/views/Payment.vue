@@ -41,7 +41,7 @@
                 </v-btn>
                 <v-btn class="ma-2" color="red" dark>
                   Delete
-                  <v-icon dark right> mdi-pencil </v-icon>
+                  <v-icon dark right> mdi-delete </v-icon>
                 </v-btn>
               </template>
               <template v-slot:no-data>
