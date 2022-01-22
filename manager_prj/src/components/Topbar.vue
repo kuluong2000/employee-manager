@@ -67,7 +67,7 @@
                 <v-img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t1.6435-9/131983622_1764246023751239_4482106337413797845_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=32WUFSKYPfUAX-pE8-N&_nc_ht=scontent.fdad3-5.fna&oh=00_AT_vsrN4kC20wtJDWQfJc0B421sECpPBlqqxWct85cQKPA&oe=6206A48D" />
               </v-avatar>
             </v-badge>
-            <span class="ml-3">{{name}}</span>
+            <span class="ml-3">Sỹ Dũng</span>
           </v-chip>
         </span>
       </template>
@@ -78,12 +78,12 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{name}}</v-list-item-title>
+            <v-list-item-title>Sỹ Dũng</v-list-item-title>
             <v-list-item-subtitle>Logged In</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-divider />
-        <v-list-item link v-for="(menu, i) in menus" :key="i" @click="logout(menu.action)">
+        <v-list-item link v-for="(menu, i) in menus" :key="i">
           <v-list-item-icon>
             <v-icon>{{ menu.icon }}</v-icon>
           </v-list-item-icon>
@@ -97,8 +97,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import baseURL from "../service/baseUrl.js"
 export default {
   name: "Topbar",
   data() {
@@ -107,7 +105,7 @@ export default {
         { title: "Profile", icon: "mdi-account" },
         { title: "Change Password", icon: "mdi-key" },
         { title: "Setting", icon: "mdi-cog" },
-        { title: "Logout", icon: "mdi-logout",action:"logout"},
+        { title: "Logout", icon: "mdi-logout" },
       ],
       items: [
         {
@@ -143,29 +141,8 @@ export default {
             '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
         },
       ],
-      name:''
     };
   },
-  methods: {
-    logout(action){
-      if(action === "logout"){
-        this.$router.push("/login")
-      }
-    }
-  },
-  async mounted() {
-            const res = await axios.get(`${baseURL}/employee`);
-            const dataLogin =JSON.parse(localStorage.getItem("login"));
-            
-            let id = [...dataLogin][0].email;
-            console.log(id);
-            let data = res.data;
-             const index =  data.find(el => el.email === id )
-            //  const index =  data.map(el => el.email == id)
-             console.log(index)
-             this.name = index.firstName
-           console.log(index.firstName);
-        },
 };
 </script>
 

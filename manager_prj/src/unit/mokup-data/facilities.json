@@ -1,102 +1,83 @@
 [
-   {
-      "id": 1,
-      "facilities_id": "Lt01",
-      "title": "Laptop",
-      "price": 1500000,
-      "qty": 10,
-      "image": "xxx",
-      "innitiated_date": "12/01/2020",
-      "email": "tranluong@gmail.com"
-   },
-   {
-      "id": 2,
-      "facilities_id": "Mi01",
-      "title": "Máy In",
-      "price": 500000,
-      "qty": 20,
-      "image": "xxx",
-      "innitiated_date": "12/05/2020",
-      "email": "sydung@gmail.com"
-   },
-   {
-      "id": 3,
-      "facilities_id": "Pc01",
-      "title": "Máy Tính Để Bàn",
-      "price": 500000,
-      "qty": 20,
-      "image": "xxx",
-      "innitiated_date": "12/03/2020",
-      "email": "thuydung@gmail.com"
-   },
-   {
-      "id": 4,
-      "facilities_id": "Mcp20",
-      "title": "Máy chiếu panasonic",
-      "price": 2000000,
-      "qty": 20,
-      "image": "xxx",
-      "innitiated_date": "20/01/2020",
-      "email": "hieuvo@gmail.com"
-   },
-   {
-      "id": 5,
-      "facilities_id": "Mq220",
-      "title": "Máy Quạt",
-      "price": 200000,
-      "qty": 50,
-      "image": "xxx",
-      "innitiated_date": "12/01/2021",
-      "email": "tranluong@gmail.com"
-   },
-   {
-      "id": 6,
-      "facilities_id": "Mcb110",
-      "title": "Máy Chiếu BeenQ",
-      "price": 2000000,
-      "qty": 50,
-      "image": "xxx",
-      "innitiated_date": "12/12/2021",
-      "email": "tranluong@gmail.com"
-   },
-   {
-      "id": 7,
-      "facilities_id": "Mcb110",
-      "title": "Máy Chiếu Mini EPSON",
-      "price": 2000000,
-      "qty": 50,
-      "image": "xxx",
-      "innitiated_date": "21/08/2020",
-      "email": "tranluong@gmail.com"
-   },
-   {
-      "id": 8,
-      "facilities_id": "Mcxm110",
-      "title": "Máy Chiếu Xiaomi",
-      "price": 2000000,
-      "qty": 50,
-      "image": "xxx",
-      "innitiated_date": "20/01/2020",
-      "email": "hieuvo@gmail.com"
-   },
-   {
-      "id": 9,
-      "facilities_id": "Table09",
-      "title": "Bàn Gỗ",
-      "price": 200000,
-      "qty": 50,
-      "image": "xxx",
-      "innitiated_date": "30/08/2020",
-      "email": "hieuvo@gmail.com"
-   },
-   {
-      "id": 10,
-      "facilities_id": "Chair10",
-      "title": "Ghế",
-      "price": 200000,
-      "qty": 50,
-      "image": "xxx",
-      "innitiated_date": "22/9/2020",
-      "email": "sydung@gmail.com"
-   }
+    {
+   "id":1,
+    "facilities_id":"mt01",
+    "title":"máy tính",
+    "price":1500000,
+    "qty":10,
+    "image":"xxx"
+},
+ {
+   "id":2,
+    "facilities_id":"mi01",
+    "title":"máy in",
+    "price":500000,
+    "qty":20,
+    "image":"xxx"
+ },
+  {
+   "id":3,
+    "facilities_id":"pc01",
+    "title":"máy tính để bàn",
+    "price":500000,
+    "qty":20,
+    "image":"xxx"
+ },
+
+  {
+   "id":4,
+    "facilities_id":"mcp20",
+    "title":"máy chiếu panasonic",
+    "price":2000000,
+    "qty":20,
+    "image":"xxx"
+ },
+{
+   "id":5,
+    "facilities_id":"mq220",
+    "title":"máy quạt",
+    "price":200000,
+    "qty":50,
+    "image":"xxx"
+ },
+{
+   "id":6,
+    "facilities_id":"mcb110",
+    "title":"máy chiếu beenQ",
+    "price":2000000,
+    "qty":50,
+    "image":"xxx"
+ },
+ {
+   "id":7,
+    "facilities_id":"mcb110",
+    "title":"máy chiếu beenQ",
+    "price":2000000,
+    "qty":50,
+    "image":"xxx"
+ },
+{
+   "id":8,
+    "facilities_id":"mcxm110",
+    "title":"máy chiếu xiaomi",
+    "price":2000000,
+    "qty":50,
+    "image":"xxx"
+ },
+ {
+   "id":9,
+    "facilities_id":"table09",
+    "title":"bàn",
+    "price":200000,
+    "qty":50,
+    "image":"xxx"
+ },
+  {
+   "id":10,
+    "facilities_id":"chair10",
+    "title":"ghế",
+    "price":200000,
+    "qty":50,
+    "image":"xxx"
+ }
 ]

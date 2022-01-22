@@ -9,11 +9,11 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "layout",
+    name: "dashboard",
     component: Layout,
     children: [
       {
-        path: "/dashboard",
+        path: "/",
         component: () => import("../views/Dashboard"),
         name: "Dashboard",
       },
