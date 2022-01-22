@@ -37,14 +37,13 @@ export default {
   data() {
     return {
       links: [
-        ["mdi-microsoft-windows", "Trang Chủ", "/dashboard"],
+        ["mdi-microsoft-windows", "Trang Chủ", "/"],
         ["mdi-account", "Quản Lý Tài Khoản", "/user"],
-        ["mdi-card-account-details-outline", "Quản Lý Nhân Viên", "/employee"],
-        ["mdi-desktop-classic", "Quản Lý CS Vật Chất", "/facilities"],
-        ["mdi-home-city", "Quản Lý Phòng Ban", "/department"],
-        ["mdi-shield-account", "Quản Lý Chức Vụ", "/position"],
-        ["mdi-cash-multiple", "Quản Lý Tiền Lương", "/payment"],
-        ["mdi-cog", "Cài Đặt", "/dashboard"],
+        ["mdi-clipboard-list-outline", "Quản Lý Nhân Viên", "/employee"],
+        ["mdi-card-account-details-outline", "Quản Lý CS Vật Chất", "/facilities"],
+        ["mdi-card-account-details-outline", "Quản Lý Phòng Ban", "/department"],
+        ["mdi-card-account-details-outline", "Quản Lý Chức Vụ", "/position"],
+        ["mdi-cog", "Cài Đặt", "/about"],
       ],
     };
   },

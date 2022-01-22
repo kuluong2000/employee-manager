@@ -2,16 +2,16 @@
     {
         "id": 1,
         "position_id": "epl",
-        "title": "Nhân viên"
+        "title": "employee"
     },
     {
         "id": 2,
         "position_id": "depart",
-        "title": "Trưởng phòng "
+        "title": "department_head"
     },
     {
         "id": 3,
         "position_id": "dir",
-        "title": "Giám đốc cơ vở vật chất"
+        "title": "director"
     }
 ]

@@ -1,5 +1,5 @@
 <template>
-   
+    <Layout>
         <div class="dashboard">
             <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
                 <h3>Dashboard</h3>
@@ -78,11 +78,10 @@
                 </v-col>
             </v-row>
         </div>
-  
+    </Layout>
 </template>
 
 <script>
-
     export default {
         name: "Dashboard",
         data() {
