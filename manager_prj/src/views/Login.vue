@@ -11,7 +11,7 @@
                     <v-card-text class="mt-12">
                       <h2 class="text-center mb-3">Login in to Your Account</h2>
                       <h5 class="text-center grey--text">
-                        Log in to your account so you can continue builiding
+                        Log in to your account so you can continue builiding.
                         <br />and editing your onboarding flows
                       </h5>
                       <v-row
