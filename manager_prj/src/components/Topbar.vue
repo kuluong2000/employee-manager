@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-app-bar app elevate-on-scroll elevation="3" color="white">
     <v-app-bar-nav-icon @click="$emit('drawerEvent')"></v-app-bar-nav-icon>
     <v-spacer />
@@ -63,27 +64,48 @@
         <span style="cursor: pointer" v-bind="attrs" v-on="on">
           <v-chip link>
             <v-badge dot bottom color="green" offset-y="10" offset-x="10">
-              <v-avatar size="40">
-                <v-img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t1.6435-9/131983622_1764246023751239_4482106337413797845_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=32WUFSKYPfUAX-pE8-N&_nc_ht=scontent.fdad3-5.fna&oh=00_AT_vsrN4kC20wtJDWQfJc0B421sECpPBlqqxWct85cQKPA&oe=6206A48D" />
+              <v-avatar size="40" v-if="imgUrl">
+                <v-img
+                  :src="imgUrl"
+                />
+              </v-avatar>
+              <v-avatar size="40" v-else>
+                <v-img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
+                />
               </v-avatar>
             </v-badge>
-            <span class="ml-3">Sỹ Dũng</span>
+            <span class="ml-3" v-if="lastName && firstName">{{ lastName }} {{ firstName }}</span>
+            <span class="ml-3" v-else>Người dùng mới</span>
           </v-chip>
         </span>
       </template>
       <v-list width="250" class="py-0">
         <v-list-item two-line>
-          <v-list-item-avatar>
-            <img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t1.6435-9/131983622_1764246023751239_4482106337413797845_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=32WUFSKYPfUAX-pE8-N&_nc_ht=scontent.fdad3-5.fna&oh=00_AT_vsrN4kC20wtJDWQfJc0B421sECpPBlqqxWct85cQKPA&oe=6206A48D" />
+          <v-list-item-avatar v-if="imgUrl">
+            <img style="object-fit: cover;"
+              :src="imgUrl"
+            />
+          </v-list-item-avatar>
+          <v-list-item-avatar v-else>
+            <img style="object-fit: cover;"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
+            />
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>Sỹ Dũng</v-list-item-title>
+            <v-list-item-title v-if="lastName && lastName">{{ lastName }} {{ firstName }}</v-list-item-title>
+            <v-list-item-title v-else>Người dùng mới</v-list-item-title>
             <v-list-item-subtitle>Logged In</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-divider />
-        <v-list-item link v-for="(menu, i) in menus" :key="i">
+        <v-list-item
+          link
+          v-for="(menu, i) in menus"
+          :key="i"
+          @click="listAction(menu.action)"
+        >
           <v-list-item-icon>
             <v-icon>{{ menu.icon }}</v-icon>
           </v-list-item-icon>
@@ -94,18 +116,30 @@
       </v-list>
     </v-menu>
   </v-app-bar>
+  <popup :show="showDialog"
+          :cancel="cancel"
+          :confirm="confirm"
+          text="Có! Mình muốn đăng xuất ^^"
+          textCancel="Không nha :v"
+          title="Thông báo?"
+          description="Bạn có muốn đăng xuất không ???"></popup>
+  </div>
 </template>
 
 <script>
+// import { mapState } from "vuex";
+import axios from "axios"
+import Popup from './Popup.vue';
 export default {
+  components: { Popup },
   name: "Topbar",
   data() {
     return {
       menus: [
-        { title: "Profile", icon: "mdi-account" },
+        { title: "Profile", icon: "mdi-account", action: "profile" },
         { title: "Change Password", icon: "mdi-key" },
         { title: "Setting", icon: "mdi-cog" },
-        { title: "Logout", icon: "mdi-logout" },
+        { title: "Logout", icon: "mdi-logout", action: "logout" },
       ],
       items: [
         {
@@ -141,7 +175,50 @@ export default {
             '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
         },
       ],
+      showDialog: false,
+      firstName: '',
+      lastName: '',
+      imgUrl: '',
     };
+  },
+  // computed: {
+  //   ...mapState({
+  //     userInfo: (state) => state.userInfo,
+  //     imageInfo: (state) => state.imageInfo,
+  //   }),
+  // },
+    async mounted() {
+            const res = await axios.get(`http://localhost:3001/employee`);
+            const dataLogin =JSON.parse(localStorage.getItem("user-info"));
+            console.log(dataLogin)
+            let id = dataLogin.email;
+            console.log(id);
+            let data = res.data;
+             const index =  data.find(el => el.email === id )
+            //  const index =  data.map(el => el.email == id)
+             console.log(index)
+             this.firstName = index.firstName
+             this.lastName = index.lastName
+             this.imgUrl = index.imgUrl
+           console.log(index.firstName);
+  },
+  methods: {
+    listAction(action) {
+      if (action === "logout") {
+        this.showDialog = true;
+      }
+      if (action === "profile") {
+        this.$router.push('/userInfo')
+      }
+    },
+    cancel() {
+      this.showDialog = false;
+    },
+    confirm() {
+      localStorage.removeItem("user-info");
+      this.$router.push("/login");
+      this.showDialog = false;
+    },
   },
 };
 </script>

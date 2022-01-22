@@ -1,12 +1,12 @@
 <template>
-  <div class="position">
+  <div class="payment">
     <v-container class="container">
       <v-row>
         <v-col cols="12">
           <!-- <h1>employee list</h1> -->
           <v-card>
             <v-card-title>
-              DANH SÁCH CHỨC VỤ
+              DANH SÁCH TIỀN LƯƠNG
               <v-spacer></v-spacer>
               <v-text-field
                 v-model="search"
@@ -18,7 +18,7 @@
             </v-card-title>
             <v-data-table
               :headers="header"
-              :items="position"
+              :items="payment"
               :items-per-page="10"
               class="elevation-1 text-center"
               item-key="id"
@@ -75,13 +75,38 @@ export default {
           align: "center",
         },
         {
+          text: "Mã Tiền Lương",
+          value: "Payment_ID",
+          align: "center",
+        },
+        {
+          text: "Email",
+          value: "email",
+          align: "center",
+        },
+        {
+          text: "Tên Nhân Viên",
+          value: "firstName",
+          align: "center",
+        },
+        {
+          text: "Tổng Lương",
+          value: "amount",
+          align: "center",
+        },
+        {
           text: "Mã Chức Vụ",
           value: "position_id",
           align: "center",
         },
-                        {
-          text: "Tên Chức Vụ",
-          value: "role",
+        {
+          text: "Chi Tiết",
+          value: "description",
+          align: "center",
+        },
+        {
+          text: "Ngày Bắt Đầu",
+          value: "innitiated_date",
           align: "center",
         },
         {
@@ -91,15 +116,15 @@ export default {
           sortable: false,
         },
       ],
-      position: [],
+      payment: [],
       search: "",
     };
   },
   async mounted() {
-    const res = await axios.get(`http://localhost:3001/position`);
+    const res = await axios.get(`http://localhost:3001/payment`);
     if (res.status === 200) {
-      this.position = res.data;
-      console.log(this.position);
+      this.payment = res.data;
+      console.log(this.payment);
     }
   },
 };
