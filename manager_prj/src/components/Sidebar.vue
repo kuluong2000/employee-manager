@@ -40,6 +40,7 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
+  
 </template>
 
 <script>
@@ -106,73 +107,61 @@ export default {
     this.role = index.role;
 
     if (this.$route.name === "user") {
-      if (this.$route.fullPath === "/user") {
-        if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          this.$router.push("/user");
-          console.log(this.$route.name);
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
+      if (this.role === "Admin" || this.role === "Trưởng Phòng") {
+        this.$router.push("/user");
+        console.log(this.$route.name);
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
     }
     if (this.$route.name === "employee") {
-      if (this.$route.fullPath !== "/employee") {
-        if (
-          this.role === "Admin" ||
-          this.role === "Trưởng Phòng" ||
-          this.role === "Nhân Viên" ||
-          this.role === "Giám Đốc CSVC"
-        ) {
-          this.$router.push("/employee");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
+      if (
+        this.role === "Admin" ||
+        this.role === "Trưởng Phòng" ||
+        this.role === "Nhân Viên" ||
+        this.role === "Giám Đốc CSVC"
+      ) {
+        this.$router.push("/employee");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
     }
     if (this.$route.name === "facilities") {
-      if (this.$route.fullPath !== "/facilities") {
-        if (
-          this.role === "Admin" ||
-          this.role === "Nhân Viên" ||
-          this.role === "Giám Đốc CSVC"
-        ) {
-          this.$router.push("/facilities");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
+      if (
+        this.role === "Admin" ||
+        this.role === "Nhân Viên" ||
+        this.role === "Giám Đốc CSVC"
+      ) {
+        this.$router.push("/facilities");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
     }
     if (this.$route.name === "department") {
-      if (this.$route.fullPath !== "/department") {
-        if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          this.$router.push("/department");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
+      if (this.role === "Admin" || this.role === "Trưởng Phòng") {
+        this.$router.push("/department");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
     }
     if (this.$route.name === "position") {
-      if (this.$route.fullPath !== "/position") {
-        if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          this.$router.push("/position");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
+      if (this.role === "Admin" || this.role === "Trưởng Phòng") {
+        this.$router.push("/position");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
     }
     if (this.$route.name === "payment") {
-      if (this.$route.fullPath !== "/payment") {
-        if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          this.$router.push("/payment");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
+      if (this.role === "Admin" || this.role === "Trưởng Phòng") {
+        this.$router.push("/payment");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
     }
   },
