@@ -18,15 +18,7 @@ const routes = [
       {
         path: "/",
         component: () => import("../views/Dashboard"),
-        name: "Dashboard",
-        meta: {
-          requiredAuth: true,
-        },
-      },
-      {
-        path: "/create",
-        name: "Create",
-        component: () => import("../views/Create"),
+        name: "dashboard",
         meta: {
           requiredAuth: true,
         },
