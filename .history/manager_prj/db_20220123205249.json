@@ -443,7 +443,7 @@
       "qty": 10,
       "image": "xxx",
       "innitiated_date": "12/01/2020",
-      "email": "luongtran@gmail.com"
+      "email": "tranluong@gmail.com"
     },
     {
       "id": 2,
@@ -483,7 +483,7 @@
       "qty": 50,
       "image": "xxx",
       "innitiated_date": "12/01/2021",
-      "email": "luongtran@gmail.com"
+      "email": "tranluong@gmail.com"
     },
     {
       "id": 6,
@@ -493,7 +493,7 @@
       "qty": 50,
       "image": "xxx",
       "innitiated_date": "12/12/2021",
-      "email": "luongtran@gmail.com"
+      "email": "tranluong@gmail.com"
     },
     {
       "id": 7,
@@ -503,7 +503,7 @@
       "qty": 50,
       "image": "xxx",
       "innitiated_date": "21/08/2020",
-      "email": "luongtran@gmail.com"
+      "email": "tranluong@gmail.com"
     },
     {
       "id": 8,
@@ -557,7 +557,7 @@
     {
       "id": 1,
       "Payment_ID": "01",
-      "email": "luongtran@gmail.com",
+      "email": "tranluong@gmail.com",
       "firstName": "Lương",
       "amount": 12000000,
       "position_id": "epl",

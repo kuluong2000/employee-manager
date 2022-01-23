@@ -90,7 +90,8 @@ export default {
 
       if (this.$route.name === "user") {
         if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          if(!this.$route.name === "user") this.$router.push("/user");
+          if(this.$route.name === "user") return
+          this.$router.push("/user");
         } else {
           this.$router.push("/");
           setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);

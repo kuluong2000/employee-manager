@@ -30,10 +30,8 @@
                 lastIcon: 'mdi-arrow-collapse-right',
               }"
             >
-          
-              <template v-slot:[`item.actions`]="" v-if="!disable_action">
-                
-                <v-btn class="ma-2"   color="primary" dark>
+              <template v-slot:[`item.actions`]="">
+                <v-btn class="ma-2" color="primary" dark>
                   Detail
                   <v-icon dark right> mdi-eye </v-icon>
                 </v-btn>
@@ -112,7 +110,7 @@ export default {
           align: "center",
         },
         {
-          text: "thao tác",
+          text: "ACTIONS",
           value: "actions",
           align: "center",
           sortable: false,
@@ -120,26 +118,15 @@ export default {
       ],
       facilities: [],
       search: "",
-      disable_action:false
     };
   },
   async mounted() {
-    const dataJson = JSON.parse(localStorage.getItem("user-info"));
-    if (dataJson.role === "Nhân Viên") {
-      const res = await axios.get(
-        `http://localhost:3001/facilities?email=${dataJson.email}`
-      );
-      if (res.status === 200) {
-        this.disable_action = true
-        this.facilities = res.data;
-        console.log(this.facilities);
-      }
-    } else {
-      const res = await axios.get(`http://localhost:3001/facilities`);
-      if (res.status === 200) {
-        this.facilities = res.data;
-        console.log(this.facilities);
-      }
+    const email = JSON.parse(localStorage.getItem("user-info"));
+    console.log("this is",email.role);
+    const res = await axios.get(`http://localhost:3001/facilities`);
+    if (res.status === 200) {
+      this.facilities = res.data;
+      console.log(this.facilities);
     }
   },
 };

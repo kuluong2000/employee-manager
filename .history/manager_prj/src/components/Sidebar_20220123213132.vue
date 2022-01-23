@@ -87,15 +87,20 @@ export default {
     this.imgUrl = index.imgUrl;
     this.role = index.role;
     console.log(this.$route.fullPath);
-
+    // if (this.$route.fullPath == "/user") {
+    //   return;
+    // } else {
       if (this.$route.name === "user") {
         if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          if(!this.$route.name === "user") this.$router.push("/user");
+          if(this.$route.fullPath == "/user") return
+          this.$router.push("/user");
+          
         } else {
           this.$router.push("/");
           setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
         }
       }
+    // }
     if (this.$route.fullPath == "/employee") {
       return;
     } else {

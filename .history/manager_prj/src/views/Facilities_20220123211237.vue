@@ -31,7 +31,7 @@
               }"
             >
           
-              <template v-slot:[`item.actions`]="" v-if="!disable_action">
+              <template v-slot:[`item.actions`]="" v-if="disable_action=true">
                 
                 <v-btn class="ma-2"   color="primary" dark>
                   Detail
@@ -112,7 +112,7 @@ export default {
           align: "center",
         },
         {
-          text: "thao tác",
+          text: "ACTIONS",
           value: "actions",
           align: "center",
           sortable: false,

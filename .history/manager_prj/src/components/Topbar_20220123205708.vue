@@ -192,7 +192,7 @@ export default {
             const dataLogin =JSON.parse(localStorage.getItem("user-info"));
             // console.log(dataLogin)
             let id = dataLogin.email;
-            // console.log(id);
+            console.log(id);
             let data = res.data;
              const index =  data.find(el => el.email === id )
             //  const index =  data.map(el => el.email == id)

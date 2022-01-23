@@ -190,17 +190,17 @@ export default {
     async mounted() {
             const res = await axios.get(`http://localhost:3001/employee`);
             const dataLogin =JSON.parse(localStorage.getItem("user-info"));
-            // console.log(dataLogin)
+            console.log(dataLogin)
             let id = dataLogin.email;
-            // console.log(id);
+            console.log(id);
             let data = res.data;
              const index =  data.find(el => el.email === id )
             //  const index =  data.map(el => el.email == id)
-            //  console.log(index)
+             console.log(index)
              this.firstName = index.firstName
              this.lastName = index.lastName
              this.imgUrl = index.imgUrl
-          //  console.log(index.firstName);
+           console.log(index.firstName);
   },
   methods: {
     listAction(action) {

@@ -112,7 +112,7 @@ export default {
           align: "center",
         },
         {
-          text: "thao tác",
+          text: "ACTIONS",
           value: "actions",
           align: "center",
           sortable: false,

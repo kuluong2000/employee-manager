@@ -86,16 +86,18 @@ export default {
     this.lastName = index.lastName;
     this.imgUrl = index.imgUrl;
     this.role = index.role;
-    console.log(this.$route.fullPath);
-
+    if (this.$route.fullPath == "/user") {
+      return;
+    } else {
       if (this.$route.name === "user") {
         if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          if(!this.$route.name === "user") this.$router.push("/user");
+          this.$router.push("/user");
         } else {
           this.$router.push("/");
           setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
         }
       }
+    }
     if (this.$route.fullPath == "/employee") {
       return;
     } else {
@@ -106,8 +108,8 @@ export default {
           this.$router.push("/");
           setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
         }
+        console.log("this is", this.$router);
       }
-        console.log("this is", this.$route.name);
     }
     // facilities
     if (this.$route.fullPath == "/facilities") {

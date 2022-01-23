@@ -31,7 +31,7 @@
               }"
             >
           
-              <template v-slot:[`item.actions`]="" v-if="!disable_action">
+              <template v-slot:[`item.actions`]="" v-if="disable_action">
                 
                 <v-btn class="ma-2"   color="primary" dark>
                   Detail
@@ -112,7 +112,7 @@ export default {
           align: "center",
         },
         {
-          text: "thao tác",
+          text: "ACTIONS",
           value: "actions",
           align: "center",
           sortable: false,
@@ -120,7 +120,7 @@ export default {
       ],
       facilities: [],
       search: "",
-      disable_action:false
+      // disable_action:false
     };
   },
   async mounted() {
@@ -130,7 +130,6 @@ export default {
         `http://localhost:3001/facilities?email=${dataJson.email}`
       );
       if (res.status === 200) {
-        this.disable_action = true
         this.facilities = res.data;
         console.log(this.facilities);
       }
