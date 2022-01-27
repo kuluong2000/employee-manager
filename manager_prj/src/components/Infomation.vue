@@ -63,6 +63,7 @@
                       label="E-mail"
                       :value="this.email"
                       required
+                      readonly
                     ></v-text-field>
                   </v-col>
 
@@ -71,6 +72,7 @@
                       label="Password"
                       :value="this.password"
                       required
+                      readonly
                     ></v-text-field>
                   </v-col>
 
@@ -92,35 +94,22 @@
 
                   <v-col cols="12" md="12">
                         <v-select
-                          :items="[
-                            'Nhân Viên',
-                            'Trưởng Phòng',
-                            'Giám đốc CSVC',
-                            'Admin',
-                          ]"
+                          :items="this.listRole"
                           label="Chức Vụ"
-                          :value="this.role"
+                          :value="this.roleName"
                           required
+                          readonly
                         ></v-select>
                   </v-col>
 
                   <v-col cols="12" md="12">
                         <v-select
-                          :items="[
-                            'Phòng Marketing',
-                            'Phòng Sales',
-                            'Phòng Nhân Sự',
-                            'Phòng Kế Toán',
-                            'Phòng Kiểm Toán',
-                            'Phòng Kinh Doanh',
-                            'Phòng Công Nghệ Thông Tin',
-                            'Phòng CSKH',
-                            'Phòng Cơ Sở Vật Chất'
-                          ]"
+                          :items="this.listDepartment"
                           label="Phòng Ban"
                           :value="this.department"
                           :menu-props="{ top: true, offsetY: true }"
                           required
+                          readonly
                         ></v-select>
                   </v-col>
                 </v-row>
@@ -204,29 +193,35 @@ export default {
       imgLink: "",
       email: "",
       password: "",
-      role: "",
+      roleName: "",
       department: "",
       address: "",
+      listRole: [],
+      listDepartment: [],
     };
   },
   async mounted() {
-    const res = await axios.get(`http://localhost:3001/employee`);
+    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
-    console.log(dataLogin);
     let id = dataLogin.email;
-    console.log(id);
     let data = res.data;
     const index = data.find((el) => el.email === id);
     //  const index =  data.map(el => el.email == id)
-    console.log(index);
     this.firstName = index.firstName;
     this.lastName = index.lastName;
     this.imgLink = index.imgUrl;
     this.email = index.email;
     this.password = index.password;
-    this.role = index.role;
+    this.roleName = index.role;
     this.address = index.address;
     this.department = index.depart_name;
+    const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
+    let result = resPo.data.map(a => a.role);
+    this.listRole = result
+    const resDe = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
+    let resultDe = resDe.data.map(a => a.depart_name);
+    this.listDepartment = resultDe
+    console.log(this.roleName);
   },
 };
 </script>

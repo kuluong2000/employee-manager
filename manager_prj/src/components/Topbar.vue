@@ -12,7 +12,7 @@
           append-icon="mdi-magnify"
           outlined
           rounded
-          placeholder="Search"
+          placeholder="Tìm Kiếm"
         />
       </v-form>
     </v-col>
@@ -96,7 +96,7 @@
           <v-list-item-content>
             <v-list-item-title v-if="lastName && lastName">{{ lastName }} {{ firstName }}</v-list-item-title>
             <v-list-item-title v-else>Người dùng mới</v-list-item-title>
-            <v-list-item-subtitle>Logged In</v-list-item-subtitle>
+            <v-list-item-subtitle class="mt-1 text-uppercase" style="line-height: 1.4;">{{role}}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-divider />
@@ -136,49 +136,43 @@ export default {
   data() {
     return {
       menus: [
-        { title: "Profile", icon: "mdi-account", action: "profile" },
-        { title: "Change Password", icon: "mdi-key" },
-        { title: "Setting", icon: "mdi-cog" },
-        { title: "Logout", icon: "mdi-logout", action: "logout" },
+        { title: "Thông Tin Nhân Viên", icon: "mdi-account", action: "profile" },
+        { title: "Đổi Mật Khẩu", icon: "mdi-key" },
+        { title: "Cài Đặt", icon: "mdi-cog" },
+        { title: "Đăng Xuất", icon: "mdi-logout", action: "logout" },
       ],
       items: [
         {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-          title: "Brunch this weekend?",
-          subtitle: `<span class="text--primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
+          avatar: "https://oxford.edu.vn/UploadFinder/images/van%20phong%202-compressed.jpg",
+          title: "Phòng Cơ Sở Vật Chất",
+          subtitle: `Bạn vừa được giao nhiệm vụ quản lý LapTop`,
         },
         { divider: true, inset: true },
         {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-          title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-          subtitle: `<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`,
+          avatar: "https://tuyensinhdhcd.vn/wp-content/uploads/2020/11/cong-viec-nhan-su-gom-nhung-gi-1.jpg",
+          title: 'Phòng Nhân Sự',
+          subtitle: `Phòng của bạn vừa có 1 nhân viên mới`,
         },
         { divider: true, inset: true },
         {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-          title: "Oui oui",
+          avatar: "https://thietkevanphongmienbac.vn/Uploaded_products/img_any/thiet-ke-noi-that-phong-giam-doc-sang-trong-mb1.jpg",
+          title: "Phòng Giám Đốc",
           subtitle:
-            '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
+            'Giám đốc đã giao cho bạn 3 nhiệm vụ mới',
         },
         { divider: true, inset: true },
         {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
-          title: "Birthday gift",
+          avatar: "https://cdn.vietnambiz.vn/171464876016439296/2020/4/24/0-15877038145611885671211.jpg",
+          title: "Phòng Hành Chính",
           subtitle:
-            '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
-        },
-        { divider: true, inset: true },
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
-          title: "Recipe to try",
-          subtitle:
-            '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
+            'Bạn được mời phòng hành chính nhận lương vào ngày 22/02/2022',
         },
       ],
       showDialog: false,
       firstName: '',
       lastName: '',
       imgUrl: '',
+      role: '',
     };
   },
   // computed: {
@@ -188,19 +182,16 @@ export default {
   //   }),
   // },
     async mounted() {
-            const res = await axios.get(`http://localhost:3001/employee`);
+            const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
             const dataLogin =JSON.parse(localStorage.getItem("user-info"));
-            console.log(dataLogin)
             let id = dataLogin.email;
-            console.log(id);
             let data = res.data;
              const index =  data.find(el => el.email === id )
             //  const index =  data.map(el => el.email == id)
-             console.log(index)
              this.firstName = index.firstName
              this.lastName = index.lastName
              this.imgUrl = index.imgUrl
-           console.log(index.firstName);
+             this.role = index.role
   },
   methods: {
     listAction(action) {
@@ -223,4 +214,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

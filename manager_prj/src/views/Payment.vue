@@ -11,7 +11,7 @@
               <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
-                label="Search"
+                label="Tìm Kiếm"
                 single-line
                 hide-details
               ></v-text-field>
@@ -31,31 +31,30 @@
               }"
             >
               <template v-slot:[`item.actions`]="">
-                <v-btn class="ma-2" color="primary" dark>
-                  Detail
-                  <v-icon dark right> mdi-eye </v-icon>
-                </v-btn>
-                <v-btn class="ma-2" color="orange darken-2" dark>
-                  Update
-                  <v-icon dark right> mdi-pencil </v-icon>
-                </v-btn>
-                <v-btn class="ma-2" color="red" dark>
-                  Delete
-                  <v-icon dark right> mdi-delete </v-icon>
-                </v-btn>
+                <div v-if="roleEm !== 'Nhân Viên'">
+                  <v-btn class="ma-2" color="primary" dark>
+                    Chi Tiết
+                    <v-icon dark right> mdi-eye </v-icon>
+                  </v-btn>
+                  <v-btn class="ma-2" color="orange darken-2" dark>
+                    Sửa
+                    <v-icon dark right> mdi-pencil </v-icon>
+                  </v-btn>
+                  <v-btn class="ma-2" color="red" dark>
+                    Xóa
+                    <v-icon dark right> mdi-delete </v-icon>
+                  </v-btn>
+                </div>
+                <div v-else>
+                  <v-btn class="ma-2" color="primary" dark>
+                    Chi Tiết
+                    <v-icon dark right> mdi-eye </v-icon>
+                  </v-btn>
+                </div>
               </template>
               <template v-slot:no-data>
                 <v-btn color="primary"> Reset </v-btn>
               </template>
-              <!-- <template v-slot:top>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                hide-details
-                class="mx-5"
-              ></v-text-field> </template> -->
             </v-data-table>
           </v-card>
         </v-col>
@@ -110,7 +109,7 @@ export default {
           align: "center",
         },
         {
-          text: "ACTIONS",
+          text: "Chức Năng",
           value: "actions",
           align: "center",
           sortable: false,
@@ -118,21 +117,25 @@ export default {
       ],
       payment: [],
       search: "",
+      roleEm: "",
     };
   },
   async mounted() {
-    const res = await axios.get(`http://localhost:3001/payment`);
-    if (res.status === 200) {
+    const dataPayment = JSON.parse(localStorage.getItem("user-info"));
+    this.roleEm = dataPayment.role;
+    if (dataPayment.role == "Nhân Viên") {
+      const resEm = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/payment?email=${dataPayment.email}`
+      );
+      this.payment = resEm.data;
+    } else {
+      const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/payment`);
       this.payment = res.data;
-      console.log(this.payment);
     }
   },
 };
 </script>
 <style scoped>
-.elevation-1 {
-  padding-top: 20px !important;
-}
 h1 {
   text-transform: uppercase;
   text-align: center;
