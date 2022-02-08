@@ -1,0 +1,56 @@
+[
+    {
+      "id": 1,
+      "depart_id": "MTK2",
+      "depart_name": "Phòng Marketing",
+      "depart_address": "Phòng 101"
+    },
+    {
+      "id": 2,
+      "depart_id": "SL2",
+      "depart_name": "Phòng Sales",
+      "depart_address": "Phòng 102"
+    },
+    {
+      "id": 3,
+      "depart_id": "HR3",
+      "depart_name": "Phòng Nhân Sự",
+      "depart_address": "Phòng 103"
+    },
+    {
+      "id": 4,
+      "depart_id": "KT4",
+      "depart_name": "Phòng Kế Toán",
+      "depart_address": "Phòng 104"
+    },
+    {
+      "id": 5,
+      "depart_id": "KT5",
+      "depart_name": "Phòng Kiểm Toán",
+      "depart_address": "Phòng 105"
+    },
+    {
+      "id": 6,
+      "depart_id": "KD6",
+      "depart_name": "Phòng Kinh Doanh",
+      "depart_address": "Phòng 201"
+    },
+    {
+      "id": 7,
+      "depart_id": "CNTT7",
+      "depart_name": "Phòng Công Nghệ Thông Tin",
+      "depart_address": "Phòng 202"
+    },
+    {
+      "id": 8,
+      "depart_id": "CSKH8",
+      "depart_name": "Phòng CSKH",
+      "depart_address": "Phòng 203"
+    },
+    {
+      "id": 9,
+      "depart_id": "CSVC9",
+      "depart_name": "Phòng Cơ Sở Vật Chất",
+      "depart_address": "Phòng 204"
+    }
+]
