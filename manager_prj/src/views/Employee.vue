@@ -491,12 +491,20 @@ export default {
     };
   },
   methods: {
-    async DetailsUser(item) {
+    // async DetailsUser(item) {
+    //   this.detailsId = item.id;
+    //   // const res = await axios.get(
+    //   //   `${process.env.VUE_APP_SERVER_URL}/employee/${this.detailsId}`
+    //   // );
+    //   const resData = JSON.parse(localStorage.getItem("employee"));
+    //   const details = [...resData].find(el => el)
+    //   this.detailsItem = res.data;
+    // },
+    DetailsUser(item) {
       this.detailsId = item.id;
-      const res = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/employee/${this.detailsId}`
-      );
-      this.detailsItem = res.data;
+      const resData = JSON.parse(localStorage.getItem("employee"));
+      const details = [...resData].find(el => el.id === this.detailsId)
+      this.detailsItem = details;
     },
     handleRow(item) {
       this.deleteId = item.id;
@@ -559,13 +567,17 @@ export default {
     },
   },
   async mounted() {
-    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
-    this.employee = res.data;
-    const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    let result = resPo.data.map((a) => a.role);
+    // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
+    const res = JSON.parse(localStorage.getItem("employee"))
+    this.employee = res;
+
+    // const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
+    const resPo = JSON.parse(localStorage.getItem("position"))
+    let result = resPo.map((a) => a.role);
     this.listRole = result;
-    const resDe = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
-    let resultDe = resDe.data.map((a) => a.depart_name);
+    // const resDe = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
+    const resDe = JSON.parse(localStorage.getItem("departments"))
+    let resultDe = resDe.map((a) => a.depart_name);
     this.listDepartment = resultDe;
   },
 };

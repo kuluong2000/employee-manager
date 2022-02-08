@@ -644,6 +644,17 @@
       "emp_ID": "NV03",
       "fullName": "Nguyễn Sỹ Dũng",
       "id": 16
+    },
+    {
+      "facilities_id": "Mt001",
+      "title": "Màn Hình Viewsonic",
+      "price": "12000000",
+      "qty": "12",
+      "image": "https://www.phucanh.vn/media/lib/26180_ManhinhViewsonicVX2476Smhd24.0InchIPS-6.jpg",
+      "innitiated_date": "2022-02-07",
+      "emp_ID": "NV02",
+      "fullName": "Trần Hữu Lương",
+      "id": 17
     }
   ],
   "position": [

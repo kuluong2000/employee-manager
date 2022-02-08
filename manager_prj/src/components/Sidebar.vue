@@ -46,7 +46,7 @@
 
 <script>
 // import { mapState } from "vuex";
-import axios from "axios";
+// import axios from "axios";
 export default {
   name: "Sidebar",
   props: ["drawer"],
@@ -95,10 +95,11 @@ export default {
     };
   },
   async mounted() {
-    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
+    // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
+    const res = JSON.parse(localStorage.getItem("employee"))
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
     let email = dataLogin.email;
-    let data = res.data;
+    let data = res;
     const index = data.find((el) => el.email === email);
     //  const index =  data.map(el => el.email == id)
     this.firstName = index.firstName;

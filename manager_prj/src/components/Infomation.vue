@@ -165,7 +165,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 export default {
   name: "Infomation",
   data() {
@@ -205,10 +205,11 @@ export default {
     };
   },
   async mounted() {
-    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
+    // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
+    const res = JSON.parse(localStorage.getItem("employee"))
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
     let id = dataLogin.email;
-    let data = res.data;
+    let data = res;
     const index = data.find((el) => el.email === id);
     //  const index =  data.map(el => el.email == id)
     this.firstName = index.firstName;
@@ -219,35 +220,37 @@ export default {
     this.roleName = index.role;
     this.address = index.address;
     this.department = index.depart_name;
-    const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    let result = resPo.data.map((a) => a.role);
+    // const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
+    const resPo =JSON.parse(localStorage.getItem("employee"))
+    let result = resPo.map((a) => a.role);
     this.listRole = result;
-    const resDe = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
-    let resultDe = resDe.data.map((a) => a.depart_name);
+    // const resDe = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
+    const resDe = JSON.parse(localStorage.getItem("departments"));
+    let resultDe = resDe.map((a) => a.depart_name);
     this.listDepartment = resultDe;
     console.log(this.roleName);
   },
   methods: {
-    async updateInfo() {
-      const dataLogin = JSON.parse(localStorage.getItem("user-info"));
-      let id = dataLogin.email;
-      let res2 = await axios.put(
-        `${process.env.VUE_APP_SERVER_URL}/employee/${id}`,
-        {
-          firstName: this.user.firstName,
-          lastName: this.user.lastName,
-          email: this.user.email,
-          password: this.user.password,
-          role: this.user.role,
-          position_id: this.user.position_id,
-          depart_id: this.user.depart_id,
-          depart_name: this.user.depart_name,
-          address: this.user.address,
-          imgUrl: this.user.imgUrl,
-        }
-      );
-      console.log(res2);
-    },
+    // async updateInfo() {
+    //   const dataLogin = JSON.parse(localStorage.getItem("user-info"));
+    //   let id = dataLogin.email;
+    //   let res2 = await axios.put(
+    //     `${process.env.VUE_APP_SERVER_URL}/employee/${id}`,
+    //     {
+    //       firstName: this.user.firstName,
+    //       lastName: this.user.lastName,
+    //       email: this.user.email,
+    //       password: this.user.password,
+    //       role: this.user.role,
+    //       position_id: this.user.position_id,
+    //       depart_id: this.user.depart_id,
+    //       depart_name: this.user.depart_name,
+    //       address: this.user.address,
+    //       imgUrl: this.user.imgUrl,
+    //     }
+    //   );
+    //   console.log(res2);
+    // },
   },
 };
 </script>
