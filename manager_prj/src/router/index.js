@@ -98,7 +98,6 @@ router.beforeEach((to, from, next) => {
   if (to.meta && to.meta.requiredAuth) {
     const auth = JSON.parse(localStorage.getItem("user-info"));
     if (auth && auth !== "") {
-      // console.log(auth);
       next();
     } else {
       next({ path: "/login" });

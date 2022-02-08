@@ -1,176 +1,74 @@
 [
     {
         "id": 1,
-        "email": "luongtran1@gmail.com",
-        "password": "12345678",
-        "role": "Admin"
+        "email": "admin",
+        "password": "admin",
+        "role": "admin"
     },
     {
         "id": 2,
-        "email": "luongtran@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên"
+        "email": "tranluong@gmail.com",
+        "password": "123456789",
+        "role": "employee"
     },
     {
         "id": 3,
         "email": "sydung@gmail.com",
-        "password": "12345678",
-        "role": "Admin"
+        "password": "123456789",
+        "role": "employee"
     },
     {
         "id": 4,
         "email": "thuydung@gmail.com",
-        "password": "12345678",
-        "role": "Admin"
+        "password": "123456789",
+        "role": "employee"
     },
     {
         "id": 5,
         "email": "hieuvo@gmail.com",
-        "password": "12345678",
-        "role": "Giám đốc CSVC"
+        "password": "123456789",
+        "role": "employee"
     },
     {
         "id": 6,
         "email": "cason@gmail.com",
-        "password": "12345678",
-        "role": "Trưởng Phòng"
-    },
-    {
-        "email": "havi@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 7
-    },
-    {
-        "email": "k2@gmail.com",
-        "password": "12345678",
-        "role": "director",
-        "id": 8
-    },
-    {
-        "email": "maichi08@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 9
-    },
-    {
-        "email": "anhtuan@gmail.com",
-        "password": "12345678",
-        "role": "Trưởng Phòng",
-        "id": 10
-    },
-    {
-        "email": "hoangyen@gmail.com",
-        "password": "12345678",
-        "role": "Trưởng Phòng",
-        "id": 11
-    },
-    {
-        "email": "huuduc@gmail.com",
-        "password": "12345678",
-        "role": "Trưởng Phòng",
-        "id": 12
-    },
-    {
-        "email": "duyson@gmail.com",
-        "password": "12345678",
-        "role": "Trưởng Phòng",
-        "id": 13
-    },
-    {
-        "email": "vanhuy@gmail.com",
-        "password": "12345678",
-        "role": "Trưởng Phòng",
-        "id": 14
-    },
-    {
-        "email": "vanthanh@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 15
-    },
-    {
-        "email": "vankhai@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 16
-    },
-    {
-        "email": "hongphong@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 17
-    },
-    {
-        "email": "duyviet@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 18
-    },
-    {
-        "email": "tiendat@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 19
-    },
-    {
-        "email": "quangdieu@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 20
-    },
-    {
-        "email": "tiennguyen@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 21
-    },
-    {
-        "email": "maichi@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 22
-    },
-    {
-        "email": "ngoctran@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 23
-    },
-    {
-        "email": "hoanganh@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 26
-    },
-    {
-        "email": "test123",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 27
-    },
-    {
-        "email": "test1234",
-        "password": "12345678",
-        "role": "Giám đốc CSVC",
-        "id": 28
-    },
-    {
-        "email": "qwe123",
         "password": "123456789",
-        "role": "Admin",
-        "id": 29
+        "role": "department"
     },
     {
-        "email": "thuyvy@gmail.com",
-        "password": "12345678",
-        "role": "Giám đốc CSVC",
-        "id": 30
+        "id": 7,
+        "email": "k2@gmail.com",
+        "password": "123456789",
+        "role": "director"
     },
     {
-        "email": "quocthang@gmail.com",
-        "password": "12345678",
-        "role": "Nhân Viên",
-        "id": 31
+        "id": 8,
+        "email": "k3@gmail.com",
+        "password": "123456789",
+        "role": "department"
+    },
+    {
+        "id": 9,
+        "email": "k4@gmail.com",
+        "password": "123456789",
+        "role": "department"
+    },
+    {
+        "id": 10,
+        "email": "k5@gmail.com",
+        "password": "123456789",
+        "role": "employee"
+    },
+    {
+        "id": 11,
+        "email": "k6@gmail.com",
+        "password": "123456789",
+        "role": "employee"
+    },
+    {
+        "id": 12,
+        "email": "k7@gmail.com",
+        "password": "123456789",
+        "role": "employee"
     }
 ]

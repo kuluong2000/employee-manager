@@ -11,21 +11,15 @@
               <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
-                label="Search"
+                label="Tìm Kiếm"
                 single-line
                 hide-details
               ></v-text-field>
             </v-card-title>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="green"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                  class="ms-5 my-4"
-                >
-                  New Item
+                <v-btn color="green" dark v-bind="attrs" v-on="on" class="ms-5 my-4">
+                  Thêm Mới
                 </v-btn>
               </template>
               <v-card>
@@ -35,26 +29,6 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-                      <!-- <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          label="Legal first name*"
-                          required
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          label="Legal middle name"
-                          hint="example of helper text only on focus"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          label="Legal last name*"
-                          hint="example of persistent helper text"
-                          persistent-hint
-                          required
-                        ></v-text-field>
-                      </v-col> -->
                       <v-col cols="12">
                         <v-text-field
                           label="Email*"
@@ -72,34 +46,12 @@
                       </v-col>
                       <v-col cols="12">
                         <v-select
-                          :items="[
-                            'Nhân Viên',
-                            'Trưởng Phòng',
-                            'Giám đốc CSVC',
-                            'Admin',
-                          ]"
+                          :items="this.listRole"
                           label="Chức Vụ"
                           required
                           v-model="user.role"
                         ></v-select>
                       </v-col>
-                      <!-- <v-col cols="12" sm="6">
-                        <v-autocomplete
-                          :items="[
-                            'Skiing',
-                            'Ice hockey',
-                            'Soccer',
-                            'Basketball',
-                            'Hockey',
-                            'Reading',
-                            'Writing',
-                            'Coding',
-                            'Basejump',
-                          ]"
-                          label="Interests"
-                          multiple
-                        ></v-autocomplete>
-                      </v-col> -->
                     </v-row>
                   </v-container>
                   <small>*indicates required field</small>
@@ -130,41 +82,103 @@
               }"
             >
               <template v-slot:[`item.actions`]="{ item }">
-                <v-btn class="ma-2" color="primary" dark>
-                  Detail
-                  <v-icon dark right> mdi-eye </v-icon>
-                </v-btn>
+                <v-dialog max-width="600" persistent>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="primary"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="DetailsUser(item)"
+                      >Chi Tiết <v-icon dark right> mdi-eye </v-icon>
+                    </v-btn>
+                  </template>
+                  <template v-slot:default="dialogDetails">
+                    <v-card class="pb-2">
+                      <v-card-text class="pb-0">
+                        <v-container class="px-0 pt-13 pb-0">
+                          <h1 class="px-5 py-0 text-center primary--text">
+                            Thông Tin Tài Khoản
+                          </h1>
+                          <v-row>
+                            <v-col cols="12">
+                              <v-text-field
+                                label="ID"
+                                required
+                                :value="detailsItem.id"
+                                readonly
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-text-field
+                                label="Email"
+                                required
+                                :value="detailsItem.email"
+                                readonly
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-text-field
+                                label="Password"
+                                required
+                                :value="detailsItem.password"
+                                readonly
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-text-field
+                                label="Chức Vụ"
+                                required
+                                :value="detailsItem.role"
+                                readonly
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-text-field
+                                label="Thời gian đăng nhập gần đây*"
+                                required
+                                :value="detailsItem.timeLogin"
+                                readonly
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-card-text>
+                      <v-card-actions class="justify-end">
+                        <v-btn
+                          text
+                          @click="dialogDetails.value = false"
+                          color="primary"
+                          >Đóng</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+                <!-- <user-details
+                  :id="detailsItem.id"
+                  :email="detailsItem.email"
+                  :password="detailsItem.password"
+                  :role="detailsItem.role"
+                  :timeLogin="detailsItem.timeLogin"
+                  :detailsUser="DetailsUser(item)"
+                ></user-details> -->
                 <v-btn
                   class="ma-2"
                   color="orange darken-2"
                   dark
                   @click="showDialogUpdate = true"
                 >
-                  Update
+                  Sửa
                   <v-icon dark right> mdi-pencil </v-icon>
                 </v-btn>
-                <v-btn
-                  class="ma-2"
-                  color="red"
-                  dark
-                  @click="handleRow(item)"
-                >
-                  Delete
+                <v-btn class="ma-2" color="red" dark @click="handleRow(item)">
+                  Xóa
                   <v-icon dark right> mdi-delete </v-icon>
                 </v-btn>
               </template>
               <template v-slot:no-data>
                 <v-btn color="primary"> Reset </v-btn>
               </template>
-              <!-- <template v-slot:top>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                hide-details
-                class="mx-5"
-              ></v-text-field> </template> -->
             </v-data-table>
           </v-card>
         </v-col>
@@ -193,7 +207,7 @@
       :confirm="confirm"
       text="Ok! Mình sẽ kiểm tra lại"
       title="Thông báo!"
-      description="Vui lòng điền đầy đủ thông tin nhân viên!!"
+      description="Vui lòng điền đầy đủ thông tin!!"
     ></popup>
     <popup
       :show="showDialogCreateSuccess"
@@ -232,17 +246,17 @@ export default {
           align: "center",
         },
         {
-          text: "Password",
-          value: "password",
-          align: "center",
-        },
-        {
-          text: "Chức vụ",
+          text: "Chức Vụ",
           value: "role",
           align: "center",
         },
         {
-          text: "ACTIONS",
+          text: "Thời Gian Đăng Nhập",
+          value: "timeLogin",
+          align: "center",
+        },
+        {
+          text: "Chức Năng",
           value: "actions",
           align: "center",
           sortable: false,
@@ -261,26 +275,37 @@ export default {
         imgUrl: "",
       },
       deleteId: 0,
+      detailsId: 0,
       account: [],
       search: "",
       dialog: false,
+      dialogDetails: false,
       showDialogDelete: false,
       showDialogUpdate: false,
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
       showDialogDeleteSuccess: false,
+      listRole: [],
+      detailsItem: {},
     };
   },
   methods: {
+    async DetailsUser(item) {
+      this.detailsId = item.id;
+      const res = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/user/${this.detailsId}`
+      );
+      this.detailsItem = res.data;
+    },
     handleRow(item) {
       this.deleteId = item.id;
       this.showDialogDelete = true;
     },
     async handleDelete() {
-      await axios.delete(`http://localhost:3001/user/${this.deleteId}`);
+      await axios.delete(`${process.env.VUE_APP_SERVER_URL}/user/${this.deleteId}`);
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
-      setTimeout(() => window.location.reload(), 2000)
+      setTimeout(() => window.location.reload(), 1200);
     },
     cancel() {
       this.showDialogDelete = false;
@@ -293,23 +318,23 @@ export default {
       this.showDialogUpdate = false;
       this.showDialogCreateRequired = false;
       this.showDialogCreateSuccess = false;
-      this.showDialogDeleteSuccess = false
+      this.showDialogDeleteSuccess = false;
     },
     async createUser() {
       if (
-        this.user.email.length == "" ||
+        this.user.email == "" ||
         this.user.password == "" ||
         this.user.role == ""
       ) {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
-        let res = await axios.post(`http://localhost:3001/user`, {
+        let res = await axios.post(`${process.env.VUE_APP_SERVER_URL}/user`, {
           email: this.user.email,
           password: this.user.password,
           role: this.user.role,
         });
-        let res2 = await axios.post(`http://localhost:3001/employee`, {
+        let res2 = await axios.post(`${process.env.VUE_APP_SERVER_URL}/employee`, {
           firstName: this.user.firstName,
           lastName: this.user.lastName,
           email: this.user.email,
@@ -325,16 +350,16 @@ export default {
         console.log(res2);
         this.dialog = false;
         this.showDialogCreateSuccess = true;
-        setTimeout(() => window.location.reload(), 2000)
+        setTimeout(() => window.location.reload(), 1500);
       }
     },
   },
   async mounted() {
-    const res = await axios.get(`http://localhost:3001/user`);
-    if (res.status === 200) {
-      this.account = res.data;
-      console.log(this.account);
-    }
+    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/user`);
+    this.account = res.data;
+    const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
+    let result = resPo.data.map((a) => a.role);
+    this.listRole = result;
   },
 };
 </script>

@@ -1,20 +1,36 @@
 <template>
   <v-navigation-drawer v-if="!drawer" app>
-    <v-img height="140" class="pa-4" src="https://timnhaviet.vn/hinh-background-dep/imager_3486.jpg">
+    <v-img
+      height="140"
+      class="pa-4"
+      src="https://timnhaviet.vn/hinh-background-dep/imager_3486.jpg"
+    >
       <div class="text-center">
         <v-avatar class="mb-2" color="grey darken-1" size="77" v-if="imgUrl">
           <v-img aspect-ratio="30" :src="imgUrl" />
         </v-avatar>
         <v-avatar class="mb-2" color="grey darken-1" size="77" v-else>
-          <v-img aspect-ratio="30" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU" />
+          <v-img
+            aspect-ratio="30"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
+          />
         </v-avatar>
-        <h3 class="white--text" v-if="lastName && firstName">{{ lastName }} {{ firstName }}</h3>
+        <h3 class="white--text" v-if="lastName && firstName">
+          {{ lastName }} {{ firstName }}
+        </h3>
         <h3 class="white--text" v-else>Người dùng mới</h3>
       </div>
     </v-img>
     <v-divider></v-divider>
     <v-list>
-      <v-list-item v-for="(link, i) in links" :key="i" link @click="positionAction(link.action)" class="item-sidebar">
+      <!-- <v-list-item-group v-model="model"> -->
+      <v-list-item
+        v-for="(link, i) in links"
+        :key="i"
+        link
+        @click="positionAction(link.action)"
+        class="item-sidebar"
+      >
         <v-list-item-icon>
           <v-icon>{{ link.icon }}</v-icon>
         </v-list-item-icon>
@@ -23,6 +39,7 @@
           {{ link.title }}
         </v-list-item-content>
       </v-list-item>
+      <!-- </v-list-item-group> -->
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -73,10 +90,12 @@ export default {
       lastName: "",
       imgUrl: "",
       role: "",
+      department: "",
+      model: 0,
     };
   },
   async mounted() {
-    const res = await axios.get(`http://localhost:3001/employee`);
+    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
     let email = dataLogin.email;
     let data = res.data;
@@ -86,80 +105,89 @@ export default {
     this.lastName = index.lastName;
     this.imgUrl = index.imgUrl;
     this.role = index.role;
-    console.log(this.$route.fullPath);
+    this.department = index.depart_name;
 
-      if (this.$route.name === "user") {
-        if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          if(!this.$route.name === "user") this.$router.push("/user");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
-      }
-    if (this.$route.fullPath == "/employee") {
-      return;
-    } else {
-      if (this.$route.name === "employee") {
-        if (this.role === "Admin" || this.role === "Trưởng Phòng" ||  this.role === "Giám Đốc CSVC") {
-          this.$router.push("/employee");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
-      }
-        console.log("this is", this.$route.name);
-    }
-    // facilities
-    if (this.$route.fullPath == "/facilities") {
-      return;
-    } else {
-      if (this.$route.name === "facilities") {
-        if (this.role === "Admin" || this.role === "Nhân Viên" || this.role === "Giám Đốc CSVC") {
-          this.$router.push("/facilities");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
+    if (this.$route.name === "user") {
+      if (
+        this.role === "Admin" ||
+        this.role === "Trưởng Phòng" ||
+        this.role === "Giám Đốc Công Ty"
+      ) {
+        if (this.$route.name === "user") return;
+        this.$router.push("/user");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
     }
-
-    // department
-    if (this.$route.fullPath == "/department") {
-      return;
-    } else {
-      if (this.$route.name === "department") {
-        if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          this.$router.push("/department");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
+    if (this.$route.name === "employee") {
+      if (
+        this.role === "Admin" ||
+        this.role === "Trưởng Phòng" ||
+        this.role === "Giám Đốc CSVC" ||
+        this.role === "Giám Đốc Công Ty"
+      ) {
+        if (this.$route.name === "employee") return;
+        this.$router.push("/employee");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
+      }
+      console.log("this is", this.$route.name);
+    }
+    if (this.$route.name === "facilities") {
+      if (
+        this.role === "Admin" ||
+        this.role === "Nhân Viên" ||
+        this.role === "Giám Đốc CSVC" ||
+        this.role === "Giám Đốc Công Ty" ||
+        (this.role === "Trưởng Phòng" && this.department === "Phòng Cơ Sở Vật Chất")
+      ) {
+        if (this.$route.name === "facilities") return;
+        this.$router.push("/facilities");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
     }
-    // position
-    if (this.$route.fullPath == "/position") {
-      return;
-    } else {
-      if (this.$route.name === "position") {
-        if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          this.$router.push("/position");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
+    if (this.$route.name === "department") {
+      if (
+        this.role === "Admin" ||
+        this.role === "Trưởng Phòng" ||
+        this.role === "Giám Đốc Công Ty"
+      ) {
+        if (this.$route.name === "department") return;
+        this.$router.push("/department");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
     }
-    //payment
-    if (this.$route.fullPath == "/payment") {
-      return;
-    } else {
-      if (this.$route.name === "payment") {
-        if (this.role === "Admin" || this.role === "Trưởng Phòng") {
-          this.$router.push("/payment");
-        } else {
-          this.$router.push("/");
-          setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
-        }
+    if (this.$route.name === "position") {
+      if (
+        this.role === "Admin" ||
+        this.role === "Trưởng Phòng" ||
+        this.role === "Giám Đốc Công Ty"
+      ) {
+        if (this.$route.name === "position") return;
+        this.$router.push("/position");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
+      }
+    }
+    if (this.$route.name === "payment") {
+      if (
+        this.role === "Admin" ||
+        this.role === "Trưởng Phòng" ||
+        this.role === "Nhân Viên" ||
+        this.role === "Giám Đốc Công Ty"
+      ) {
+        if (this.$route.name === "payment") return;
+        this.$router.push("/payment");
+      } else {
+        this.$router.push("/");
+        setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
     }
   },
@@ -175,7 +203,11 @@ export default {
           break;
         case "user":
           if (this.$route.name !== "user") {
-            if (this.role === "Admin" || this.role === "Trưởng Phòng") {
+            if (
+              this.role === "Admin" ||
+              this.role === "Trưởng Phòng" ||
+              this.role === "Giám Đốc Công Ty"
+            ) {
               this.$router.push("/user");
               console.log(this.$route.name);
             } else {
@@ -187,7 +219,12 @@ export default {
           break;
         case "employee":
           if (this.$route.name !== "employee") {
-            if (this.role === "Admin" || this.role === "Trưởng Phòng"  || this.role === "Giám Đốc CSVC") {
+            if (
+              this.role === "Admin" ||
+              this.role === "Trưởng Phòng" ||
+              this.role === "Giám Đốc CSVC" ||
+              this.role === "Giám Đốc Công Ty"
+            ) {
               this.$router.push("/employee");
             } else {
               alert("Bạn Không Có Quyền Hạn Để Vào");
@@ -199,7 +236,14 @@ export default {
           break;
         case "facilities":
           if (this.$route.name !== "facilities") {
-            if (this.role === "Admin" || this.role === "Nhân Viên" || this.role === "Giám Đốc CSVC") {
+            if (
+              this.role === "Admin" ||
+              this.role === "Nhân Viên" ||
+              this.role === "Giám Đốc CSVC" ||
+              (this.role === "Trưởng Phòng" &&
+                this.department === "Phòng Cơ Sở Vật Chất") ||
+              this.role === "Giám Đốc Công Ty"
+            ) {
               this.$router.push("/facilities");
             } else {
               alert("Bạn Không Có Quyền Hạn Để Vào");
@@ -210,7 +254,11 @@ export default {
           break;
         case "department":
           if (this.$route.name !== "department") {
-            if (this.role === "Admin" || this.role === "Trưởng Phòng") {
+            if (
+              this.role === "Admin" ||
+              this.role === "Trưởng Phòng" ||
+              this.role === "Giám Đốc Công Ty"
+            ) {
               this.$router.push("/department");
             } else {
               alert("Bạn Không Có Quyền Hạn Để Vào");
@@ -221,7 +269,11 @@ export default {
           break;
         case "position":
           if (this.$route.name !== "position") {
-            if (this.role === "Admin" || this.role === "Trưởng Phòng") {
+            if (
+              this.role === "Admin" ||
+              this.role === "Trưởng Phòng" ||
+              this.role === "Giám Đốc Công Ty"
+            ) {
               this.$router.push("/position");
             } else {
               alert("Bạn Không Có Quyền Hạn Để Vào");
@@ -233,7 +285,12 @@ export default {
           break;
         case "payment":
           if (this.$route.name !== "payment") {
-            if (this.role === "Admin" || this.role === "Trưởng Phòng") {
+            if (
+              this.role === "Admin" ||
+              this.role === "Trưởng Phòng" ||
+              this.role === "Nhân Viên" ||
+              this.role === "Giám Đốc Công Ty"
+            ) {
               this.$router.push("/payment");
             } else {
               alert("Bạn Không Có Quyền Hạn Để Vào");
@@ -275,6 +332,8 @@ i {
 .v-list-item--link:hover {
   background-color: green;
 }
+/* .theme--light.v-list-item--active .v-list-item__content,
+.theme--light.v-list-item--active i, */
 .v-list-item--link:hover .v-list-item__content,
 .v-list-item--link:hover i {
   color: #fff !important;
@@ -282,4 +341,12 @@ i {
 .item-sidebar {
   display: flex;
 }
+/* .theme--light.v-list-item--active:hover::before,
+.theme--light.v-list-item--active::before {
+  opacity: 1;
+}
+.v-list-item--link:before {
+  z-index: -1;
+  background-color: green;
+} */
 </style>

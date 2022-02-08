@@ -93,7 +93,7 @@
 <script>
 import { mapState } from "vuex";
 import Popup from "../components/Popup.vue";
-
+import axios from "axios";
 export default {
   components: { Popup },
   name: "Dashboard",
@@ -119,7 +119,7 @@ export default {
           color: "blue-grey darken-1",
         },
         {
-          title: "Tổng số tài khoản",
+          title: "Tổng số chức vụ",
           amount: 3433,
           icon: "mdi-account-group-outline",
           color: "deep-orange darken-1",
@@ -221,6 +221,10 @@ export default {
           iron: "6%",
         },
       ],
+      listEm: [],
+      listFa: [],
+      listDe: [],
+      listPo: [],
     };
   },
   methods: {
@@ -231,13 +235,30 @@ export default {
       this.showAccess = false;
     },
     confirm() {
-        this.$store.dispatch('actionSetDialog', false);
+      this.$store.dispatch("actionSetDialog", false);
     },
   },
   computed: {
     ...mapState({
       showAccess: (state) => state.showDialog,
     }),
+  },
+  async mounted() {
+    const resEm = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
+    this.listEm = resEm.data;
+    console.log(this.listEm.length);
+
+    const resFa = await axios.get(`${process.env.VUE_APP_SERVER_URL}/facilities`);
+    this.listFa = resFa.data;
+    console.log(this.listFa.length);
+
+    const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
+    this.listPo = resPo.data;
+    console.log(this.listPo.length);
+
+    const resDe = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
+    this.listDe = resDe.data;
+    console.log(this.listDe.length);
   },
 };
 </script>
