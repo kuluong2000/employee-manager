@@ -374,6 +374,7 @@
 <script>
 import axios from "axios";
 import Popup from "../components/Popup.vue";
+
 export default {
   components: { Popup },
   data() {
@@ -496,10 +497,12 @@ export default {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
-        const resEm = await axios.get(
-          `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.facilitiesItem.emp_ID}`
-        );
-        this.employData = resEm.data[0];
+        // const resEm = await axios.get(
+        //   `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.facilitiesItem.emp_ID}`
+        // );
+        const datalocal = JSON.parse(localStorage.getItem("employee"))
+        const resEm = [...datalocal].find(el=> el.emp_ID === this.facilitiesItem.emp_ID);
+        this.employData = resEm;
         if (this.employData) {
           const resFa = await axios.post(
             `${process.env.VUE_APP_SERVER_URL}/facilities`,
