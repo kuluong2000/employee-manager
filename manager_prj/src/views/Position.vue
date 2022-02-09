@@ -18,13 +18,7 @@
             </v-card-title>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="green"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                  class="ms-5 my-4"
-                >
+                <v-btn color="green" dark v-bind="attrs" v-on="on" class="ms-5 my-4">
                   Thêm Mới
                 </v-btn>
               </template>
@@ -99,7 +93,7 @@
                           <v-row>
                             <v-col cols="12">
                               <v-text-field
-                                label="ID*"
+                                label="ID"
                                 required
                                 :value="detailsItem.id"
                                 readonly
@@ -107,7 +101,7 @@
                             </v-col>
                             <v-col cols="12">
                               <v-text-field
-                                label="Mã Chức Vụ*"
+                                label="Mã Chức Vụ"
                                 required
                                 :value="detailsItem.position_id"
                                 readonly
@@ -115,7 +109,7 @@
                             </v-col>
                             <v-col cols="12">
                               <v-text-field
-                                label="Tên Chức Vụ*"
+                                label="Tên Chức Vụ"
                                 required
                                 :value="detailsItem.role"
                                 readonly
@@ -123,7 +117,7 @@
                             </v-col>
                             <v-col cols="12">
                               <v-text-field
-                                label="Số Lượng*"
+                                label="Số Lượng Nhân Sự"
                                 required
                                 :value="qtyPositon.length"
                                 readonly
@@ -133,10 +127,7 @@
                         </v-container>
                       </v-card-text>
                       <v-card-actions class="justify-end">
-                        <v-btn
-                          text
-                          @click="dialog.value = false"
-                          color="primary"
+                        <v-btn text @click="dialog.value = false" color="primary"
                           >Đóng</v-btn
                         >
                       </v-card-actions>
@@ -260,13 +251,10 @@ export default {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
-        let res = await axios.post(
-          `${process.env.VUE_APP_SERVER_URL}/position`,
-          {
-            position_id: this.positionItem.position_id,
-            role: this.positionItem.role,
-          }
-        );
+        let res = await axios.post(`${process.env.VUE_APP_SERVER_URL}/position`, {
+          position_id: this.positionItem.position_id,
+          role: this.positionItem.role,
+        });
         console.log(res);
         this.dialog = false;
         this.showDialogCreateSuccess = true;
@@ -279,7 +267,9 @@ export default {
         `${process.env.VUE_APP_SERVER_URL}/position/${this.detailsId}`
       );
       this.detailsItem = res.data;
-      const resEm = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee?role=${this.detailsItem.role}`);
+      const resEm = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/employee?role=${this.detailsItem.role}`
+      );
       this.qtyPositon = resEm.data;
     },
     handleRow(item) {

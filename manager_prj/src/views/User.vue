@@ -18,13 +18,7 @@
             </v-card-title>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="green"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                  class="ms-5 my-4"
-                >
+                <v-btn color="green" dark v-bind="attrs" v-on="on" class="ms-5 my-4">
                   Thêm Mới
                 </v-btn>
               </template>
@@ -98,7 +92,7 @@
                       >Chi Tiết <v-icon dark right> mdi-eye </v-icon>
                     </v-btn>
                   </template>
-                  <template v-slot:default="dialog">
+                  <template v-slot:default="dialogDetails">
                     <v-card class="pb-2">
                       <v-card-text class="pb-0">
                         <v-container class="px-0 pt-13 pb-0">
@@ -108,7 +102,7 @@
                           <v-row>
                             <v-col cols="12">
                               <v-text-field
-                                label="ID*"
+                                label="ID"
                                 required
                                 :value="detailsItem.id"
                                 readonly
@@ -116,7 +110,7 @@
                             </v-col>
                             <v-col cols="12">
                               <v-text-field
-                                label="Email*"
+                                label="Email"
                                 required
                                 :value="detailsItem.email"
                                 readonly
@@ -124,7 +118,7 @@
                             </v-col>
                             <v-col cols="12">
                               <v-text-field
-                                label="Password*"
+                                label="Password"
                                 required
                                 :value="detailsItem.password"
                                 readonly
@@ -132,7 +126,7 @@
                             </v-col>
                             <v-col cols="12">
                               <v-text-field
-                                label="Chức Vụ*"
+                                label="Chức Vụ"
                                 required
                                 :value="detailsItem.role"
                                 readonly
@@ -150,11 +144,24 @@
                         </v-container>
                       </v-card-text>
                       <v-card-actions class="justify-end">
-                        <v-btn text @click="dialog.value = false" color="primary">Đóng</v-btn>
+                        <v-btn
+                          text
+                          @click="dialogDetails.value = false"
+                          color="primary"
+                          >Đóng</v-btn
+                        >
                       </v-card-actions>
                     </v-card>
                   </template>
                 </v-dialog>
+                <!-- <user-details
+                  :id="detailsItem.id"
+                  :email="detailsItem.email"
+                  :password="detailsItem.password"
+                  :role="detailsItem.role"
+                  :timeLogin="detailsItem.timeLogin"
+                  :detailsUser="DetailsUser(item)"
+                ></user-details> -->
                 <v-btn
                   class="ma-2"
                   color="orange darken-2"
@@ -172,15 +179,6 @@
               <template v-slot:no-data>
                 <v-btn color="primary"> Reset </v-btn>
               </template>
-              <!-- <template v-slot:top>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                hide-details
-                class="mx-5"
-              ></v-text-field> </template> -->
             </v-data-table>
           </v-card>
         </v-col>
@@ -232,7 +230,6 @@
 <script>
 import axios from "axios";
 import Popup from "../components/Popup.vue";
-import md5 from "md5";
 export default {
   components: { Popup },
   data() {
@@ -282,6 +279,7 @@ export default {
       account: [],
       search: "",
       dialog: false,
+      dialogDetails: false,
       showDialogDelete: false,
       showDialogUpdate: false,
       showDialogCreateRequired: false,
@@ -359,7 +357,6 @@ export default {
   async mounted() {
     const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/user`);
     this.account = res.data;
-    console.log(md5(this.account[0].password));
     const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
     let result = resPo.data.map((a) => a.role);
     this.listRole = result;

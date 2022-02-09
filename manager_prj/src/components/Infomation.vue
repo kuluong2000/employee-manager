@@ -5,11 +5,13 @@
         <h1 class="px-5 py-7 text-center">Thông Tin Nhân Viên</h1>
         <v-row align="center" justify="center" class="">
           <v-col cols="12" sm="4" class="text-center">
-            <v-avatar class="mb-2" color="grey darken-1" size="250" v-if="this.imgLink">
-              <v-img
-                aspect-ratio="30"
-                :src="this.imgLink"
-              />
+            <v-avatar
+              class="mb-2"
+              color="grey darken-1"
+              size="250"
+              v-if="this.imgLink"
+            >
+              <v-img aspect-ratio="30" :src="this.imgLink" />
             </v-avatar>
             <v-avatar class="mb-2" color="grey darken-1" size="250" v-else>
               <v-img
@@ -17,7 +19,9 @@
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
               />
             </v-avatar>
-            <h2 class="black--text mt-2 mb-6" v-if="this.firstName && this.lastName">{{this.lastName}} {{this.firstName}}</h2>
+            <h2 class="black--text mt-2 mb-6" v-if="this.firstName && this.lastName">
+              {{ this.lastName }} {{ this.firstName }}
+            </h2>
             <h2 class="black--text mt-2 mb-6" v-else>Người dùng mới</h2>
             <v-row
               align="center"
@@ -93,24 +97,24 @@
                   </v-col>
 
                   <v-col cols="12" md="12">
-                        <v-select
-                          :items="this.listRole"
-                          label="Chức Vụ"
-                          :value="this.roleName"
-                          required
-                          readonly
-                        ></v-select>
+                    <v-select
+                      :items="this.listRole"
+                      label="Chức Vụ"
+                      :value="this.roleName"
+                      required
+                      readonly
+                    ></v-select>
                   </v-col>
 
                   <v-col cols="12" md="12">
-                        <v-select
-                          :items="this.listDepartment"
-                          label="Phòng Ban"
-                          :value="this.department"
-                          :menu-props="{ top: true, offsetY: true }"
-                          required
-                          readonly
-                        ></v-select>
+                    <v-select
+                      :items="this.listDepartment"
+                      label="Phòng Ban"
+                      :value="this.department"
+                      :menu-props="{ top: true, offsetY: true }"
+                      required
+                      readonly
+                    ></v-select>
                   </v-col>
                 </v-row>
               </v-container>
@@ -216,15 +220,36 @@ export default {
     this.address = index.address;
     this.department = index.depart_name;
     const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    let result = resPo.data.map(a => a.role);
-    this.listRole = result
+    let result = resPo.data.map((a) => a.role);
+    this.listRole = result;
     const resDe = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
-    let resultDe = resDe.data.map(a => a.depart_name);
-    this.listDepartment = resultDe
+    let resultDe = resDe.data.map((a) => a.depart_name);
+    this.listDepartment = resultDe;
     console.log(this.roleName);
+  },
+  methods: {
+    async updateInfo() {
+      const dataLogin = JSON.parse(localStorage.getItem("user-info"));
+      let id = dataLogin.email;
+      let res2 = await axios.put(
+        `${process.env.VUE_APP_SERVER_URL}/employee/${id}`,
+        {
+          firstName: this.user.firstName,
+          lastName: this.user.lastName,
+          email: this.user.email,
+          password: this.user.password,
+          role: this.user.role,
+          position_id: this.user.position_id,
+          depart_id: this.user.depart_id,
+          depart_name: this.user.depart_name,
+          address: this.user.address,
+          imgUrl: this.user.imgUrl,
+        }
+      );
+      console.log(res2);
+    },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

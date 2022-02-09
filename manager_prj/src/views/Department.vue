@@ -18,13 +18,7 @@
             </v-card-title>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="green"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                  class="ms-5 my-4"
-                >
+                <v-btn color="green" dark v-bind="attrs" v-on="on" class="ms-5 my-4">
                   Thêm Mới
                 </v-btn>
               </template>
@@ -108,17 +102,12 @@
                       <v-card class="pb-3">
                         <v-card-text class="pb-0">
                           <v-container class="px-0 pt-13 pb-0">
-                            <h1
-                              class="px-5 py-0 pb-5 text-center primary--text"
-                            >
+                            <h1 class="px-5 py-0 pb-5 text-center primary--text">
                               Thông Tin Phòng Ban
                             </h1>
                             <v-row align="center" justify="center" class="">
                               <v-col cols="12" sm="6" class="text-center">
-                                <div
-                                  class="mb-8"
-                                  v-if="detailsItem.depart_image"
-                                >
+                                <div class="mb-8" v-if="detailsItem.depart_image">
                                   <v-img
                                     aspect-ratio="30"
                                     :src="detailsItem.depart_image"
@@ -136,19 +125,11 @@
                                   {{ detailsItem.depart_name }}
                                 </h1>
                               </v-col>
-                              <v-col
-                                cols="12"
-                                sm="6"
-                                class="text-center pt-0"
-                              >
+                              <v-col cols="12" sm="6" class="text-center pt-0">
                                 <v-form>
                                   <v-container>
                                     <v-row>
-                                      <v-col
-                                        cols="12"
-                                        md="12"
-                                        class="pb-0 pt-1"
-                                      >
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
                                         <v-text-field
                                           label="ID"
                                           :value="detailsItem.id"
@@ -157,11 +138,7 @@
                                           readonly
                                         ></v-text-field>
                                       </v-col>
-                                      <v-col
-                                        cols="12"
-                                        md="12"
-                                        class="pb-0 pt-1"
-                                      >
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
                                         <v-text-field
                                           label="Mã Phòng Ban"
                                           :value="detailsItem.depart_id"
@@ -170,11 +147,7 @@
                                         ></v-text-field>
                                       </v-col>
 
-                                      <v-col
-                                        cols="12"
-                                        md="12"
-                                        class="pb-0 pt-1"
-                                      >
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
                                         <v-text-field
                                           label="Tên Phòng Ban"
                                           :value="detailsItem.depart_name"
@@ -183,11 +156,7 @@
                                         ></v-text-field>
                                       </v-col>
 
-                                      <v-col
-                                        cols="12"
-                                        md="12"
-                                        class="pb-0 pt-1"
-                                      >
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
                                         <v-text-field
                                           label="Số Lượng Nhân Viên"
                                           :value="qtyDepartment.length"
@@ -196,11 +165,7 @@
                                         ></v-text-field>
                                       </v-col>
 
-                                      <v-col
-                                        cols="12"
-                                        md="12"
-                                        class="pb-0 pt-1"
-                                      >
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
                                         <v-text-field
                                           label="Địa Chỉ Phòng Ban"
                                           :value="detailsItem.depart_address"
@@ -216,7 +181,8 @@
                           </v-container>
                         </v-card-text>
                         <v-card-actions class="justify-end">
-                          <v-btn text @click="dialog.value = false" color="primary">Đóng</v-btn
+                          <v-btn text @click="dialog.value = false" color="primary"
+                            >Đóng</v-btn
                           >
                         </v-card-actions>
                       </v-card>
@@ -310,7 +276,7 @@ export default {
           align: "center",
         },
         {
-          text: "ACTIONS",
+          text: "Chức Năng",
           value: "actions",
           align: "center",
           sortable: false,
@@ -336,9 +302,7 @@ export default {
     };
   },
   async mounted() {
-    const res = await axios.get(
-      `${process.env.VUE_APP_SERVER_URL}/departments`
-    );
+    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
     if (res.status === 200) {
       this.department = res.data;
       console.log(this.department);
@@ -357,15 +321,12 @@ export default {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
-        let res = await axios.post(
-          `${process.env.VUE_APP_SERVER_URL}/departments`,
-          {
-            depart_id: this.departmentItem.depart_id,
-            depart_name: this.departmentItem.depart_name,
-            depart_address: this.departmentItem.depart_address,
-            depart_image: this.departmentItem.depart_image,
-          }
-        );
+        let res = await axios.post(`${process.env.VUE_APP_SERVER_URL}/departments`, {
+          depart_id: this.departmentItem.depart_id,
+          depart_name: this.departmentItem.depart_name,
+          depart_address: this.departmentItem.depart_address,
+          depart_image: this.departmentItem.depart_image,
+        });
         console.log(res);
         this.dialog = false;
         this.showDialogCreateSuccess = true;

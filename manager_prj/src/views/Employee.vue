@@ -18,13 +18,7 @@
             </v-card-title>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="green"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                  class="ms-5 my-4"
-                >
+                <v-btn color="green" dark v-bind="attrs" v-on="on" class="ms-5 my-4">
                   Thêm Mới
                 </v-btn>
               </template>
@@ -145,8 +139,8 @@
                     </v-btn>
                   </template>
                   <template v-slot:default="dialog">
-                    <v-card>
-                      <v-card-text>
+                    <v-card class="pb-3">
+                      <v-card-text class="pb-2">
                         <v-container class="px-0 pt-13 pb-0">
                           <h1 class="px-5 py-0 text-center primary--text">
                             Thông Tin Nhân Viên
@@ -159,10 +153,7 @@
                                 size="250"
                                 v-if="detailsItem.imgUrl"
                               >
-                                <v-img
-                                  aspect-ratio="30"
-                                  :src="detailsItem.imgUrl"
-                                />
+                                <v-img aspect-ratio="30" :src="detailsItem.imgUrl" />
                               </v-avatar>
                               <v-avatar
                                 class="mb-2"
@@ -177,9 +168,7 @@
                               </v-avatar>
                               <h2
                                 class="black--text mt-2 mb-6"
-                                v-if="
-                                  detailsItem.firstName && detailsItem.lastName
-                                "
+                                v-if="detailsItem.firstName && detailsItem.lastName"
                               >
                                 {{ detailsItem.lastName }}
                                 {{ detailsItem.firstName }}
@@ -194,20 +183,13 @@
                                 :key="index"
                                 class="mt-0 ms-5"
                               >
-                                <v-col
-                                  cols="12"
-                                  sm="2"
-                                  class="text-end px-0 mb-2"
-                                >
+                                <v-col cols="12" sm="2" class="text-end px-0 mb-2">
                                   <v-avatar
                                     class="mb"
                                     color="grey darken-1"
                                     size="30"
                                   >
-                                    <v-img
-                                      aspect-ratio="30"
-                                      :src="link.imgUrl"
-                                    />
+                                    <v-img aspect-ratio="30" :src="link.imgUrl" />
                                   </v-avatar>
                                 </v-col>
                                 <v-col cols="12" sm="10" class="text-start">
@@ -223,19 +205,28 @@
                                   <v-row>
                                     <v-col cols="12" md="12" class="pb-0 pt-1">
                                       <v-text-field
-                                        :counter="30"
-                                        label="Họ"
-                                        :value="detailsItem.lastName"
+                                        label="ID"
+                                        :value="detailsItem.id"
                                         required
-                                        class="pt-1"
                                         readonly
                                       ></v-text-field>
                                     </v-col>
                                     <v-col cols="12" md="12" class="pb-0 pt-1">
                                       <v-text-field
-                                        :counter="30"
-                                        label="Tên"
-                                        :value="detailsItem.firstName"
+                                        label="Mã Nhân Viên"
+                                        :value="detailsItem.emp_ID"
+                                        required
+                                        readonly
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="12" class="pb-0 pt-1">
+                                      <v-text-field
+                                        label="Tên Nhân Viên"
+                                        :value="
+                                          detailsItem.lastName +
+                                            ' ' +
+                                            detailsItem.firstName
+                                        "
                                         required
                                         readonly
                                       ></v-text-field>
@@ -342,7 +333,9 @@
                         </v-container>
                       </v-card-text>
                       <v-card-actions class="justify-end">
-                        <v-btn text @click="dialog.value = false" color="primary">Đóng</v-btn>
+                        <v-btn text @click="dialog.value = false" color="primary"
+                          >Đóng</v-btn
+                        >
                       </v-card-actions>
                     </v-card>
                   </template>
@@ -510,7 +503,9 @@ export default {
       this.showDialogDelete = true;
     },
     async handleDelete() {
-      await axios.delete(`${process.env.VUE_APP_SERVER_URL}/employee/${this.deleteId}`);
+      await axios.delete(
+        `${process.env.VUE_APP_SERVER_URL}/employee/${this.deleteId}`
+      );
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
       setTimeout(() => window.location.reload(), 1200);
