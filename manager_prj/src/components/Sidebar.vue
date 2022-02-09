@@ -97,9 +97,9 @@ export default {
   async mounted() {
     const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
-    let id = dataLogin.email;
+    let email = dataLogin.email;
     let data = res.data;
-    const index = data.find((el) => el.email === id);
+    const index = data.find((el) => el.email === email);
     //  const index =  data.map(el => el.email == id)
     this.firstName = index.firstName;
     this.lastName = index.lastName;
@@ -133,6 +133,7 @@ export default {
         this.$router.push("/");
         setTimeout(() => alert("Bạn không có quyền hạn để vào"), 400);
       }
+      console.log("this is", this.$route.name);
     }
     if (this.$route.name === "facilities") {
       if (
