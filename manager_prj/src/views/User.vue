@@ -300,16 +300,21 @@ export default {
       this.detailsItem = details;
     },
     handleRow(item) {
-      this.deleteId = item.id;
+      this.deleteId = item.email;
       this.showDialogDelete = true;
     },
-    async handleDelete() {
+    handleDelete() {
       // await axios.delete(`${process.env.VUE_APP_SERVER_URL}/user/${this.deleteId}`);
       const resData = JSON.parse(localStorage.getItem("user"));
-      const indexDel = [...resData].findIndex((el) => el.id === this.deleteId);
+      const resDataEmp = JSON.parse(localStorage.getItem("employee"))
+      const indexDel = [...resData].findIndex((el) => el.email === this.deleteId);
+      const index = resDataEmp.findIndex(el => el.email === this.deleteId)
+      resDataEmp.splice(index,1);
+      localStorage.setItem("employee", JSON.stringify(resDataEmp));
       this.listUser = resData;
       this.listUser.splice(indexDel, 1);
       localStorage.setItem("user", JSON.stringify(this.listUser));
+      this.account = this.listUser;
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
     },
@@ -362,6 +367,7 @@ export default {
           password: this.user.password,
           role: this.user.role,
         });
+         this.account = this.listUser;
         localStorage.setItem("user", JSON.stringify(this.listUser));
         const resEm = JSON.parse(localStorage.getItem("employee"));
         const detailsIdEm = resEm[resEm.length - 1];
@@ -380,8 +386,6 @@ export default {
           imgUrl: this.user.imgUrl,
         });
         localStorage.setItem("employee", JSON.stringify(this.listEmployees));
-        console.log(this.listUser);
-        console.log(this.listEmployees);
         this.dialog = false;
         this.showDialogCreateSuccess = true;
       }
