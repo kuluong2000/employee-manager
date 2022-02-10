@@ -218,6 +218,24 @@ export default {
       emQty: 10,
     };
   },
+  mounted() {
+    // count employee
+    const EmpData = JSON.parse(localStorage.getItem("employee"));
+    this.activityLog[0].amount = EmpData.length;
+    // count facilities
+    const faciData = JSON.parse(localStorage.getItem("facilities"));
+    let totalFaci = 0;
+    faciData.forEach((el) => {
+      totalFaci += Number(el.qty);
+    });
+    this.activityLog[1].amount = totalFaci;
+    // count deparment
+    const departData = JSON.parse(localStorage.getItem("departments"));
+    this.activityLog[2].amount = departData.length;
+    // count position
+    const posiData = JSON.parse(localStorage.getItem("position"));
+    this.activityLog[3].amount = posiData.length;
+  },
   methods: {
     onButtonClick(item) {
       console.log("click on " + item.no);
