@@ -3,7 +3,7 @@
     <v-img
       height="140"
       class="pa-4"
-      src="https://timnhaviet.vn/hinh-background-dep/imager_3486.jpg"
+      src="https://data.1freewallpapers.com/download/lines-abstract-background-point-scheme-background-free-1366x768.jpg"
     >
       <div class="text-center">
         <v-avatar class="mb-2" color="grey darken-1" size="77" v-if="imgUrl">
@@ -96,7 +96,7 @@ export default {
   },
   async mounted() {
     // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
-    const res = JSON.parse(localStorage.getItem("employee"))
+    const res = JSON.parse(localStorage.getItem("employee"));
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
     let email = dataLogin.email;
     let data = res;

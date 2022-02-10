@@ -455,29 +455,37 @@ export default {
     const dataPayment = JSON.parse(localStorage.getItem("user-info"));
     this.roleEm = dataPayment.role;
     if (dataPayment.role == "Nhân Viên") {
-      const resEm = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/payment?email=${dataPayment.email}`
-      );
-      this.payment = resEm.data;
+      // const resEm = await axios.get(
+      //   `${process.env.VUE_APP_SERVER_URL}/payment?email=${dataPayment.email}`
+      // );
+      const dataPay = JSON.parse(localStorage.getItem("payment"));
+      const resEm = dataPay.filter((el) => el.email === this.detailsItem.email);
+      this.payment = resEm;
     } else {
-      const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/payment`);
-      this.payment = res.data;
+      // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/payment`);
+      // this.payment = res.data;
+      const res = JSON.parse(localStorage.getItem("payment"));
+      this.payment = res;
     }
-    const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    let result = resPo.data.map((a) => a.role);
-    this.listRole = result;
+    // const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
+    // let result = resPo.data.map((a) => a.role);
+    // this.listRole = result;
   },
   methods: {
     async DetailsPayment(item) {
       this.detailsId = item.id;
-      const resPay = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/payment/${this.detailsId}`
+      // const resPay = await axios.get(
+      //   `${process.env.VUE_APP_SERVER_URL}/payment/${this.detailsId}`
+      // );
+      // this.detailsPaymentItem = resPay.data;
+      const resData = JSON.parse(localStorage.getItem("payment"));
+      const details = [...resData].find((el) => el.id === this.detailsId);
+      this.detailsPaymentItem = details;
+      const dataEm = JSON.parse(localStorage.getItem("employee"));
+      const resEm = [...dataEm].find(
+        (el) => el.emp_ID === this.detailsPaymentItem.emp_ID
       );
-      this.detailsPaymentItem = resPay.data;
-      const resEm = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/employee?email=${this.detailsPaymentItem.email}`
-      );
-      this.detailsEmployItem = resEm.data[0];
+      this.detailsEmployItem = resEm;
     },
     handleRow(item) {
       this.deleteId = item.id;
@@ -550,5 +558,8 @@ h1 {
   text-transform: uppercase;
   text-align: center;
   margin: -10px 0 30px;
+}
+.v-dialog > .v-card > .v-card__actions {
+  padding: 0 26px 20px;
 }
 </style>

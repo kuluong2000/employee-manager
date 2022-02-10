@@ -302,11 +302,9 @@ export default {
     };
   },
   async mounted() {
-    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
-    if (res.status === 200) {
-      this.department = res.data;
-      console.log(this.department);
-    }
+    // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
+    const res = JSON.parse(localStorage.getItem("departments"));
+    this.department = res;
     const dataDe = JSON.parse(localStorage.getItem("user-info"));
     this.roleEm = dataDe.role;
   },
@@ -335,14 +333,21 @@ export default {
     },
     async DetailsUser(item) {
       this.detailsId = item.id;
-      const res = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/departments/${this.detailsId}`
+      // const res = await axios.get(
+      //   `${process.env.VUE_APP_SERVER_URL}/departments/${this.detailsId}`
+      // );
+      // this.detailsItem = res.data;
+      const resData = JSON.parse(localStorage.getItem("departments"));
+      const details = [...resData].find((el) => el.id === this.detailsId);
+      this.detailsItem = details;
+      // const resEm = await axios.get(
+      //   `${process.env.VUE_APP_SERVER_URL}/employee?depart_name=${this.detailsItem.depart_name}`
+      // );
+      const dataEm = JSON.parse(localStorage.getItem("employee"));
+      const detailsQty = dataEm.filter(
+        (el) => el.depart_name === this.detailsItem.depart_name
       );
-      this.detailsItem = res.data;
-      const resEm = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/employee?depart_name=${this.detailsItem.depart_name}`
-      );
-      this.qtyDepartment = resEm.data;
+      this.qtyDepartment = detailsQty;
     },
     handleRow(item) {
       this.deleteId = item.id;

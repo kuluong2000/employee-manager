@@ -239,11 +239,10 @@ export default {
     };
   },
   async mounted() {
-    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    if (res.status === 200) {
-      this.position = res.data;
-      console.log(this.position);
-    }
+    // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
+    // this.position = res.data;
+    const res = JSON.parse(localStorage.getItem("position"));
+    this.position = res;
   },
   methods: {
     async createPosition() {
@@ -263,14 +262,19 @@ export default {
     },
     async DetailsUser(item) {
       this.detailsId = item.id;
-      const res = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/position/${this.detailsId}`
-      );
-      this.detailsItem = res.data;
-      const resEm = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/employee?role=${this.detailsItem.role}`
-      );
-      this.qtyPositon = resEm.data;
+      // const res = await axios.get(
+      //   `${process.env.VUE_APP_SERVER_URL}/position/${this.detailsId}`
+      // );
+      // this.detailsItem = res.data;
+      const resData = JSON.parse(localStorage.getItem("position"));
+      const details = [...resData].find((el) => el.id === this.detailsId);
+      this.detailsItem = details;
+      // const resEm = await axios.get(
+      //   `${process.env.VUE_APP_SERVER_URL}/employee?role=${this.detailsItem.role}`
+      // );
+      const dataEm = JSON.parse(localStorage.getItem("employee"));
+      const detailsQty = dataEm.filter((el) => el.role === this.detailsItem.role);
+      this.qtyPositon = detailsQty;
     },
     handleRow(item) {
       this.deleteId = item.id;

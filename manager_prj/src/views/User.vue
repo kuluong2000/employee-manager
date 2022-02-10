@@ -228,7 +228,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Popup from "../components/Popup.vue";
 export default {
   components: { Popup },
@@ -263,6 +263,7 @@ export default {
         },
       ],
       user: {
+        id: "",
         firstName: "",
         lastName: "",
         email: "",
@@ -287,25 +288,30 @@ export default {
       showDialogDeleteSuccess: false,
       listRole: [],
       detailsItem: {},
+      listUser: [],
+      listEmployees: [],
     };
   },
   methods: {
     async DetailsUser(item) {
       this.detailsId = item.id;
-      const res = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/user/${this.detailsId}`
-      );
-      this.detailsItem = res.data;
+      const resData = JSON.parse(localStorage.getItem("user"));
+      const details = [...resData].find((el) => el.id === this.detailsId);
+      this.detailsItem = details;
     },
     handleRow(item) {
       this.deleteId = item.id;
       this.showDialogDelete = true;
     },
     async handleDelete() {
-      await axios.delete(`${process.env.VUE_APP_SERVER_URL}/user/${this.deleteId}`);
+      // await axios.delete(`${process.env.VUE_APP_SERVER_URL}/user/${this.deleteId}`);
+      const resData = JSON.parse(localStorage.getItem("user"));
+      const indexDel = [...resData].findIndex((el) => el.id === this.deleteId);
+      this.listUser = resData;
+      this.listUser.splice(indexDel, 1);
+      localStorage.setItem("user", JSON.stringify(this.listUser));
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
-      setTimeout(() => window.location.reload(), 1200);
     },
     cancel() {
       this.showDialogDelete = false;
@@ -329,12 +335,39 @@ export default {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
-        let res = await axios.post(`${process.env.VUE_APP_SERVER_URL}/user`, {
+        // let res = await axios.post(`${process.env.VUE_APP_SERVER_URL}/user`, {
+        //   email: this.user.email,
+        //   password: this.user.password,
+        //   role: this.user.role,
+        // });
+        // let res2 = await axios.post(`${process.env.VUE_APP_SERVER_URL}/employee`, {
+        //   firstName: this.user.firstName,
+        //   lastName: this.user.lastName,
+        //   email: this.user.email,
+        //   password: this.user.password,
+        //   role: this.user.role,
+        //   position_id: this.user.position_id,
+        //   depart_id: this.user.depart_id,
+        //   depart_name: this.user.depart_name,
+        //   address: this.user.address,
+        //   imgUrl: this.user.imgUrl,
+        // });
+        const resUser = JSON.parse(localStorage.getItem("user"));
+        const detailsIdUser = resUser[resUser.length - 1];
+        console.log(detailsIdUser);
+        this.listUser = resUser;
+        this.listUser.push({
+          id: detailsIdUser.id + 1,
           email: this.user.email,
           password: this.user.password,
           role: this.user.role,
         });
-        let res2 = await axios.post(`${process.env.VUE_APP_SERVER_URL}/employee`, {
+        localStorage.setItem("user", JSON.stringify(this.listUser));
+        const resEm = JSON.parse(localStorage.getItem("employee"));
+        const detailsIdEm = resEm[resEm.length - 1];
+        this.listEmployees = resEm;
+        this.listEmployees.push({
+          id: detailsIdEm.id + 1,
           firstName: this.user.firstName,
           lastName: this.user.lastName,
           email: this.user.email,
@@ -346,19 +379,20 @@ export default {
           address: this.user.address,
           imgUrl: this.user.imgUrl,
         });
-        console.log(res);
-        console.log(res2);
+        localStorage.setItem("employee", JSON.stringify(this.listEmployees));
+        console.log(this.listUser);
+        console.log(this.listEmployees);
         this.dialog = false;
         this.showDialogCreateSuccess = true;
-        setTimeout(() => window.location.reload(), 1500);
       }
     },
   },
   async mounted() {
-    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/user`);
-    this.account = res.data;
-    const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    let result = resPo.data.map((a) => a.role);
+    // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/user`);
+    const res = JSON.parse(localStorage.getItem("user"));
+    this.account = res;
+    const resPo = JSON.parse(localStorage.getItem("position"));
+    let result = resPo.map((a) => a.role);
     this.listRole = result;
   },
 };

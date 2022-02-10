@@ -457,21 +457,27 @@ export default {
       );
       this.facilities = resEm.data;
     } else {
-      const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/facilities`);
-      this.facilities = res.data;
+      // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/facilities`);
+      // this.facilities = res.data;
+      const res = JSON.parse(localStorage.getItem("facilities"));
+      this.facilities = res;
     }
   },
   methods: {
     async DetailsUser(item) {
       this.detailsId = item.id;
-      const resFa = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/facilities/${this.detailsId}`
+      const resData = JSON.parse(localStorage.getItem("facilities"));
+      const details = [...resData].find((el) => el.id === this.detailsId);
+      this.detailsFaItem = details;
+      // const resEm = await axios.get(
+      //   `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.detailsFaItem.emp_ID}`
+      // );
+      // this.detailsEmployItem = resEm.data[0];
+      const dataEm = JSON.parse(localStorage.getItem("employee"));
+      const resEm = [...dataEm].find(
+        (el) => el.emp_ID === this.detailsFaItem.emp_ID
       );
-      this.detailsFaItem = resFa.data;
-      const resEm = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.detailsFaItem.emp_ID}`
-      );
-      this.detailsEmployItem = resEm.data[0];
+      this.detailsEmployItem = resEm;
     },
     handleRow(item) {
       this.deleteId = item.id;
@@ -500,8 +506,10 @@ export default {
         // const resEm = await axios.get(
         //   `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.facilitiesItem.emp_ID}`
         // );
-        const datalocal = JSON.parse(localStorage.getItem("employee"))
-        const resEm = [...datalocal].find(el=> el.emp_ID === this.facilitiesItem.emp_ID);
+        const datalocal = JSON.parse(localStorage.getItem("employee"));
+        const resEm = [...datalocal].find(
+          (el) => el.emp_ID === this.facilitiesItem.emp_ID
+        );
         this.employData = resEm;
         if (this.employData) {
           const resFa = await axios.post(

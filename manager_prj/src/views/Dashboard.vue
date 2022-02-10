@@ -11,12 +11,7 @@
           Login Successfully! Welcome to <strong>Web Burden</strong>
         </v-alert>
         <v-row>
-          <v-col
-            lg="6"
-            cols="12"
-            v-for="(item, index) in activityLog"
-            :key="index"
-          >
+          <v-col lg="6" cols="12" v-for="(item, index) in activityLog" :key="index">
             <v-card elevation="2" class="rounded-lg">
               <v-card-text class="d-flex justify-space-between align-center">
                 <div>
@@ -31,8 +26,7 @@
                   <span style="color: white">{{ item.amount }} +</span>
                 </v-avatar>
               </v-card-text>
-              <v-card-actions class="d-flex justify-space-between">
-              </v-card-actions>
+              <v-card-actions class="d-flex justify-space-between"> </v-card-actions>
             </v-card>
           </v-col>
         </v-row>
@@ -225,6 +219,7 @@ export default {
       listFa: [],
       listDe: [],
       listPo: [],
+      emQty: 10,
     };
   },
   methods: {
@@ -243,10 +238,12 @@ export default {
       showAccess: (state) => state.showDialog,
     }),
   },
-  async mounted() {
-    const resEm = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
-    this.listEm = resEm.data;
-    console.log(this.listEm.length);
+  async created() {
+    // const resEm = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
+    const resEm = JSON.parse(localStorage.getItem("employee"));
+    this.listEm = resEm;
+    this.emQty = resEm.length;
+    console.log(this.emQty);
 
     const resFa = await axios.get(`${process.env.VUE_APP_SERVER_URL}/facilities`);
     this.listFa = resFa.data;
