@@ -87,7 +87,7 @@
 <script>
 import { mapState } from "vuex";
 import Popup from "../components/Popup.vue";
-import axios from "axios";
+// import axios from "axios";
 export default {
   components: { Popup },
   name: "Dashboard",
@@ -215,10 +215,6 @@ export default {
           iron: "6%",
         },
       ],
-      listEm: [],
-      listFa: [],
-      listDe: [],
-      listPo: [],
       emQty: 10,
     };
   },
@@ -238,24 +234,10 @@ export default {
       showAccess: (state) => state.showDialog,
     }),
   },
-  async created() {
+  mounted() {
     // const resEm = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
     const resEm = JSON.parse(localStorage.getItem("employee"));
-    this.listEm = resEm;
-    this.emQty = resEm.length;
-    console.log(this.emQty);
-
-    const resFa = await axios.get(`${process.env.VUE_APP_SERVER_URL}/facilities`);
-    this.listFa = resFa.data;
-    console.log(this.listFa.length);
-
-    const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    this.listPo = resPo.data;
-    console.log(this.listPo.length);
-
-    const resDe = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
-    this.listDe = resDe.data;
-    console.log(this.listDe.length);
+    this.activityLog[0].amount = resEm.length;
   },
 };
 </script>

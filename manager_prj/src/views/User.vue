@@ -303,12 +303,13 @@ export default {
       this.deleteId = item.id;
       this.showDialogDelete = true;
     },
-    async handleDelete() {
+    handleDelete() {
       // await axios.delete(`${process.env.VUE_APP_SERVER_URL}/user/${this.deleteId}`);
       const resData = JSON.parse(localStorage.getItem("user"));
       const indexDel = [...resData].findIndex((el) => el.id === this.deleteId);
       this.listUser = resData;
       this.listUser.splice(indexDel, 1);
+      this.account = this.listUser;
       localStorage.setItem("user", JSON.stringify(this.listUser));
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
@@ -362,6 +363,7 @@ export default {
           password: this.user.password,
           role: this.user.role,
         });
+        this.account = this.listUser;
         localStorage.setItem("user", JSON.stringify(this.listUser));
         const resEm = JSON.parse(localStorage.getItem("employee"));
         const detailsIdEm = resEm[resEm.length - 1];
