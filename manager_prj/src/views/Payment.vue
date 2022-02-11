@@ -16,7 +16,12 @@
                 hide-details
               ></v-text-field>
             </v-card-title>
-            <v-dialog v-model="dialog" persistent max-width="600px">
+            <v-dialog
+              v-model="dialog"
+              persistent
+              max-width="600px"
+              v-if="roleEm !== 'Nhân Viên'"
+            >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn color="green" dark v-bind="attrs" v-on="on" class="ms-5 my-4">
                   Thêm Mới
@@ -352,7 +357,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Popup from "../components/Popup.vue";
 export default {
   components: { Popup },
@@ -417,6 +422,7 @@ export default {
       showDialogCreateSuccess: false,
       showDialogIdFail: false,
       payList: {
+        id: "",
         payment_ID: "",
         emp_ID: "",
         email: "",
@@ -452,32 +458,24 @@ export default {
     };
   },
   async mounted() {
-    const dataPayment = JSON.parse(localStorage.getItem("user-info"));
-    this.roleEm = dataPayment.role;
-    if (dataPayment.role == "Nhân Viên") {
-      // const resEm = await axios.get(
-      //   `${process.env.VUE_APP_SERVER_URL}/payment?email=${dataPayment.email}`
-      // );
+    const dataLogin = JSON.parse(localStorage.getItem("user-info"));
+    this.roleEm = dataLogin.role;
+    if (dataLogin.role == "Nhân Viên") {
+      // const dataPay = JSON.parse(localStorage.getItem("payment"));
+      // const resEm = dataPay.filter((el) => el.email === this.detailsItem.email);
+      const dataEm = JSON.parse(localStorage.getItem("employee"));
+      const detailsEm = dataEm.find((el) => el.email === dataLogin.email);
       const dataPay = JSON.parse(localStorage.getItem("payment"));
-      const resEm = dataPay.filter((el) => el.email === this.detailsItem.email);
-      this.payment = resEm;
+      const detailsPay = dataPay.filter((el) => el.emp_ID === detailsEm.emp_ID);
+      this.payment = detailsPay;
     } else {
-      // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/payment`);
-      // this.payment = res.data;
       const res = JSON.parse(localStorage.getItem("payment"));
       this.payment = res;
     }
-    // const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    // let result = resPo.data.map((a) => a.role);
-    // this.listRole = result;
   },
   methods: {
     async DetailsPayment(item) {
       this.detailsId = item.id;
-      // const resPay = await axios.get(
-      //   `${process.env.VUE_APP_SERVER_URL}/payment/${this.detailsId}`
-      // );
-      // this.detailsPaymentItem = resPay.data;
       const resData = JSON.parse(localStorage.getItem("payment"));
       const details = [...resData].find((el) => el.id === this.detailsId);
       this.detailsPaymentItem = details;
@@ -492,9 +490,11 @@ export default {
       this.showDialogDelete = true;
     },
     async handleDelete() {
-      await axios.delete(
-        `${process.env.VUE_APP_SERVER_URL}/payment/${this.deleteId}`
-      );
+      const resDataPay = JSON.parse(localStorage.getItem("payment"));
+      const indexDel = resDataPay.findIndex((el) => el.id === this.deleteId);
+      resDataPay.splice(indexDel, 1);
+      this.payment = resDataPay;
+      localStorage.setItem("payment", JSON.stringify(resDataPay));
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
     },
@@ -509,12 +509,30 @@ export default {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
-        const resEm = await axios.get(
-          `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.payList.emp_ID}`
-        );
-        this.employData = resEm.data[0];
+        // const resEm = await axios.get(
+        //   `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.payList.emp_ID}`
+        // );
+        // this.employData = resEm.data[0];
+        const datalocal = JSON.parse(localStorage.getItem("employee"));
+        const resEm = [...datalocal].find((el) => el.emp_ID === this.payList.emp_ID);
+        this.employData = resEm;
         if (this.employData) {
-          await axios.post(`${process.env.VUE_APP_SERVER_URL}/payment`, {
+          // await axios.post(`${process.env.VUE_APP_SERVER_URL}/payment`, {
+          //   payment_ID: this.payList.payment_ID,
+          //   emp_ID: this.payList.emp_ID,
+          //   email: this.employData.email,
+          //   fullName: this.employData.lastName + " " + this.employData.firstName,
+          //   amount: this.payList.amount,
+          //   allowance: this.payList.allowance,
+          //   amount_total:
+          //     Number(this.payList.amount) + Number(this.payList.allowance),
+          //   role: this.employData.role,
+          //   description: this.payList.description,
+          // });
+          const resPay = JSON.parse(localStorage.getItem("payment"));
+          const detailsIdFa = resPay[resPay.length - 1];
+          resPay.push({
+            id: detailsIdFa.id + 1,
             payment_ID: this.payList.payment_ID,
             emp_ID: this.payList.emp_ID,
             email: this.employData.email,
@@ -526,6 +544,8 @@ export default {
             role: this.employData.role,
             description: this.payList.description,
           });
+          this.payment = resPay;
+          localStorage.setItem("payment", JSON.stringify(resPay));
           this.dialog = false;
           this.showDialogCreateSuccess = true;
         } else {
@@ -548,7 +568,6 @@ export default {
     confirmSuccess() {
       this.showDialogCreateSuccess = false;
       this.showDialogDeleteSuccess = false;
-      window.location.reload();
     },
   },
 };

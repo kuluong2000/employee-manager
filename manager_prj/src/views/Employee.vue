@@ -390,10 +390,18 @@
       title="Thông báo!"
       description="Thêm dữ liệu thành công!!"
     ></popup>
+    <popup
+      :show="showDialogDuplicateEmail"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Email này đã tồn tại!! Vui lòng chọn email khác"
+    ></popup>
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Popup from "../components/Popup.vue";
 export default {
   components: { Popup },
@@ -451,6 +459,8 @@ export default {
       dialog: false,
       detailsItem: {},
       user: {
+        id: "",
+        emp_ID: "",
         firstName: "",
         lastName: "",
         email: "",
@@ -466,6 +476,7 @@ export default {
       showDialogDeleteSuccess: false,
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
+      showDialogDuplicateEmail: false,
       linkUser: [
         {
           imgUrl:
@@ -507,16 +518,30 @@ export default {
       this.detailsItem = details;
     },
     handleRow(item) {
-      this.deleteId = item.id;
+      this.deleteId = item.email;
       this.showDialogDelete = true;
     },
     async handleDelete() {
-      await axios.delete(
-        `${process.env.VUE_APP_SERVER_URL}/employee/${this.deleteId}`
-      );
+      // await axios.delete(
+      //   `${process.env.VUE_APP_SERVER_URL}/employee/${this.deleteId}`
+      // );
+      const resDataUser = JSON.parse(localStorage.getItem("user"));
+      const resDataEmp = JSON.parse(localStorage.getItem("employee"));
+      const indexDel = resDataUser.findIndex((el) => el.email === this.deleteId);
+      const index = resDataEmp.findIndex((el) => el.email === this.deleteId);
+      resDataEmp.splice(index, 1);
+      localStorage.setItem("employee", JSON.stringify(resDataEmp));
+      resDataUser.splice(indexDel, 1);
+      this.employee = resDataEmp;
+      localStorage.setItem("user", JSON.stringify(resDataUser));
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
-      setTimeout(() => window.location.reload(), 1200);
+    },
+    userExists(email) {
+      const resUser = JSON.parse(localStorage.getItem("employee"));
+      return resUser.some(function(el) {
+        return el.email === email;
+      });
     },
     async createUser() {
       if (
@@ -530,28 +555,40 @@ export default {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
-        let res = await axios.post(`${process.env.VUE_APP_SERVER_URL}/user`, {
-          email: this.user.email,
-          password: this.user.password,
-          role: this.user.role,
-        });
-        let res2 = await axios.post(`${process.env.VUE_APP_SERVER_URL}/employee`, {
-          firstName: this.user.firstName,
-          lastName: this.user.lastName,
-          email: this.user.email,
-          password: this.user.password,
-          role: this.user.role,
-          position_id: this.user.position_id,
-          depart_id: this.user.depart_id,
-          depart_name: this.user.depart_name,
-          address: this.user.address,
-          imgUrl: this.user.imgUrl,
-        });
-        console.log(res);
-        console.log(res2);
-        this.dialog = false;
-        this.showDialogCreateSuccess = true;
-        setTimeout(() => window.location.reload(), 1500);
+        if (this.userExists(this.user.email) == true) {
+          this.showDialogDuplicateEmail = true;
+          this.dialog = false;
+        } else {
+          const resUser = JSON.parse(localStorage.getItem("user"));
+          const detailsIdUser = resUser[resUser.length - 1];
+          resUser.push({
+            id: detailsIdUser.id + 1,
+            email: this.user.email,
+            password: this.user.password,
+            role: this.user.role,
+          });
+          localStorage.setItem("user", JSON.stringify(resUser));
+          const resEm = JSON.parse(localStorage.getItem("employee"));
+          const detailsIdEm = resEm[resEm.length - 1];
+          resEm.push({
+            id: detailsIdEm.id + 1,
+            emp_ID: `NV${detailsIdEm.id + 1}`,
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            email: this.user.email,
+            password: this.user.password,
+            role: this.user.role,
+            position_id: this.user.position_id,
+            depart_id: this.user.depart_id,
+            depart_name: this.user.depart_name,
+            address: this.user.address,
+            imgUrl: this.user.imgUrl,
+          });
+          this.employee = resEm;
+          localStorage.setItem("employee", JSON.stringify(resEm));
+          this.dialog = false;
+          this.showDialogCreateSuccess = true;
+        }
       }
     },
     cancel() {
@@ -564,6 +601,7 @@ export default {
       this.showDialogDeleteSuccess = false;
       this.showDialogCreateRequired = false;
       this.showDialogCreateSuccess = false;
+      this.showDialogDuplicateEmail = false;
     },
   },
   async mounted() {

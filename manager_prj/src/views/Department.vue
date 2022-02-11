@@ -248,7 +248,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Popup from "../components/Popup.vue";
 export default {
   components: { Popup },
@@ -289,6 +289,7 @@ export default {
       detailsId: 0,
       detailsItem: {},
       departmentItem: {
+        id: "",
         depart_id: "",
         depart_name: "",
         depart_address: "",
@@ -302,7 +303,6 @@ export default {
     };
   },
   async mounted() {
-    // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
     const res = JSON.parse(localStorage.getItem("departments"));
     this.department = res;
     const dataDe = JSON.parse(localStorage.getItem("user-info"));
@@ -319,30 +319,26 @@ export default {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
-        let res = await axios.post(`${process.env.VUE_APP_SERVER_URL}/departments`, {
+        const resDe = JSON.parse(localStorage.getItem("departments"));
+        const detailsIdDe = resDe[resDe.length - 1];
+        resDe.push({
+          id: detailsIdDe.id + 1,
           depart_id: this.departmentItem.depart_id,
           depart_name: this.departmentItem.depart_name,
           depart_address: this.departmentItem.depart_address,
           depart_image: this.departmentItem.depart_image,
         });
-        console.log(res);
+        this.department = resDe;
+        localStorage.setItem("departments", JSON.stringify(resDe));
         this.dialog = false;
         this.showDialogCreateSuccess = true;
-        setTimeout(() => window.location.reload(), 1500);
       }
     },
     async DetailsUser(item) {
       this.detailsId = item.id;
-      // const res = await axios.get(
-      //   `${process.env.VUE_APP_SERVER_URL}/departments/${this.detailsId}`
-      // );
-      // this.detailsItem = res.data;
       const resData = JSON.parse(localStorage.getItem("departments"));
       const details = [...resData].find((el) => el.id === this.detailsId);
       this.detailsItem = details;
-      // const resEm = await axios.get(
-      //   `${process.env.VUE_APP_SERVER_URL}/employee?depart_name=${this.detailsItem.depart_name}`
-      // );
       const dataEm = JSON.parse(localStorage.getItem("employee"));
       const detailsQty = dataEm.filter(
         (el) => el.depart_name === this.detailsItem.depart_name
@@ -354,12 +350,13 @@ export default {
       this.showDialogDelete = true;
     },
     async handleDelete() {
-      await axios.delete(
-        `${process.env.VUE_APP_SERVER_URL}/departments/${this.deleteId}`
-      );
+      const resDataDe = JSON.parse(localStorage.getItem("departments"));
+      const indexDel = resDataDe.findIndex((el) => el.id === this.deleteId);
+      resDataDe.splice(indexDel, 1);
+      this.department = resDataDe;
+      localStorage.setItem("departments", JSON.stringify(resDataDe));
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
-      setTimeout(() => window.location.reload(), 1200);
     },
     cancel() {
       this.showDialogDelete = false;
