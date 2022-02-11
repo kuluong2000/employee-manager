@@ -185,7 +185,7 @@ export default {
   // },
   async mounted() {
     // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
-    const res = JSON.parse(localStorage.getItem("employee"))
+    const res = JSON.parse(localStorage.getItem("employee"));
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
     let id = dataLogin.email;
     let data = res;
@@ -202,6 +202,7 @@ export default {
         this.showDialog = true;
       }
       if (action === "profile") {
+        if (action === "profile") return;
         this.$router.push("/userInfo");
       }
     },
