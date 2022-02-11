@@ -128,7 +128,7 @@
               }"
             >
               <template v-slot:[`item.actions`]="{ item }">
-                <v-dialog max-width="1400" persistent>
+                <v-dialog max-width="1600" persistent>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       color="primary"
@@ -140,17 +140,17 @@
                   </template>
                   <template v-slot:default="dialog">
                     <v-card class="pb-3">
-                      <v-card-text class="pb-2">
+                      <v-card-text class="pb-5">
                         <v-container class="px-0 pt-13 pb-0">
                           <h1 class="px-5 py-0 text-center primary--text">
                             Thông Tin Nhân Viên
                           </h1>
-                          <v-row align="center" justify="center" class="">
-                            <v-col cols="12" sm="4" class="text-center">
+                          <v-row align="center" justify="center" class="pe-5">
+                            <v-col cols="12" sm="3" class="text-center">
                               <v-avatar
                                 class="mb-2"
                                 color="grey darken-1"
-                                size="250"
+                                size="300"
                                 v-if="detailsItem.imgUrl"
                               >
                                 <v-img aspect-ratio="30" :src="detailsItem.imgUrl" />
@@ -199,7 +199,7 @@
                                 </v-col>
                               </v-row>
                             </v-col>
-                            <v-col cols="12" sm="4" class="text-center">
+                            <v-col cols="12" sm="3" class="text-center">
                               <v-form>
                                 <v-container>
                                   <v-row>
@@ -253,7 +253,7 @@
                                     <v-col cols="12" md="12" class="pb-0 pt-1">
                                       <v-text-field
                                         label="Số điện thoại"
-                                        value="0346996951"
+                                        :value="detailsItem.phoneNumber"
                                         required
                                         readonly
                                       ></v-text-field>
@@ -276,7 +276,14 @@
                                         readonly
                                       ></v-text-field>
                                     </v-col>
-
+                                  </v-row>
+                                </v-container>
+                              </v-form>
+                            </v-col>
+                            <v-col cols="12" sm="3" class="text-center">
+                              <v-form>
+                                <v-container>
+                                  <v-row>
                                     <v-col cols="12" md="12" class="pb-0 pt-1">
                                       <v-text-field
                                         label="Phòng Ban"
@@ -285,11 +292,75 @@
                                         readonly
                                       ></v-text-field>
                                     </v-col>
+                                    <v-col cols="12" md="12" class="pb-0 pt-1">
+                                      <v-text-field
+                                        label="Ngày Sinh"
+                                        :value="detailsItem.birthday"
+                                        required
+                                        readonly
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="12" class="pb-0 pt-1">
+                                      <v-select
+                                        :items="['Nam', 'Nữ']"
+                                        label="Giới Tính"
+                                        :value="detailsItem.gender"
+                                        required
+                                        readonly
+                                      ></v-select>
+                                    </v-col>
+                                    <v-col cols="12" md="12" class="pb-0 pt-1">
+                                      <v-text-field
+                                        label="Số CMND/CCCD"
+                                        :value="detailsItem.numberCard"
+                                        required
+                                        readonly
+                                      ></v-text-field>
+                                    </v-col>
+
+                                    <v-col cols="12" md="12" class="pb-0 pt-1">
+                                      <v-text-field
+                                        label="Quốc Tịch"
+                                        :value="detailsItem.nationality"
+                                        required
+                                        readonly
+                                      ></v-text-field>
+                                    </v-col>
+
+                                    <v-col cols="12" md="12" class="pb-0 pt-1">
+                                      <v-text-field
+                                        label="Dân Tộc"
+                                        :value="detailsItem.ethnic"
+                                        required
+                                        readonly
+                                      ></v-text-field>
+                                    </v-col>
+
+                                    <v-col cols="12" md="12" class="pb-0 pt-1">
+                                      <v-select
+                                        :items="['12/12']"
+                                        label="Trình Độ Văn Hóa"
+                                        :value="detailsItem.educationalLevel"
+                                        required
+                                        readonly
+                                      ></v-select>
+                                    </v-col>
+
+                                    <v-col cols="12" md="12" class="pb-0 pt-1">
+                                      <v-select
+                                        :items="['Cao Đẳng', 'Đại Học', 'Cao Học']"
+                                        label="Trình Độ Học Vấn"
+                                        :value="detailsItem.academicLevel"
+                                        :menu-props="{ top: true, offsetY: true }"
+                                        required
+                                        readonly
+                                      ></v-select>
+                                    </v-col>
                                   </v-row>
                                 </v-container>
                               </v-form>
                             </v-col>
-                            <v-col cols="12" sm="4" class="text-center">
+                            <v-col cols="12" sm="3" class="text-center">
                               <v-card class="mx-auto" max-width="400">
                                 <v-img
                                   class="white--text align-end"

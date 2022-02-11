@@ -3,13 +3,13 @@
     <v-img
       height="140"
       class="pa-4"
-      src="https://data.1freewallpapers.com/download/lines-abstract-background-point-scheme-background-free-1366x768.jpg"
+      src="https://bigdata-vn.com/wp-content/uploads/2021/09/Background-anh-sang-dep.jpg"
     >
       <div class="text-center">
-        <v-avatar class="mb-2" color="grey darken-1" size="77" v-if="imgUrl">
+        <v-avatar class="mb-2" color="grey darken-1" size="78" v-if="imgUrl">
           <v-img aspect-ratio="30" :src="imgUrl" />
         </v-avatar>
-        <v-avatar class="mb-2" color="grey darken-1" size="77" v-else>
+        <v-avatar class="mb-2" color="grey darken-1" size="78" v-else>
           <v-img
             aspect-ratio="30"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
@@ -21,7 +21,7 @@
         <h3 class="white--text" v-else>Người dùng mới</h3>
       </div>
     </v-img>
-    <v-divider></v-divider>
+    <!-- <v-divider></v-divider> -->
     <v-list>
       <!-- <v-list-item-group v-model="model"> -->
       <v-list-item
@@ -29,13 +29,13 @@
         :key="i"
         link
         @click="positionAction(link.action)"
-        class="item-sidebar"
+        class="item-sidebar ps-5"
       >
         <v-list-item-icon>
           <v-icon>{{ link.icon }}</v-icon>
         </v-list-item-icon>
 
-        <v-list-item-content style="color: #9ca6ac">
+        <v-list-item-content style="color: #b7c7d1">
           {{ link.title }}
         </v-list-item-content>
       </v-list-item>
@@ -84,7 +84,26 @@ export default {
           title: "Quản Lý Tiền Lương",
           action: "payment",
         },
-        { icon: "mdi-cog", title: "Cài Đặt", action: "dashboard" },
+        {
+          icon: "mdi-newspaper-variant-outline",
+          title: "Tin Tức Công Ty",
+          action: "news",
+        },
+        {
+          icon: "mdi-ballot-outline",
+          title: "Thủ Tục",
+          action: "procedure",
+        },
+        {
+          icon: "mdi-file-sign",
+          title: "Báo Cáo",
+          action: "report",
+        },
+        {
+          icon: "mdi-cog",
+          title: "Tiện Ích",
+          action: "settings",
+        },
       ],
       firstName: "",
       lastName: "",
@@ -302,7 +321,7 @@ export default {
 
           break;
         default:
-          alert("Hiện tại không có chức năng này");
+          this.$router.push("/pageupdate");
       }
     },
   },
@@ -323,7 +342,7 @@ a {
 }
 a,
 i {
-  color: #9ca6ac !important;
+  color: #b7c7d1 !important;
   transition: 0.3s;
 }
 .v-list-item--link,
@@ -331,7 +350,17 @@ i {
   transition: 0.3s;
 }
 .v-list-item--link:hover {
-  background-color: green;
+  background: linear-gradient(
+    90deg,
+    rgba(4, 41, 161, 1) 11%,
+    rgba(16, 85, 10, 1) 48%,
+    rgba(58, 8, 122, 1) 83%
+  );
+}
+.bg-list {
+  background: url("https://cdn.pixabay.com/photo/2017/05/11/08/37/universe-2303321_960_720.jpg")
+    no-repeat center 0px !important;
+  background-size: cover;
 }
 /* .theme--light.v-list-item--active .v-list-item__content,
 .theme--light.v-list-item--active i, */
@@ -350,4 +379,11 @@ i {
   z-index: -1;
   background-color: green;
 } */
+.theme--light.v-navigation-drawer {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("https://cdn.pixabay.com/photo/2017/05/11/08/37/universe-2303321_960_720.jpg")
+      center 0px !important;
+  background-size: cover;
+  width: 260px !important;
+}
 </style>

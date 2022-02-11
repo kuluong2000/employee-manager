@@ -104,7 +104,7 @@
             >
               <template v-slot:[`item.actions`]="{ item }">
                 <div v-if="roleEm !== 'Nhân Viên'">
-                  <v-dialog max-width="1000" persistent>
+                  <v-dialog max-width="1200" persistent>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         color="primary"
@@ -116,17 +116,17 @@
                     </template>
                     <template v-slot:default="dialog">
                       <v-card>
-                        <v-card-text>
+                        <v-card-text class="pb-2">
                           <v-container class="px-0 pt-5 pb-0">
                             <h1 class="px-5 pt-5 pb-5 text-center primary--text">
                               Thông Tin Tiền Lương Nhân Viên
                             </h1>
-                            <v-row align="center" justify="center" class="">
-                              <v-col cols="12" sm="6" class="text-center">
+                            <v-row align="start" justify="center">
+                              <v-col cols="12" sm="4" class="text-center">
                                 <v-avatar
                                   class="mb-2"
                                   color="grey darken-1"
-                                  size="250"
+                                  size="200"
                                   v-if="detailsEmployItem.imgUrl"
                                 >
                                   <v-img
@@ -181,7 +181,7 @@
                                   </v-col>
                                 </v-row>
                               </v-col>
-                              <v-col cols="12" sm="6" class="text-center">
+                              <v-col cols="12" sm="4" class="text-center">
                                 <v-form>
                                   <v-container>
                                     <v-row>
@@ -200,32 +200,6 @@
                                           :value="detailsPaymentItem.payment_ID"
                                           required
                                           class="pt-1"
-                                          readonly
-                                        ></v-text-field>
-                                      </v-col>
-                                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                                        <v-text-field
-                                          label="Mã Nhân Viên"
-                                          :value="detailsPaymentItem.emp_ID"
-                                          required
-                                          readonly
-                                        ></v-text-field>
-                                      </v-col>
-
-                                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                                        <v-text-field
-                                          label="Email"
-                                          :value="detailsPaymentItem.email"
-                                          required
-                                          readonly
-                                        ></v-text-field>
-                                      </v-col>
-
-                                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                                        <v-text-field
-                                          label="Tên Nhân Viên"
-                                          :value="detailsPaymentItem.fullName"
-                                          required
                                           readonly
                                         ></v-text-field>
                                       </v-col>
@@ -256,11 +230,34 @@
                                           readonly
                                         ></v-text-field>
                                       </v-col>
-
                                       <v-col cols="12" md="12" class="pb-0 pt-1">
                                         <v-text-field
-                                          label="Chức Vụ"
-                                          :value="detailsPaymentItem.role"
+                                          label="Chi Tiết"
+                                          :value="detailsPaymentItem.description"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Mã Nhân Viên"
+                                          :value="detailsPaymentItem.emp_ID"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                    </v-row>
+                                  </v-container>
+                                </v-form>
+                              </v-col>
+                              <v-col cols="12" sm="4" class="text-center">
+                                <v-form>
+                                  <v-container>
+                                    <v-row>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Email"
+                                          :value="detailsPaymentItem.email"
                                           required
                                           readonly
                                         ></v-text-field>
@@ -268,8 +265,17 @@
 
                                       <v-col cols="12" md="12" class="pb-0 pt-1">
                                         <v-text-field
-                                          label="Chi Tiết"
-                                          :value="detailsPaymentItem.description"
+                                          label="Tên Nhân Viên"
+                                          :value="detailsPaymentItem.fullName"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Chức Vụ"
+                                          :value="detailsPaymentItem.role"
                                           required
                                           readonly
                                         ></v-text-field>

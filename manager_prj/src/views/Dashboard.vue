@@ -201,6 +201,10 @@ export default {
     // count position
     const posiData = JSON.parse(localStorage.getItem("position"));
     this.activityLog[3].amount = posiData.length;
+    const event = new Date();
+
+    // British English uses day-month-year order and 24-hour time without AM/PM
+    console.log(event.toLocaleString("en-GB", { timeZone: "UTC" }));
   },
   methods: {
     onButtonClick(item) {

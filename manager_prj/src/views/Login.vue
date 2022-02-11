@@ -292,6 +292,8 @@ export default {
       showDialogSignUp: false,
       showDialogPassword: false,
       showDialogSuccess: false,
+      month: "",
+      minutes: "",
     };
   },
   methods: {
@@ -306,6 +308,32 @@ export default {
         setTimeout(() => this.$store.dispatch("actionSetDialog", true), 200);
         localStorage.setItem("user-info", JSON.stringify(resEmail));
         this.$router.push("/");
+        let today = new Date();
+        // if (today.getMonth() < 10) {
+        //   this.month = "0" + (today.getMonth() + 1);
+        // } else {
+        //   this.month = today.getMonth() + 1;
+        // }
+        // if (today.getMinutes() < 10) {
+        //   this.minutes = "0" + today.getMinutes();
+        // } else {
+        //   this.minutes = today.getMinutes();
+        // }
+        // let date = today.getDate() + "-" + this.month + "-" + today.getFullYear();
+        // let time = today.getHours() + ":" + this.minutes + ":" + today.getSeconds();
+        // let timeNow = date + "  " + time;
+        // console.log(timeNow);
+        const resDataInf = JSON.parse(localStorage.getItem("user-info"));
+        const resDataUser = JSON.parse(localStorage.getItem("user"));
+        const index = resDataUser.findIndex((el) => el.email === resDataInf.email);
+        resDataUser.splice(index, 1, {
+          id: resDataInf.id,
+          email: resDataInf.email,
+          password: resDataInf.password,
+          role: resDataInf.role,
+          timeLogin: today.toLocaleString(),
+        });
+        localStorage.setItem("user", JSON.stringify(resDataUser));
       } else {
         this.showDialog = true;
       }

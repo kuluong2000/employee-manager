@@ -282,6 +282,7 @@ export default {
         depart_name: "",
         address: "",
         imgUrl: "",
+        timeLogin: "",
       },
       deleteId: 0,
       detailsId: 0,
@@ -364,6 +365,7 @@ export default {
             email: this.user.email,
             password: this.user.password,
             role: this.user.role,
+            timeLogin: this.user.timeLogin,
           });
           this.account = resUser;
           localStorage.setItem("user", JSON.stringify(resUser));
