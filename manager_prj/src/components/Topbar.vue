@@ -202,8 +202,11 @@ export default {
         this.showDialog = true;
       }
       if (action === "profile") {
-        if (action === "profile") return;
-        this.$router.push("/userInfo");
+        if (this.$route.name !== "userInfo") {
+          this.$router.push("/userInfo");
+        } else {
+          alert("Bạn đang ở trang này rồi");
+        }
       }
     },
     cancel() {
