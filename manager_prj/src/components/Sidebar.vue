@@ -352,9 +352,8 @@ i {
 .v-list-item--link:hover {
   background: linear-gradient(
     90deg,
-    rgba(4, 41, 161, 1) 11%,
-    rgba(16, 85, 10, 1) 48%,
-    rgba(58, 8, 122, 1) 83%
+    rgba(4, 161, 46, 1) 10%,
+    rgba(0, 0, 0, 0.7147233893557423) 80%
   );
 }
 .bg-list {
