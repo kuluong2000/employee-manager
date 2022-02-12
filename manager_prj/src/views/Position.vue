@@ -192,7 +192,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Popup from "../components/Popup.vue";
 export default {
   components: { Popup },
@@ -228,6 +228,7 @@ export default {
       deleteId: 0,
       dialog: false,
       positionItem: {
+        id: "",
         position_id: "",
         role: "",
       },
@@ -239,11 +240,8 @@ export default {
     };
   },
   async mounted() {
-    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    if (res.status === 200) {
-      this.position = res.data;
-      console.log(this.position);
-    }
+    const res = JSON.parse(localStorage.getItem("position"));
+    this.position = res;
   },
   methods: {
     async createPosition() {
@@ -251,38 +249,40 @@ export default {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
-        let res = await axios.post(`${process.env.VUE_APP_SERVER_URL}/position`, {
+        const resPo = JSON.parse(localStorage.getItem("position"));
+        const detailsIdDe = resPo[resPo.length - 1];
+        resPo.push({
+          id: detailsIdDe.id + 1,
           position_id: this.positionItem.position_id,
           role: this.positionItem.role,
         });
-        console.log(res);
+        this.position = resPo;
+        localStorage.setItem("position", JSON.stringify(resPo));
         this.dialog = false;
         this.showDialogCreateSuccess = true;
-        setTimeout(() => window.location.reload(), 1500);
       }
     },
     async DetailsUser(item) {
       this.detailsId = item.id;
-      const res = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/position/${this.detailsId}`
-      );
-      this.detailsItem = res.data;
-      const resEm = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/employee?role=${this.detailsItem.role}`
-      );
-      this.qtyPositon = resEm.data;
+      const resData = JSON.parse(localStorage.getItem("position"));
+      const details = [...resData].find((el) => el.id === this.detailsId);
+      this.detailsItem = details;
+      const dataEm = JSON.parse(localStorage.getItem("employee"));
+      const detailsQty = dataEm.filter((el) => el.role === this.detailsItem.role);
+      this.qtyPositon = detailsQty;
     },
     handleRow(item) {
       this.deleteId = item.id;
       this.showDialogDelete = true;
     },
     async handleDelete() {
-      await axios.delete(
-        `${process.env.VUE_APP_SERVER_URL}/position/${this.deleteId}`
-      );
+      const resDataPo = JSON.parse(localStorage.getItem("position"));
+      const indexDel = resDataPo.findIndex((el) => el.id === this.deleteId);
+      resDataPo.splice(indexDel, 1);
+      this.position = resDataPo;
+      localStorage.setItem("position", JSON.stringify(resDataPo));
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
-      setTimeout(() => window.location.reload(), 1200);
     },
     cancel() {
       this.showDialogDelete = false;

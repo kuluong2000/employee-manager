@@ -65,6 +65,7 @@
                             Or Log in using
                           </h5>
                           <div
+<<<<<<< HEAD
                             class="
                               d-flex
                               justify-space-between
@@ -72,6 +73,9 @@
                               mx-10
                               mb-16
                             "
+=======
+                            class="d-flex justify-space-between align-center mx-10 mb-16"
+>>>>>>> cbd3588268609332fdc7b85282153bbcc50c1160
                           >
                             <v-btn depressed outlined color="grey">
                               <v-icon color="red">mdi-google</v-icon>
@@ -96,9 +100,15 @@
                           Don't Have an Account Yet?
                         </h1>
                         <h4 class="text-center">
+<<<<<<< HEAD
                           Let's get you all set up so you can start creating
                           your your first<br />
                           onboarding experience.
+=======
+                          Let's get you all set up so you can start creating your
+                          your first<br />
+                          onboarding experience
+>>>>>>> cbd3588268609332fdc7b85282153bbcc50c1160
                         </h4>
                       </v-card-text>
                       <div class="text-center">
@@ -214,6 +224,7 @@
                             Or Sign up using
                           </h5>
                           <div
+<<<<<<< HEAD
                             class="
                               d-flex
                               justify-space-between
@@ -221,6 +232,9 @@
                               mx-10
                               mb-11
                             "
+=======
+                            class="d-flex justify-space-between align-center mx-10 mb-11"
+>>>>>>> cbd3588268609332fdc7b85282153bbcc50c1160
                           >
                             <v-btn depressed outlined color="grey">
                               <v-icon color="red">mdi-google</v-icon>
@@ -309,15 +323,21 @@ export default {
       showDialogSignUp: false,
       showDialogPassword: false,
       showDialogSuccess: false,
+      month: "",
+      minutes: "",
     };
   },
   methods: {
     async login() {
       // using localStorage
       const datalocal = JSON.parse(localStorage.getItem("user"));
+<<<<<<< HEAD
       const resEmail = [...datalocal].find(
         (el) => el.email === this.user.email
       );
+=======
+      const resEmail = [...datalocal].find((el) => el.email === this.user.email);
+>>>>>>> cbd3588268609332fdc7b85282153bbcc50c1160
       const resPass = [...datalocal].find(
         (el) => el.password === this.user.password
       );
@@ -325,6 +345,32 @@ export default {
         setTimeout(() => this.$store.dispatch("actionSetDialog", true), 200);
         localStorage.setItem("user-info", JSON.stringify(resEmail));
         this.$router.push("/");
+        let today = new Date();
+        // if (today.getMonth() < 10) {
+        //   this.month = "0" + (today.getMonth() + 1);
+        // } else {
+        //   this.month = today.getMonth() + 1;
+        // }
+        // if (today.getMinutes() < 10) {
+        //   this.minutes = "0" + today.getMinutes();
+        // } else {
+        //   this.minutes = today.getMinutes();
+        // }
+        // let date = today.getDate() + "-" + this.month + "-" + today.getFullYear();
+        // let time = today.getHours() + ":" + this.minutes + ":" + today.getSeconds();
+        // let timeNow = date + "  " + time;
+        // console.log(timeNow);
+        const resDataInf = JSON.parse(localStorage.getItem("user-info"));
+        const resDataUser = JSON.parse(localStorage.getItem("user"));
+        const index = resDataUser.findIndex((el) => el.email === resDataInf.email);
+        resDataUser.splice(index, 1, {
+          id: resDataInf.id,
+          email: resDataInf.email,
+          password: resDataInf.password,
+          role: resDataInf.role,
+          timeLogin: today.toLocaleString(),
+        });
+        localStorage.setItem("user", JSON.stringify(resDataUser));
       } else {
         this.showDialog = true;
       }

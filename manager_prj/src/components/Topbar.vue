@@ -185,7 +185,7 @@ export default {
   // },
   async mounted() {
     // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
-    const res = JSON.parse(localStorage.getItem("employee"))
+    const res = JSON.parse(localStorage.getItem("employee"));
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
     let id = dataLogin.email;
     let data = res;
@@ -202,7 +202,11 @@ export default {
         this.showDialog = true;
       }
       if (action === "profile") {
-        this.$router.push("/userInfo");
+        if (this.$route.name !== "userInfo") {
+          this.$router.push("/userInfo");
+        } else {
+          alert("Bạn đang ở trang này rồi");
+        }
       }
     },
     cancel() {
