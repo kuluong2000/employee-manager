@@ -16,7 +16,7 @@
                 hide-details
               ></v-text-field>
             </v-card-title>
-            <v-dialog v-model="dialog" persistent max-width="600px">
+            <v-dialog v-model="dialog" persistent max-width="1200px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn color="green" dark v-bind="attrs" v-on="on" class="ms-5 my-4">
                   Thêm Mới
@@ -29,80 +29,188 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                        <v-text-field
-                          :counter="30"
-                          label="Họ"
-                          v-model="user.lastName"
-                          required
-                          class="pt-1"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                        <v-text-field
-                          :counter="30"
-                          label="Tên"
-                          v-model="user.firstName"
-                          required
-                        ></v-text-field>
-                      </v-col>
+                      <v-col cols="12" sm="4" class="text-center">
+                        <v-container>
+                          <v-row>
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                :counter="30"
+                                label="Họ"
+                                v-model="user.lastName"
+                                required
+                                class="pt-1"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                :counter="30"
+                                label="Tên"
+                                v-model="user.firstName"
+                                required
+                              ></v-text-field>
+                            </v-col>
 
-                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                        <v-text-field
-                          label="E-mail"
-                          v-model="user.email"
-                          required
-                        ></v-text-field>
-                      </v-col>
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                label="E-mail"
+                                v-model="user.email"
+                                required
+                              ></v-text-field>
+                            </v-col>
 
-                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                        <v-text-field
-                          label="Password"
-                          v-model="user.password"
-                          type="password"
-                          required
-                        ></v-text-field>
-                      </v-col>
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                label="Password"
+                                v-model="user.password"
+                                type="password"
+                                required
+                              ></v-text-field>
+                            </v-col>
 
-                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                        <v-text-field
-                          label="Link Hình Ảnh"
-                          v-model="user.imgUrl"
-                          required
-                        ></v-text-field>
-                      </v-col>
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                label="Link Hình Ảnh"
+                                v-model="user.imgUrl"
+                                required
+                              ></v-text-field>
+                            </v-col>
 
-                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                        <v-text-field
-                          label="Địa Chỉ"
-                          v-model="user.address"
-                          required
-                        ></v-text-field>
-                      </v-col>
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                label="Địa Chỉ"
+                                v-model="user.address"
+                                required
+                              ></v-text-field>
+                            </v-col>
 
-                      <v-col cols="12" md="12">
-                        <v-select
-                          :items="this.listRole"
-                          label="Chức Vụ"
-                          v-model="user.role"
-                          required
-                        ></v-select>
-                      </v-col>
+                            <v-col cols="12" md="12">
+                              <v-select
+                                :items="this.listRole"
+                                label="Chức Vụ"
+                                v-model="user.role"
+                                required
+                              ></v-select>
+                            </v-col>
 
-                      <v-col cols="12" md="12">
-                        <v-select
-                          :items="this.listDepartment"
-                          label="Phòng Ban"
-                          v-model="user.depart_name"
-                          :menu-props="{ top: true, offsetY: true }"
-                          required
-                        ></v-select>
+                            <v-col cols="12" md="12">
+                              <v-select
+                                :items="this.listDepartment"
+                                label="Phòng Ban"
+                                v-model="user.depart_name"
+                                :menu-props="{ top: true, offsetY: true }"
+                                required
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-container>
                       </v-col>
+                      <v-col cols="12" sm="4" class="text-center">
+                        <v-container>
+                          <v-row>
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                label="Số Điện Thoại"
+                                v-model="user.phoneNumber"
+                                required
+                                class="pt-1"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                label="Ngày Sinh"
+                                v-model="user.birthday"
+                                required
+                                type="date"
+                              ></v-text-field>
+                            </v-col>
+
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-select
+                                :items="['Nam', 'Nữ']"
+                                label="Giới Tính"
+                                v-model="user.gender"
+                                required
+                              ></v-select>
+                            </v-col>
+
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                label="Số CMND/CCCD"
+                                v-model="user.numberCard"
+                                required
+                              ></v-text-field>
+                            </v-col>
+
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                label="Quốc Tịch"
+                                v-model="user.nationality"
+                                required
+                              ></v-text-field>
+                            </v-col>
+
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-text-field
+                                label="Dân Tộc"
+                                v-model="user.ethnic"
+                                required
+                              ></v-text-field>
+                            </v-col>
+
+                            <v-col cols="12" md="12">
+                              <v-text-field
+                                label="Tôn Giáo"
+                                v-model="user.religion"
+                                required
+                              ></v-text-field>
+                            </v-col>
+
+                            <v-col cols="12" md="12">
+                              <v-select
+                                :items="['12/12']"
+                                label="Trình Độ Văn Hóa"
+                                required
+                                v-model="user.educationalLevel"
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-col>
+                      <v-col cols="12" sm="4" class="text-center">
+                        <v-container>
+                          <v-row>
+                            <v-col cols="12" md="12" class="pb-0 pt-1">
+                              <v-select
+                                class="pt-1"
+                                :items="['Cao Đẳng', 'Đại Học', 'Cao Học']"
+                                label="Trình Độ Học Vấn"
+                                :menu-props="{ top: true, offsetY: true }"
+                                required
+                                v-model="user.academicLevel"
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-col>
+                      <!-- <v-col cols="12" sm="4" class="text-center">
+                        <v-container>
+                          <v-row>
+                            <v-col cols="12" md="12" class="pb-0 pt-0">
+                              <v-select
+                                :items="['Cao Đẳng', 'Đại Học', 'Cao Học']"
+                                label="Trình Độ Học Vấn"
+                                :menu-props="{ top: true, offsetY: true }"
+                                required
+                                v-model="user.academicLevel"
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-col> -->
                     </v-row>
                   </v-container>
-                  <small>*indicates required field</small>
                 </v-card-text>
-                <v-card-actions>
+                <v-card-actions class="pt-0 pb-4">
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="dialog = false">
                     Đóng
@@ -351,7 +459,10 @@
                                         :items="['Cao Đẳng', 'Đại Học', 'Cao Học']"
                                         label="Trình Độ Học Vấn"
                                         :value="detailsItem.academicLevel"
-                                        :menu-props="{ top: true, offsetY: true }"
+                                        :menu-props="{
+                                          top: true,
+                                          offsetY: true,
+                                        }"
                                         required
                                         readonly
                                       ></v-select>
@@ -529,20 +640,7 @@ export default {
       detailsId: 0,
       dialog: false,
       detailsItem: {},
-      user: {
-        id: "",
-        emp_ID: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        role: "",
-        position_id: "",
-        depart_id: "",
-        depart_name: "",
-        address: "",
-        imgUrl: "",
-      },
+      user: {},
       showDialogDelete: false,
       showDialogDeleteSuccess: false,
       showDialogCreateRequired: false,
@@ -615,14 +713,8 @@ export default {
       });
     },
     async createUser() {
-      if (
-        this.user.firstName == "" ||
-        this.user.lastName == "" ||
-        this.user.email == "" ||
-        this.user.password == "" ||
-        this.user.depart_name == "" ||
-        this.user.role == ""
-      ) {
+      let result = Object.values(this.user);
+      if (result.length < 17) {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
@@ -654,6 +746,15 @@ export default {
             depart_name: this.user.depart_name,
             address: this.user.address,
             imgUrl: this.user.imgUrl,
+            phoneNumber: this.user.phoneNumber,
+            birthday: this.user.birthday,
+            gender: this.user.gender,
+            numberCard: this.user.numberCard,
+            nationality: this.user.nationality,
+            ethnic: this.user.ethnic,
+            religion: this.user.religion,
+            educationalLevel: this.user.educationalLevel,
+            academicLevel: this.user.academicLevel,
           });
           this.employee = resEm;
           localStorage.setItem("employee", JSON.stringify(resEm));
