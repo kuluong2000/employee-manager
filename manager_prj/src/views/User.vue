@@ -37,12 +37,19 @@
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
-                        <v-text-field
-                          label="Password*"
-                          type="password"
-                          required
-                          v-model="user.password"
-                        ></v-text-field>
+                        <div class="input-container">
+                          <v-text-field
+                            label="Password*"
+                            :type="choose"
+                            required
+                            v-model="user.password"
+                          ></v-text-field>
+                          <v-icon
+                            class="material-icons visibility"
+                            @click="showPassword"
+                            >{{ visibility }}</v-icon
+                          >
+                        </div>
                       </v-col>
                       <v-col cols="12">
                         <v-select
@@ -117,12 +124,20 @@
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12">
-                              <v-text-field
-                                label="Password"
-                                required
-                                :value="detailsItem.password"
-                                readonly
-                              ></v-text-field>
+                              <div class="input-container">
+                                <v-text-field
+                                  label="Password"
+                                  required
+                                  :value="detailsItem.password"
+                                  readonly
+                                  :type="choose"
+                                ></v-text-field>
+                                <v-icon
+                                  class="material-icons visibility"
+                                  @click="showPassword"
+                                  >{{ visibility }}</v-icon
+                                >
+                              </div>
                             </v-col>
                             <v-col cols="12">
                               <v-text-field
@@ -238,6 +253,8 @@
 <script>
 // import axios from "axios";
 import Popup from "../components/Popup.vue";
+import { mapState } from "vuex";
+
 export default {
   components: { Popup },
   data() {
@@ -339,6 +356,9 @@ export default {
       this.showDialogDeleteSuccess = false;
       this.showDialogDuplicateEmail = false;
     },
+    showPassword() {
+      this.$store.dispatch("actionSetShowPassword");
+    },
     userExists(email) {
       const resUser = JSON.parse(localStorage.getItem("user"));
       return resUser.some(function(el) {
@@ -398,6 +418,12 @@ export default {
     let result = resPo.map((a) => a.role);
     this.listRole = result;
   },
+  computed: {
+    ...mapState({
+      choose: (state) => state.choose,
+      visibility: (state) => state.visibility,
+    }),
+  },
 };
 </script>
 <style scoped>
@@ -405,5 +431,17 @@ h1 {
   text-transform: uppercase;
   text-align: center;
   margin: -10px 0 30px;
+}
+.input-container {
+  position: relative;
+}
+.material-icons {
+  margin: 0 10px;
+  color: #aaa;
+  cursor: default;
+  position: absolute;
+  content: "";
+  top: 16px;
+  right: -8px;
 }
 </style>

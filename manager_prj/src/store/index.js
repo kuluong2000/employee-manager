@@ -9,6 +9,8 @@ export default new Vuex.Store({
     imageInfo:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU",
     showDialog: false,
+    choose: "password",
+    visibility: "mdi-eye-off",
   },
   mutations: {
     setUserInfo(state, info) {
@@ -20,6 +22,15 @@ export default new Vuex.Store({
     setDialog(state, info) {
       state.showDialog = info;
     },
+    setShowPassword(state) {
+      if (state.choose === "password") {
+        state.choose = "text";
+        state.visibility = "mdi-eye";
+      } else {
+        state.choose = "password";
+        state.visibility = "mdi-eye-off";
+      }
+    },
   },
   actions: {
     actionSetUserInfo({ commit }, info) {
@@ -30,6 +41,9 @@ export default new Vuex.Store({
     },
     actionSetDialog({ commit }, info) {
       commit("setDialog", info);
+    },
+    actionSetShowPassword({ commit }) {
+      commit("setShowPassword");
     },
   },
   modules: {},

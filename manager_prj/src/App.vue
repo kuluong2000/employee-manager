@@ -23,6 +23,13 @@ export default {
     localStorage.setItem("payment", JSON.stringify(payment));
     localStorage.setItem("position", JSON.stringify(position));
     localStorage.setItem("user", JSON.stringify(user));
+    const dataInfo = JSON.parse(localStorage.getItem("user-info"));
+    if (dataInfo) {
+      const dataUser = JSON.parse(localStorage.getItem("user"));
+      const itemUser = dataUser.find((el) => el.email === dataInfo.email);
+      dataInfo.password = itemUser.password;
+      localStorage.setItem("user-info", JSON.stringify(dataInfo));
+    }
   },
 };
 </script>

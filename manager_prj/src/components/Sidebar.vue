@@ -318,6 +318,18 @@ export default {
           } else {
             alert("Bạn đang ở trang này rồi");
           }
+          break;
+
+        case "report":
+          if (this.$route.name !== "report") {
+            if (this.role === "Admin" || this.role === "Giám Đốc Công Ty") {
+              this.$router.push("/report");
+            } else {
+              alert("Bạn Không Có Quyền Hạn Để Vào");
+            }
+          } else {
+            alert("Bạn đang ở trang này rồi");
+          }
 
           break;
         default:

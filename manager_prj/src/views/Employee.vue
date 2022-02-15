@@ -29,7 +29,7 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-                      <v-col cols="12" sm="4" class="text-center">
+                      <v-col cols="12" sm="6" class="text-center">
                         <v-container>
                           <v-row>
                             <v-col cols="12" md="12" class="pb-0 pt-1">
@@ -54,15 +54,6 @@
                               <v-text-field
                                 label="E-mail"
                                 v-model="user.email"
-                                required
-                              ></v-text-field>
-                            </v-col>
-
-                            <v-col cols="12" md="12" class="pb-0 pt-1">
-                              <v-text-field
-                                label="Password"
-                                v-model="user.password"
-                                type="password"
                                 required
                               ></v-text-field>
                             </v-col>
@@ -101,12 +92,6 @@
                                 required
                               ></v-select>
                             </v-col>
-                          </v-row>
-                        </v-container>
-                      </v-col>
-                      <v-col cols="12" sm="4" class="text-center">
-                        <v-container>
-                          <v-row>
                             <v-col cols="12" md="12" class="pb-0 pt-1">
                               <v-text-field
                                 label="Số Điện Thoại"
@@ -115,6 +100,12 @@
                                 class="pt-1"
                               ></v-text-field>
                             </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-col>
+                      <v-col cols="12" sm="6" class="text-center">
+                        <v-container>
+                          <v-row>
                             <v-col cols="12" md="12" class="pb-0 pt-1">
                               <v-text-field
                                 label="Ngày Sinh"
@@ -173,12 +164,7 @@
                                 v-model="user.educationalLevel"
                               ></v-select>
                             </v-col>
-                          </v-row>
-                        </v-container>
-                      </v-col>
-                      <v-col cols="12" sm="4" class="text-center">
-                        <v-container>
-                          <v-row>
+
                             <v-col cols="12" md="12" class="pb-0 pt-1">
                               <v-select
                                 class="pt-1"
@@ -192,21 +178,6 @@
                           </v-row>
                         </v-container>
                       </v-col>
-                      <!-- <v-col cols="12" sm="4" class="text-center">
-                        <v-container>
-                          <v-row>
-                            <v-col cols="12" md="12" class="pb-0 pt-0">
-                              <v-select
-                                :items="['Cao Đẳng', 'Đại Học', 'Cao Học']"
-                                label="Trình Độ Học Vấn"
-                                :menu-props="{ top: true, offsetY: true }"
-                                required
-                                v-model="user.academicLevel"
-                              ></v-select>
-                            </v-col>
-                          </v-row>
-                        </v-container>
-                      </v-col> -->
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -350,12 +321,20 @@
                                     </v-col>
 
                                     <v-col cols="12" md="12" class="pb-0 pt-1">
-                                      <v-text-field
-                                        label="Password"
-                                        :value="detailsItem.password"
-                                        required
-                                        readonly
-                                      ></v-text-field>
+                                      <div class="input-container">
+                                        <v-text-field
+                                          label="Password"
+                                          :value="detailsItem.password"
+                                          required
+                                          readonly
+                                          :type="choose"
+                                        ></v-text-field>
+                                        <v-icon
+                                          class="material-icons visibility"
+                                          @click="showPassword"
+                                          >{{ visibility }}</v-icon
+                                        >
+                                      </div>
                                     </v-col>
 
                                     <v-col cols="12" md="12" class="pb-0 pt-1">
@@ -585,6 +564,8 @@
 <script>
 // import axios from "axios";
 import Popup from "../components/Popup.vue";
+import { mapState } from "vuex";
+
 export default {
   components: { Popup },
   data() {
@@ -714,7 +695,7 @@ export default {
     },
     async createUser() {
       let result = Object.values(this.user);
-      if (result.length < 17) {
+      if (result.length < 16) {
         this.showDialogCreateRequired = true;
         this.dialog = false;
       } else {
@@ -727,7 +708,7 @@ export default {
           resUser.push({
             id: detailsIdUser.id + 1,
             email: this.user.email,
-            password: this.user.password,
+            password: "12345678",
             role: this.user.role,
           });
           localStorage.setItem("user", JSON.stringify(resUser));
@@ -739,7 +720,7 @@ export default {
             firstName: this.user.firstName,
             lastName: this.user.lastName,
             email: this.user.email,
-            password: this.user.password,
+            password: "12345678",
             role: this.user.role,
             position_id: this.user.position_id,
             depart_id: this.user.depart_id,
@@ -775,6 +756,9 @@ export default {
       this.showDialogCreateSuccess = false;
       this.showDialogDuplicateEmail = false;
     },
+    showPassword() {
+      this.$store.dispatch("actionSetShowPassword");
+    },
   },
   async mounted() {
     // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
@@ -789,6 +773,12 @@ export default {
     const resDe = JSON.parse(localStorage.getItem("departments"));
     let resultDe = resDe.map((a) => a.depart_name);
     this.listDepartment = resultDe;
+  },
+  computed: {
+    ...mapState({
+      choose: (state) => state.choose,
+      visibility: (state) => state.visibility,
+    }),
   },
 };
 </script>
@@ -805,5 +795,17 @@ h1 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.input-container {
+  position: relative;
+}
+.material-icons {
+  margin: 0 10px;
+  color: #aaa;
+  cursor: default;
+  position: absolute;
+  content: "";
+  top: 16px;
+  right: -8px;
 }
 </style>

@@ -314,10 +314,192 @@
                   </v-btn>
                 </div>
                 <div v-else>
-                  <v-btn class="ma-2" color="primary" dark>
+                  <!-- <v-btn class="ma-2" color="primary" dark>
                     Chi Tiết
                     <v-icon dark right> mdi-eye </v-icon>
-                  </v-btn>
+                  </v-btn> -->
+                  <v-dialog max-width="1000" persistent>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        color="primary"
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="DetailsUser(item)"
+                        >Chi Tiết <v-icon dark right> mdi-eye </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:default="dialog">
+                      <v-card class="pb-3">
+                        <v-card-text class="pb-0">
+                          <v-container class="px-0 pt-13 pb-0">
+                            <h1 class="px-5 pt-0 pb-5 text-center primary--text">
+                              Thông Tin Cơ Sở Vật Chất
+                            </h1>
+                            <v-row align="center" justify="center" class="">
+                              <v-col cols="12" sm="6" class="text-center">
+                                <div class="mb-5" v-if="detailsFaItem.image">
+                                  <v-img
+                                    aspect-ratio="30"
+                                    :src="detailsFaItem.image"
+                                    height="300px"
+                                    contain
+                                  />
+                                </div>
+                                <div class="mb-5" v-else>
+                                  <v-img
+                                    aspect-ratio="30"
+                                    src="https://taimienphi.vn/tmp/cf/aut/anh-gai-xinh-1.jpg"
+                                    height="300px"
+                                  />
+                                </div>
+                                <h1 class="black--text mt-0 mb-12">
+                                  {{ detailsFaItem.title }}
+                                </h1>
+                                <v-row>
+                                  <v-col cols="12" sm="3">
+                                    <v-avatar
+                                      size="155px"
+                                      class="text-left float-left"
+                                    >
+                                      <img
+                                        alt="Avatar"
+                                        :src="detailsEmployItem.imgUrl"
+                                        style="object-fit: cover;"
+                                      /> </v-avatar
+                                  ></v-col>
+                                  <v-col
+                                    cols="12"
+                                    sm="7"
+                                    class="text-left ms-15 black--text d-flex flex-column justify-center col-infoEm"
+                                  >
+                                    <h2 class="mb-4">Nhân Viên Quản Lý</h2>
+                                    <v-row>
+                                      <v-col cols="12" sm="6" class="pe-0 pb-2">
+                                        <p class="mb-0">Tên Nhân Viên:</p>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" class="ps-0 pb-2">
+                                        <p class="mb-0">
+                                          {{ detailsEmployItem.lastName }}
+                                          {{ detailsEmployItem.firstName }}
+                                        </p>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" class="pe-0 pb-2 pt-0">
+                                        <p class="mb-0">Chức Vụ:</p>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" class="ps-0 pb-2 pt-0">
+                                        <p class="mb-0">
+                                          {{ detailsEmployItem.role }}
+                                        </p>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" class="pe-0 pb-2 pt-0">
+                                        <p class="mb-0">Phòng Ban:</p>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" class="ps-0 pb-2 pt-0">
+                                        <p class="mb-0">
+                                          {{ detailsEmployItem.depart_name }}
+                                        </p>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" class="pe-0 pb-2 pt-0">
+                                        <p class="mb-0">Số Điện Thoại:</p>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" class="ps-0 pb-2 pt-0">
+                                        <p class="mb-0">
+                                          0346996951
+                                        </p>
+                                      </v-col>
+                                    </v-row>
+                                  </v-col>
+                                </v-row>
+                              </v-col>
+                              <v-col cols="12" sm="6" class="text-center">
+                                <v-form>
+                                  <v-container>
+                                    <v-row>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="ID"
+                                          :value="detailsFaItem.id"
+                                          required
+                                          class="pt-1"
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Mã Cơ Sở Vật Chất"
+                                          :value="detailsFaItem.facilities_id"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Tên Cơ Sở Vật Chất"
+                                          :value="detailsFaItem.title"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Giá Tiền"
+                                          :value="detailsFaItem.price"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Số Lượng"
+                                          :value="detailsFaItem.qty"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Ngày Nhập"
+                                          :value="detailsFaItem.innitiated_date"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Mã Nhân Viên"
+                                          :value="detailsFaItem.emp_ID"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Email Nhân Viên"
+                                          :value="detailsEmployItem.email"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                    </v-row>
+                                  </v-container>
+                                </v-form>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                        </v-card-text>
+                        <v-card-actions class="justify-end">
+                          <v-btn text @click="dialog.value = false" color="primary"
+                            >Đóng</v-btn
+                          >
+                        </v-card-actions>
+                      </v-card>
+                    </template>
+                  </v-dialog>
                 </div>
               </template>
               <template v-slot:no-data>

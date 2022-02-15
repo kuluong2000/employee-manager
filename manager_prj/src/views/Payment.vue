@@ -36,14 +36,6 @@
                     <v-row>
                       <v-col cols="12" md="12" class="pb-0 pt-1">
                         <v-text-field
-                          label="Mã Lương"
-                          v-model="payList.payment_ID"
-                          required
-                          class="pt-1"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                        <v-text-field
                           label="Mã Nhân Viên"
                           v-model="payList.emp_ID"
                           required
@@ -258,6 +250,7 @@
                                         <v-text-field
                                           label="Email"
                                           :value="detailsPaymentItem.email"
+                                          class="pt-1"
                                           required
                                           readonly
                                         ></v-text-field>
@@ -268,6 +261,7 @@
                                           label="Tên Nhân Viên"
                                           :value="detailsPaymentItem.fullName"
                                           required
+                                          class="pt-1"
                                           readonly
                                         ></v-text-field>
                                       </v-col>
@@ -276,6 +270,14 @@
                                         <v-text-field
                                           label="Chức Vụ"
                                           :value="detailsPaymentItem.role"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Phòng Ban"
+                                          :value="detailsEmployItem.depart_name"
                                           required
                                           readonly
                                         ></v-text-field>
@@ -305,10 +307,211 @@
                   </v-btn>
                 </div>
                 <div v-else>
-                  <v-btn class="ma-2" color="primary" dark>
+                  <!-- <v-btn class="ma-2" color="primary" dark>
                     Chi Tiết
                     <v-icon dark right> mdi-eye </v-icon>
-                  </v-btn>
+                  </v-btn> -->
+                  <v-dialog max-width="1200" persistent>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        color="primary"
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="DetailsPayment(item)"
+                        >Chi Tiết <v-icon dark right> mdi-eye </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:default="dialog">
+                      <v-card>
+                        <v-card-text class="pb-2">
+                          <v-container class="px-0 pt-5 pb-0">
+                            <h1 class="px-5 pt-5 pb-5 text-center primary--text">
+                              Thông Tin Tiền Lương Nhân Viên
+                            </h1>
+                            <v-row align="start" justify="center">
+                              <v-col cols="12" sm="4" class="text-center">
+                                <v-avatar
+                                  class="mb-2"
+                                  color="grey darken-1"
+                                  size="200"
+                                  v-if="detailsEmployItem.imgUrl"
+                                >
+                                  <v-img
+                                    aspect-ratio="30"
+                                    :src="detailsEmployItem.imgUrl"
+                                  />
+                                </v-avatar>
+                                <v-avatar
+                                  class="mb-2"
+                                  color="grey darken-1"
+                                  size="250"
+                                  v-else
+                                >
+                                  <v-img
+                                    aspect-ratio="30"
+                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
+                                  />
+                                </v-avatar>
+                                <h2
+                                  class="black--text mt-2 mb-6"
+                                  v-if="
+                                    detailsEmployItem.firstName &&
+                                      detailsEmployItem.lastName
+                                  "
+                                >
+                                  {{ detailsEmployItem.lastName }}
+                                  {{ detailsEmployItem.firstName }}
+                                </h2>
+                                <h2 class="black--text mt-2 mb-6" v-else>
+                                  Người dùng mới
+                                </h2>
+                                <v-row
+                                  align="center"
+                                  justify="center"
+                                  v-for="(link, index) in linkUser"
+                                  :key="index"
+                                  class="mt-0 ms-5"
+                                >
+                                  <v-col cols="12" sm="2" class="text-end px-0 mb-2">
+                                    <v-avatar
+                                      class="mb"
+                                      color="grey darken-1"
+                                      size="30"
+                                    >
+                                      <v-img aspect-ratio="30" :src="link.imgUrl" />
+                                    </v-avatar>
+                                  </v-col>
+                                  <v-col cols="12" sm="10" class="text-start">
+                                    <h4 class="primary--text">
+                                      {{ link.titleUrl }}
+                                    </h4>
+                                  </v-col>
+                                </v-row>
+                              </v-col>
+                              <v-col cols="12" sm="4" class="text-center">
+                                <v-form>
+                                  <v-container>
+                                    <v-row>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="ID"
+                                          :value="detailsPaymentItem.id"
+                                          required
+                                          class="pt-1"
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Mã Tiền Lương"
+                                          :value="detailsPaymentItem.payment_ID"
+                                          required
+                                          class="pt-1"
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Lương Cơ Bản"
+                                          :value="detailsPaymentItem.amount"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Lương Phụ Cấp"
+                                          :value="detailsPaymentItem.allowance"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Tổng Lương"
+                                          :value="detailsPaymentItem.amount_total"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Chi Tiết"
+                                          :value="detailsPaymentItem.description"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Mã Nhân Viên"
+                                          :value="detailsPaymentItem.emp_ID"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                    </v-row>
+                                  </v-container>
+                                </v-form>
+                              </v-col>
+                              <v-col cols="12" sm="4" class="text-center">
+                                <v-form>
+                                  <v-container>
+                                    <v-row>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Email"
+                                          :value="detailsPaymentItem.email"
+                                          class="pt-1"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Tên Nhân Viên"
+                                          :value="detailsPaymentItem.fullName"
+                                          required
+                                          class="pt-1"
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Chức Vụ"
+                                          :value="detailsPaymentItem.role"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Phòng Ban"
+                                          :value="detailsEmployItem.depart_name"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                    </v-row>
+                                  </v-container>
+                                </v-form>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                        </v-card-text>
+                        <v-card-actions class="justify-end">
+                          <v-btn text @click="dialog.value = false" color="primary"
+                            >Đóng</v-btn
+                          >
+                        </v-card-actions>
+                      </v-card>
+                    </template>
+                  </v-dialog>
                 </div>
               </template>
               <template v-slot:no-data>
@@ -427,18 +630,7 @@ export default {
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
       showDialogIdFail: false,
-      payList: {
-        id: "",
-        payment_ID: "",
-        emp_ID: "",
-        email: "",
-        firstName: "",
-        amount: "",
-        allowance: "",
-        amount_total: "",
-        role: "",
-        description: "",
-      },
+      payList: {},
       linkUser: [
         {
           imgUrl:
@@ -539,7 +731,7 @@ export default {
           const detailsIdFa = resPay[resPay.length - 1];
           resPay.push({
             id: detailsIdFa.id + 1,
-            payment_ID: this.payList.payment_ID,
+            payment_ID: `SA${detailsIdFa.id + 1}`,
             emp_ID: this.payList.emp_ID,
             email: this.employData.email,
             fullName: this.employData.lastName + " " + this.employData.firstName,

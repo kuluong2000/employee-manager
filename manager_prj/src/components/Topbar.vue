@@ -137,7 +137,7 @@ export default {
     return {
       menus: [
         { title: "Thông Tin Nhân Viên", icon: "mdi-account", action: "profile" },
-        { title: "Đổi Mật Khẩu", icon: "mdi-key" },
+        { title: "Đổi Mật Khẩu", icon: "mdi-key", action: "changepassword" },
         { title: "Cài Đặt", icon: "mdi-cog" },
         { title: "Đăng Xuất", icon: "mdi-logout", action: "logout" },
       ],
@@ -204,6 +204,13 @@ export default {
       if (action === "profile") {
         if (this.$route.name !== "userInfo") {
           this.$router.push("/userInfo");
+        } else {
+          alert("Bạn đang ở trang này rồi");
+        }
+      }
+      if (action === "changepassword") {
+        if (this.$route.name !== "changepassword") {
+          this.$router.push("/changepassword");
         } else {
           alert("Bạn đang ở trang này rồi");
         }
