@@ -65,7 +65,6 @@
                             Or Log in using
                           </h5>
                           <div
-<<<<<<< HEAD
                             class="
                               d-flex
                               justify-space-between
@@ -73,9 +72,6 @@
                               mx-10
                               mb-16
                             "
-=======
-                            class="d-flex justify-space-between align-center mx-10 mb-16"
->>>>>>> cbd3588268609332fdc7b85282153bbcc50c1160
                           >
                             <v-btn depressed outlined color="grey">
                               <v-icon color="red">mdi-google</v-icon>
@@ -100,15 +96,9 @@
                           Don't Have an Account Yet?
                         </h1>
                         <h4 class="text-center">
-<<<<<<< HEAD
                           Let's get you all set up so you can start creating
                           your your first<br />
                           onboarding experience.
-=======
-                          Let's get you all set up so you can start creating your
-                          your first<br />
-                          onboarding experience
->>>>>>> cbd3588268609332fdc7b85282153bbcc50c1160
                         </h4>
                       </v-card-text>
                       <div class="text-center">
@@ -224,7 +214,6 @@
                             Or Sign up using
                           </h5>
                           <div
-<<<<<<< HEAD
                             class="
                               d-flex
                               justify-space-between
@@ -232,9 +221,6 @@
                               mx-10
                               mb-11
                             "
-=======
-                            class="d-flex justify-space-between align-center mx-10 mb-11"
->>>>>>> cbd3588268609332fdc7b85282153bbcc50c1160
                           >
                             <v-btn depressed outlined color="grey">
                               <v-icon color="red">mdi-google</v-icon>
@@ -331,13 +317,9 @@ export default {
     async login() {
       // using localStorage
       const datalocal = JSON.parse(localStorage.getItem("user"));
-<<<<<<< HEAD
       const resEmail = [...datalocal].find(
         (el) => el.email === this.user.email
       );
-=======
-      const resEmail = [...datalocal].find((el) => el.email === this.user.email);
->>>>>>> cbd3588268609332fdc7b85282153bbcc50c1160
       const resPass = [...datalocal].find(
         (el) => el.password === this.user.password
       );
@@ -362,7 +344,9 @@ export default {
         // console.log(timeNow);
         const resDataInf = JSON.parse(localStorage.getItem("user-info"));
         const resDataUser = JSON.parse(localStorage.getItem("user"));
-        const index = resDataUser.findIndex((el) => el.email === resDataInf.email);
+        const index = resDataUser.findIndex(
+          (el) => el.email === resDataInf.email
+        );
         resDataUser.splice(index, 1, {
           id: resDataInf.id,
           email: resDataInf.email,
