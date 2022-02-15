@@ -23,6 +23,7 @@ const routes = [
           requiredAuth: true,
         },
       },
+
       {
         path: "/user",
         name: "user",
@@ -31,6 +32,7 @@ const routes = [
           requiredAuth: true,
         },
       },
+
       {
         path: "/userInfo",
         name: "userInfo",
@@ -79,8 +81,17 @@ const routes = [
           requiredAuth: true,
         },
       },
+      {
+        path: "/resetPassword",
+        component: () => import("../components/ChangePassword"),
+        name: "resetPassword",
+        meta: {
+          requiredAuth: true,
+        },
+      },
     ],
   },
+
   {
     path: "/login",
     name: "login",

@@ -30,7 +30,7 @@
     "email": "luongtran@gmail.com",
     "password": "12345678",
     "imgUrl": "https://scontent-hkg4-1.xx.fbcdn.net/v/t1.6435-9/35407432_1700232523425097_3176969785384632320_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=8bfeb9&_nc_ohc=E1mz9EyIj1sAX-2pM-O&_nc_ht=scontent-hkg4-1.xx&oh=00_AT9O1Cgk_Xc3Qf70TA_Ztu4JUTwfLZwsxf6Ko88jOCgjpg&oe=620B29CA",
-    "role": "Nhân Viên",
+    "role": "Admin",
     "depart_id": "CSVC9",
     "depart_name": "Phòng Công Nghệ Thông Tin",
     "position_id": "epl",

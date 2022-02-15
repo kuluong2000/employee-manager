@@ -24,24 +24,27 @@
                             label="Email"
                             outlined
                             dense
-                            color="blue"
+                            :color="colorEmail"
                             autocomplete="false"
                             class="mt-12 mb-1"
                             v-model="user.email"
-                            :rules="[requiredEmail]"
-                          />
+                            @input="inputEmail"
+                            ref="inputEmail"
+                          /> <span class="error__email" v-show="emailShow">Email không hợp lệ</span>
                           <!-- <h5 v-if="user.email !== 'sydung@gmail.com'" style="color: red;margin: -20px 0 20px">Vui lòng nhập đúng cú pháp</h5> -->
                           <v-text-field
                             label="Password"
                             outlined
                             dense
-                            color="blue"
+                            :color="colorPassword"
                             autocomplete="false"
                             type="password"
                             v-model="user.password"
-                            :rules="[requiredPassword]"
+                            @input="inputPassword"
                           />
+                           <span class=" error_password" v-show="passShow">Mật khẩu phải lớn hơn hoặc bằng 8 kí tự</span>
                           <!-- <h5 v-if="user.password !== '1234567890'" style="color: red; margin: -20px 0 20px">Vui lòng nhập trên 8 ký tự</h5> -->
+                        
                           <v-row>
                             <v-col cols="12" sm="7">
                               <v-checkbox
@@ -57,8 +60,7 @@
                               >
                             </v-col>
                           </v-row>
-                          <v-btn color="blue" dark block tile @click="login"
-                            >Sign in</v-btn
+                          <v-btn color="blue" dark block tile @click="login">Sign in</v-btn
                           >
 
                           <h5 class="text-center grey--text mt-4 mb-3">
@@ -159,7 +161,7 @@
                             label="Email"
                             outlined
                             dense
-                            color="blue"
+                          color="blue"
                             autocomplete="false"
                             v-model="userSignUp.email"
                           />
@@ -271,9 +273,6 @@ export default {
   data() {
     return {
       step: 1,
-      requiredEmail: (value) => value.length > 0 || "You must input your email",
-      requiredPassword: (value) =>
-        value.length > 0 || "You must input your password",
       user: {},
       userSignUp: {
         firstName: "",
@@ -287,6 +286,7 @@ export default {
         depart_name: "",
         address: "",
         imgUrl: "",
+        
       },
       showDialog: false,
       showDialogSignUp: false,
@@ -294,10 +294,47 @@ export default {
       showDialogSuccess: false,
       month: "",
       minutes: "",
+      colorEmail:"blue",
+      colorPassword:"blue",
+      emailShow:false,
+      passShow:false
+
     };
   },
   methods: {
-    async login() {
+    // validation email 
+    inputEmail(){
+      let dataInput = this.user.email;
+  
+      // const regex = new RegExp("^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$")
+      const regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+       if (regex.test(dataInput.trim())){
+        this.emailShow = false;
+        this.colorEmail = "blue"
+      }else{
+        this.emailShow = true;
+        this.colorEmail ="red"
+      }
+      if(dataInput.length === 0){
+        this.emailShow = false
+         this.colorEmail ="blue"
+      }
+    },
+    inputPassword(){
+      let dataPassword = this.user.password;
+      if(dataPassword.length < 8){
+        this.colorPassword = "red"
+        this.passShow = true
+      }else{
+        this.colorPassword = "blue"
+        this.passShow = false
+      }
+      if(dataPassword.length === 0 ){
+this.colorPassword = "blue"
+        this.passShow = false
+      }
+    },
+     login() {
       // using localStorage
       const datalocal = JSON.parse(localStorage.getItem("user"));
       const resEmail = [...datalocal].find((el) => el.email === this.user.email);
@@ -416,5 +453,19 @@ a {
   color: #fff;
   display: block;
   width: 100%;
+}
+.error__email{
+  position: fixed;
+    top: 45%;
+    transform: translateY(-50%);
+    color: red;
+    font-size: 11px;
+}
+.error_password{
+  position: absolute;
+    top: 50%;
+    transform: translateY(60%);
+    color: red;
+    font-size: 11px;
 }
 </style>

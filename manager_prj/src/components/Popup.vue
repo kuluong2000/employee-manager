@@ -1,22 +1,16 @@
 <template>
   <transition name="fade" mode="out-in">
   <div key='5' v-show="show" class="overlay">
-
-
     <div class="dialog">
-
       <div class="dialog__content">
         <h2 class="dialog__title" v-text="title"></h2>
         <p class="dialog__description" v-text="description"></p>
       </div>
-
       <hr />
-
       <div class="dialog__footer">
         <button @click="cancel" class="dialog__cancel">{{textCancel}}</button>
         <button @click="confirm" class="dialog__confirm">{{text}}</button>
       </div>
-
     </div>
 
   </div>
