@@ -1,218 +1,246 @@
 <template>
-   
-        <div class="dashboard">
-            <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
-                <h3>Dashboard</h3>
-                <v-btn color="success">
-                    View Orders
-                </v-btn>
-            </v-subheader>
-            <br>
-            <v-row>
-                <v-col lg="7" cols="12">
-                    <v-alert dense text type="success">
-                        Login Successfully! Welcome to <strong>Web Burden</strong>
-                    </v-alert>
-                    <v-row>
-                        <v-col lg="6" cols="12" v-for="(item,index) in activityLog" :key="index">
-                            <v-card elevation="2" class="rounded-lg">
-                                <v-card-text class="d-flex justify-space-between align-center">
-                                    <div>
-                                        <strong>{{ item.title }}</strong> <br>
-                                        <span>Last 3 weeks</span>
-                                    </div>
-                                    <v-avatar size="60" :color="item.color" style="border: 3px solid #444">
-                                        <span style="color: white">{{item.amount}} +</span>
-                                    </v-avatar>
-                                </v-card-text>
-                                <v-card-actions class="d-flex justify-space-between">
+  <div class="dashboard">
+    <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
+      <h2
+        class="mb-0
+      "
+      >
+        Trang Chủ
+      </h2>
+      <v-btn color="success"> Giới Thiệu Công Ty </v-btn>
+    </v-subheader>
+    <br />
+    <v-row>
+      <v-col lg="7" cols="12">
+        <v-alert dense text type="success">
+          Xin Chào Bạn! Chào mừng bạn đến với <strong>Công Ty LH2D</strong>
+        </v-alert>
+        <v-row>
+          <v-col lg="6" cols="12" v-for="(item, index) in activityLog" :key="index">
+            <v-card elevation="2" class="rounded-lg">
+              <v-card-text class="d-flex justify-space-between align-center">
+                <div>
+                  <strong>{{ item.title }}</strong> <br />
+                  <span>Cập nhật 3 tuần trước</span>
+                </div>
+                <v-avatar
+                  size="60"
+                  :color="item.color"
+                  style="border: 3px solid #444"
+                >
+                  <span style="color: white">{{ item.amount }} +</span>
+                </v-avatar>
+              </v-card-text>
+              <v-card-actions class="d-flex justify-space-between"> </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12" lg="5">
+        <v-card>
+          <v-card-title>Hoạt Động Gần Đây</v-card-title>
+          <v-card-text class="py-0">
+            <v-timeline align-top dense>
+              <v-timeline-item color="indigo" small>
+                <strong>5 Phút Trước</strong>
+                <div class="text-caption">
+                  Phòng Cơ Sở Vật Chất vừa thêm vật dụng mới
+                </div>
+              </v-timeline-item>
+              <v-timeline-item color="green" small>
+                <strong>35 Phút Trước</strong>
+                <div class="text-caption mb-2">
+                  Nhân viên phòng Marketing vừa được Giám Đốc giao nhiệm vụ
+                </div>
+              </v-timeline-item>
 
-
-                                </v-card-actions>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                </v-col>
-                <v-col cols="12" lg="5">
-                    <v-card>
-                        <v-card-title>Activities</v-card-title>
-                        <v-card-text class="py-0">
-                            <v-timeline align-top dense>
-                                <v-timeline-item color="indigo" small>
-                                    <strong>5 Minuts ago</strong>
-                                    <div class="text-caption">
-                                    You have new order please check this out
-                                    </div>
-                                </v-timeline-item>
-                                <v-timeline-item color="green" small>
-                                    <strong>35 Minuts ago</strong>
-                                    <div class="text-caption mb-2">
-                                        A Product has delivered!
-                                    </div>
-                                </v-timeline-item>
-
-                                <v-timeline-item color="indigo" small>
-                                    <strong>44 Minuts ago</strong>
-                                    <div class="text-caption">
-                                        You have new order please check this out
-                                    </div>
-                                </v-timeline-item>
-                            </v-timeline>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col>
-                    <v-card>
-                        <v-data-table
-                                caption="Recent Order list"
-                                :headers="headers"
-                                :items="desserts"
-                                :items-per-page="5"
-                                class="elevation-1"
-                        >
-                            <template  v-slot:[`item.actions`]="">
-                                <v-btn color="success" outlined small shaped >View</v-btn>
-                            </template>
-                        </v-data-table>
-                    </v-card>
-                </v-col>
-            </v-row>
-        </div>
-  
+              <v-timeline-item color="indigo" small>
+                <strong>44 Phút Trước</strong>
+                <div class="text-caption">
+                  Phòng Kiểm Toán đã hoàn thành lương cho nhân viên
+                </div>
+              </v-timeline-item>
+            </v-timeline>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col>
+        <v-card>
+          <v-data-table
+            caption="Danh Sách Nhân Viên Xuất Xắc"
+            :headers="headers"
+            :items="desserts"
+            :items-per-page="5"
+            class="elevation-1"
+          >
+            <template v-slot:[`item.actions`]="">
+              <v-btn color="success" outlined small shaped>View</v-btn>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-col>
+    </v-row>
+    <popup
+      :show="showAccess"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Xin chào bạn ^^"
+      title="Thông báo?"
+      description="Bạn đã đăng nhập thành công !!!"
+    ></popup>
+  </div>
 </template>
 
 <script>
-
-    export default {
-        name: "Dashboard",
-        data() {
-            return {
-                activityLog: [
-                    {title: 'Total Products', amount: 50, icon: 'mdi-account', color: 'cyan lighten-3'},
-                    {title: 'Total Customer', amount: 3433, icon: 'mdi-account-group-outline', color: 'green darken-2'},
-                    {title: 'Total Sale', amount: 3433, icon: 'mdi-account-group-outline', color: 'blue-grey darken-1'},
-                    {
-                        title: 'Pending Orders',
-                        amount: 3433,
-                        icon: 'mdi-account-group-outline',
-                        color: 'deep-orange darken-1'
-                    },
-                ],
-                headers: [
-                    {
-                        text: 'Dessert (100g serving)',
-                        align: 'start',
-                        sortable: false,
-                        value: 'name',
-                    },
-                    {text: 'Calories', value: 'calories'},
-                    {text: 'Fat (g)', value: 'fat'},
-                    {text: 'Carbs (g)', value: 'carbs'},
-                    {text: 'Protein (g)', value: 'protein'},
-                    {text: 'Iron (%)', value: 'iron'},
-                    {text: 'Actions', value: 'action'},
-                ],
-                desserts: [
-                    {
-                        name: 'Frozen Yogurt',
-                        calories: 159,
-                        fat: 6.0,
-                        carbs: 24,
-                        protein: 4.0,
-                        iron: '1%',
-                    },
-                    {
-                        name: 'Ice cream sandwich',
-                        calories: 237,
-                        fat: 9.0,
-                        carbs: 37,
-                        protein: 4.3,
-                        iron: '1%',
-                    },
-                    {
-                        name: 'Eclair',
-                        calories: 262,
-                        fat: 16.0,
-                        carbs: 23,
-                        protein: 6.0,
-                        iron: '7%',
-                    },
-                    {
-                        name: 'Cupcake',
-                        calories: 305,
-                        fat: 3.7,
-                        carbs: 67,
-                        protein: 4.3,
-                        iron: '8%',
-                    },
-                    {
-                        name: 'Gingerbread',
-                        calories: 356,
-                        fat: 16.0,
-                        carbs: 49,
-                        protein: 3.9,
-                        iron: '16%',
-                    },
-                    {
-                        name: 'Jelly bean',
-                        calories: 375,
-                        fat: 0.0,
-                        carbs: 94,
-                        protein: 0.0,
-                        iron: '0%',
-                    },
-                    {
-                        name: 'Lollipop',
-                        calories: 392,
-                        fat: 0.2,
-                        carbs: 98,
-                        protein: 0,
-                        iron: '2%',
-                    },
-                    {
-                        name: 'Honeycomb',
-                        calories: 408,
-                        fat: 3.2,
-                        carbs: 87,
-                        protein: 6.5,
-                        iron: '45%',
-                    },
-                    {
-                        name: 'Donut',
-                        calories: 452,
-                        fat: 25.0,
-                        carbs: 51,
-                        protein: 4.9,
-                        iron: '22%',
-                    },
-                    {
-                        name: 'KitKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%',
-                    },
-                ],
-            }
+import { mapState } from "vuex";
+import Popup from "../components/Popup.vue";
+// import axios from "axios";
+export default {
+  components: { Popup },
+  name: "Dashboard",
+  data() {
+    return {
+      activityLog: [
+        {
+          title: "Tổng số nhân viên",
+          amount: 50,
+          icon: "mdi-account",
+          color: "cyan lighten-3",
         },
-        methods: {
-            onButtonClick(item) {
-                console.log('click on ' + item.no)
-            }
-        }
+        {
+          title: "Tổng số CSVC",
+          amount: 3433,
+          icon: "mdi-account-group-outline",
+          color: "green darken-2",
+        },
+        {
+          title: "Tổng số phòng ban",
+          amount: 3433,
+          icon: "mdi-account-group-outline",
+          color: "blue-grey darken-1",
+        },
+        {
+          title: "Tổng số chức vụ",
+          amount: 3433,
+          icon: "mdi-account-group-outline",
+          color: "deep-orange darken-1",
+        },
+      ],
+      headers: [
+        {
+          text: "ID",
+          align: "center",
+          sortable: false,
+          value: "id",
+        },
+        { text: "Tên Nhân Viên", align: "center", value: "nameEm" },
+        { text: "Chức Vụ", align: "center", value: "position" },
+        { text: "Phòng Ban", align: "center", value: "department" },
+        { text: "Email", align: "center", value: "email" },
+        { text: "Thành Tích", align: "center", value: "performance" },
+      ],
+      desserts: [
+        {
+          id: 1,
+          nameEm: "Nguyễn Sỹ Dũng",
+          position: "Admin",
+          department: "Phòng Cơ Sở Vật Chất",
+          email: "sydung@gmail.com",
+          performance: "Admin tốt nhất công ty",
+        },
+        {
+          id: 2,
+          nameEm: "Trần Hữu Lương",
+          position: "Nhân Viên",
+          department: "Phòng Cơ Sở Vật Chất",
+          email: "luongtran@gmail.com",
+          performance: "Nhân Viên năng động nhất công ty",
+        },
+        {
+          id: 3,
+          nameEm: "Võ Trung Hiếu",
+          position: "Nhân Viên",
+          department: "Phòng Cơ Sở Vật Chất",
+          email: "hieuvo@gmail.com",
+          performance: "Nhân Viên hài hước nhất công ty",
+        },
+        {
+          id: 4,
+          nameEm: "Dương Thị Thùy Dung",
+          position: "Nhân Viên",
+          department: "Phòng Cơ Sở Vật Chất",
+          email: "thuydung@gmail.com",
+          performance: "Nhân Viên siêng năng nhất công ty",
+        },
+        {
+          id: 5,
+          nameEm: "Lê Doãn Chánh",
+          position: "Trưởng Phòng",
+          department: "Phòng Cơ Sở Vật Chất",
+          email: "doanchanh@gmail.com",
+          performance: "Trưởng Phòng 5 tốt",
+        },
+      ],
+      emQty: 10,
+    };
+  },
+  mounted() {
+    // count employee
+    const EmpData = JSON.parse(localStorage.getItem("employee"));
+    this.activityLog[0].amount = EmpData.length;
+    // count facilities
+    const faciData = JSON.parse(localStorage.getItem("facilities"));
+    let totalFaci = 0;
+    faciData.forEach((el) => {
+      totalFaci += Number(el.qty);
+    });
+    this.activityLog[1].amount = totalFaci;
+    // count deparment
+    const departData = JSON.parse(localStorage.getItem("departments"));
+    this.activityLog[2].amount = departData.length;
+    // count position
+    const posiData = JSON.parse(localStorage.getItem("position"));
+    this.activityLog[3].amount = posiData.length;
+    const event = new Date();
 
-    }
+    // British English uses day-month-year order and 24-hour time without AM/PM
+    console.log(event.toLocaleString("en-GB", { timeZone: "UTC" }));
+  },
+  methods: {
+    onButtonClick(item) {
+      console.log("click on " + item.no);
+    },
+    cancel() {
+      this.showAccess = false;
+    },
+    confirm() {
+      this.$store.dispatch("actionSetDialog", false);
+    },
+  },
+  computed: {
+    ...mapState({
+      showAccess: (state) => state.showDialog,
+    }),
+  },
+};
 </script>
 
 <style scoped>
-    .overlap-icon {
-        position: absolute;
-        top: -33px;
-        text-align: center;
-        padding-top: 12px;
-    }
-    .elevation-1{
-        padding-top: 20px!important;
-    }
+.overlap-icon {
+  position: absolute;
+  top: -33px;
+  text-align: center;
+  padding-top: 12px;
+}
+.elevation-1 {
+  padding-top: 20px !important;
+}
+.v-data-table >>> td:nth-of-type(6) {
+  max-width: 200px;
+}
+.v-data-table >>> td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>

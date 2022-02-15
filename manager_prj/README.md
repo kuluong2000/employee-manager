@@ -1,4 +1,4 @@
-# manager_prj
+# v-admin
 
 ## Project setup
 ```
