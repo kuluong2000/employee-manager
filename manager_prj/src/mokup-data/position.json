@@ -20,6 +20,11 @@
       "role": "Admin"
     },
     {
+      "id": 5,
+      "position_id": "comlead",
+      "role": "Chủ Tịch HĐQT"
+    },
+    {
       "position_id": "dir_mid",
       "role": "Phó Giám Đốc CSVC",
       "id": 6

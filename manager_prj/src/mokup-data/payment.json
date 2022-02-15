@@ -132,15 +132,27 @@
       "id": 11
     },
     {
-      "payment_ID": "123",
+      "payment_ID": "SA12",
       "emp_ID": "NV02",
       "email": "luongtran@gmail.com",
       "fullName": "Trần Hữu Lương",
-      "amount": "123",
-      "allowance": "123",
-      "amount_total": 246,
+      "amount": "4000000",
+      "allowance": "4000000",
+      "amount_total": 8000000,
       "role": "Nhân Viên",
-      "description": "123",
+      "description": "Lương tháng 3",
       "id": 12
+    },
+    {
+      "payment_ID": "SA13",
+      "emp_ID": "NV02",
+      "email": "luongtran@gmail.com",
+      "fullName": "Trần Hữu Lương",
+      "amount": "4000000",
+      "allowance": "4000000",
+      "amount_total": 8000000,
+      "role": "Nhân Viên",
+      "description": "Lương Tháng 4",
+      "id": 13
     }
   ]

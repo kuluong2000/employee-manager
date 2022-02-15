@@ -372,7 +372,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Popup from "../components/Popup.vue";
 
 export default {
@@ -452,38 +452,41 @@ export default {
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
     this.roleEm = dataLogin.role;
     if (dataLogin.role == "Nhân Viên") {
-      const resEm = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/facilities?email=${dataLogin.email}`
-      );
-      this.facilities = resEm.data;
+      const dataEm = JSON.parse(localStorage.getItem("employee"));
+      const detailsEm = dataEm.find((el) => el.email === dataLogin.email);
+      const dataFa = JSON.parse(localStorage.getItem("facilities"));
+      const detailsFa = dataFa.filter((el) => el.emp_ID === detailsEm.emp_ID);
+      this.facilities = detailsFa;
+      console.log(detailsFa);
     } else {
-      const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/facilities`);
-      this.facilities = res.data;
+      const res = JSON.parse(localStorage.getItem("facilities"));
+      this.facilities = res;
     }
   },
   methods: {
     async DetailsUser(item) {
       this.detailsId = item.id;
-      const resFa = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/facilities/${this.detailsId}`
+      const resData = JSON.parse(localStorage.getItem("facilities"));
+      const details = [...resData].find((el) => el.id === this.detailsId);
+      this.detailsFaItem = details;
+      const dataEm = JSON.parse(localStorage.getItem("employee"));
+      const resEm = [...dataEm].find(
+        (el) => el.emp_ID === this.detailsFaItem.emp_ID
       );
-      this.detailsFaItem = resFa.data;
-      const resEm = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.detailsFaItem.emp_ID}`
-      );
-      this.detailsEmployItem = resEm.data[0];
+      this.detailsEmployItem = resEm;
     },
     handleRow(item) {
       this.deleteId = item.id;
       this.showDialogDelete = true;
     },
     async handleDelete() {
-      await axios.delete(
-        `${process.env.VUE_APP_SERVER_URL}/facilities/${this.deleteId}`
-      );
+      const resDataFa = JSON.parse(localStorage.getItem("facilities"));
+      const indexDel = resDataFa.findIndex((el) => el.id === this.deleteId);
+      resDataFa.splice(indexDel, 1);
+      this.facilities = resDataFa;
+      localStorage.setItem("facilities", JSON.stringify(resDataFa));
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
-      setTimeout(() => window.location.reload(), 1100);
     },
     async createFacilities() {
       if (
@@ -500,27 +503,43 @@ export default {
         // const resEm = await axios.get(
         //   `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.facilitiesItem.emp_ID}`
         // );
-        const datalocal = JSON.parse(localStorage.getItem("employee"))
-        const resEm = [...datalocal].find(el=> el.emp_ID === this.facilitiesItem.emp_ID);
+        const datalocal = JSON.parse(localStorage.getItem("employee"));
+        const resEm = [...datalocal].find(
+          (el) => el.emp_ID === this.facilitiesItem.emp_ID
+        );
         this.employData = resEm;
         if (this.employData) {
-          const resFa = await axios.post(
-            `${process.env.VUE_APP_SERVER_URL}/facilities`,
-            {
-              facilities_id: this.facilitiesItem.facilities_id,
-              title: this.facilitiesItem.title,
-              price: this.facilitiesItem.price,
-              qty: this.facilitiesItem.qty,
-              image: this.facilitiesItem.image,
-              innitiated_date: this.facilitiesItem.innitiated_date,
-              emp_ID: this.facilitiesItem.emp_ID,
-              fullName: this.employData.lastName + " " + this.employData.firstName,
-            }
-          );
-          console.log(resFa);
+          // const resFa = await axios.post(
+          //   `${process.env.VUE_APP_SERVER_URL}/facilities`,
+          //   {
+          //     facilities_id: this.facilitiesItem.facilities_id,
+          //     title: this.facilitiesItem.title,
+          //     price: this.facilitiesItem.price,
+          //     qty: this.facilitiesItem.qty,
+          //     image: this.facilitiesItem.image,
+          //     innitiated_date: this.facilitiesItem.innitiated_date,
+          //     emp_ID: this.facilitiesItem.emp_ID,
+          //     fullName: this.employData.lastName + " " + this.employData.firstName,
+          //   }
+          // );
+          // console.log(resFa);
+          const resFa = JSON.parse(localStorage.getItem("facilities"));
+          const detailsIdFa = resFa[resFa.length - 1];
+          resFa.push({
+            id: detailsIdFa.id + 1,
+            facilities_id: this.facilitiesItem.facilities_id,
+            title: this.facilitiesItem.title,
+            price: this.facilitiesItem.price,
+            qty: this.facilitiesItem.qty,
+            image: this.facilitiesItem.image,
+            innitiated_date: this.facilitiesItem.innitiated_date,
+            emp_ID: this.facilitiesItem.emp_ID,
+            fullName: this.employData.lastName + " " + this.employData.firstName,
+          });
+          this.facilities = resFa;
+          localStorage.setItem("facilities", JSON.stringify(resFa));
           this.dialog = false;
           this.showDialogCreateSuccess = true;
-          setTimeout(() => window.location.reload(), 1200);
         } else {
           this.showDialogIdFail = true;
           this.dialog = false;
