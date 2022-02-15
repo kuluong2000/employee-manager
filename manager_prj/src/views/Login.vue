@@ -188,7 +188,13 @@
                             Or Log in using
                           </h5>
                           <div
-                            class="d-flex justify-space-between align-center mx-10 mb-16"
+                            class="
+                              d-flex
+                              justify-space-between
+                              align-center
+                              mx-10
+                              mb-16
+                            "
                           >
                             <v-btn depressed outlined color="grey">
                               <v-icon color="red">mdi-google</v-icon>
@@ -209,15 +215,19 @@
                   <v-col cols="12" md="6" class="blue rounded-bl-xl bg-login">
                     <div style="text-align: center; padding: 180px 0">
                       <v-card-text class="white--text">
-                        <h1 class="text-center mb-5">Don't Have an Account Yet?</h1>
+                        <h1 class="text-center mb-5">
+                          Don't Have an Account Yet?
+                        </h1>
                         <h4 class="text-center">
-                          Let's get you all set up so you can start creating your
-                          your first<br />
-                          onboarding experience
+                          Let's get you all set up so you can start creating
+                          your your first<br />
+                          onboarding experience.
                         </h4>
                       </v-card-text>
                       <div class="text-center">
-                        <v-btn tile outlined dark @click="step++">SIGN UP</v-btn>
+                        <v-btn tile outlined dark @click="step++"
+                          >SIGN UP</v-btn
+                        >
                       </div>
                     </div>
                   </v-col>
@@ -230,7 +240,8 @@
                       <v-card-text class="white--text">
                         <h1 class="text-center mb-5">Alredy Signed up?</h1>
                         <h4 class="text-center">
-                          Log in to your account so you can continue building and<br />
+                          Log in to your account so you can continue building
+                          and<br />
                           editing your onboarding flows
                         </h4>
                       </v-card-text>
@@ -335,7 +346,13 @@
                             Or Sign up using
                           </h5>
                           <div
-                            class="d-flex justify-space-between align-center mx-10 mb-11"
+                            class="
+                              d-flex
+                              justify-space-between
+                              align-center
+                              mx-10
+                              mb-11
+                            "
                           >
                             <v-btn depressed outlined color="grey">
                               <v-icon color="red">mdi-google</v-icon>
