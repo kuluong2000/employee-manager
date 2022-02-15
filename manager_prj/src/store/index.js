@@ -11,16 +11,18 @@ export default new Vuex.Store({
     showDialog: false,
     choose: "password",
     visibility: "mdi-eye-off",
+    accountList: [],
   },
   mutations: {
-    setUserInfo(state, info) {
-      state.userInfo = info;
-    },
-    setImageInfo(state, info) {
-      state.imageInfo = info;
+    renderDataUser(state) {
+      const res = JSON.parse(localStorage.getItem("user"));
+      state.accountList = res;
     },
     setDialog(state, info) {
       state.showDialog = info;
+    },
+    setAccountList(state, accountList) {
+      state.accountList = accountList;
     },
     setShowPassword(state) {
       if (state.choose === "password") {
@@ -33,17 +35,17 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    actionSetUserInfo({ commit }, info) {
-      commit("setUserInfo", info);
-    },
-    actionSetImageInfo({ commit }, info) {
-      commit("setImageInfo", info);
-    },
     actionSetDialog({ commit }, info) {
       commit("setDialog", info);
     },
     actionSetShowPassword({ commit }) {
       commit("setShowPassword");
+    },
+    actionRenderDataUser({ commit }) {
+      commit("renderDataUser");
+    },
+    actionSetAccountList({ commit }, accountList) {
+      commit("setAccountList", accountList);
     },
   },
   modules: {},

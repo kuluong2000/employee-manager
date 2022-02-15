@@ -57,23 +57,6 @@
       </v-card>
     </v-dialog>
     <popup
-      :show="showDialogDelete"
-      :cancel="cancel"
-      :confirm="handleDelete"
-      text="Có! Mình muốn xóa ^^"
-      title="Thông báo!"
-      textCancel="Không nha :v"
-      description="Bạn có muốn xóa dữ liệu này không ???"
-    ></popup>
-    <popup
-      :show="showDialogUpdate"
-      :cancel="cancel"
-      :confirm="confirm"
-      text="Ok! Mình sẽ vào lại sau"
-      title="Thông báo!"
-      description="Chức năng này hiện tại vẫn chưa cập nhật???"
-    ></popup>
-    <popup
       :show="showDialogCreateRequired"
       :cancel="cancel"
       :confirm="confirm"
@@ -88,14 +71,6 @@
       text="Oke ^^"
       title="Thông báo!"
       description="Thêm dữ liệu thành công!!"
-    ></popup>
-    <popup
-      :show="showDialogDeleteSuccess"
-      :cancel="cancel"
-      :confirm="confirm"
-      text="Oke ^^"
-      title="Thông báo!"
-      description="Xoá dữ liệu thành công!!"
     ></popup>
     <popup
       :show="showDialogDuplicateEmail"
@@ -119,14 +94,16 @@ export default {
     return {
       dialog: false,
       user: {},
-      dialogDetails: false,
-      showDialogDelete: false,
-      showDialogUpdate: false,
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
-      showDialogDeleteSuccess: false,
       showDialogDuplicateEmail: false,
+      listRole: [],
     };
+  },
+  mounted() {
+    const resPo = JSON.parse(localStorage.getItem("position"));
+    let result = resPo.map((a) => a.role);
+    this.listRole = result;
   },
   methods: {
     async createUser() {
@@ -175,18 +152,18 @@ export default {
       }
     },
     cancel() {
-      this.showDialogDelete = false;
-      this.showDialogUpdate = false;
+      //   this.showDialogDelete = false;
+      //   this.showDialogUpdate = false;
       // this.showDialogCreateRequired = false;
       // this.showDialogCreateSuccess = false;
       // this.showDialogDuplicateEmail = false;
     },
     confirm() {
-      this.showDialogDelete = false;
-      this.showDialogUpdate = false;
+      //   this.showDialogDelete = false;
+      //   this.showDialogUpdate = false;
       this.showDialogCreateRequired = false;
       this.showDialogCreateSuccess = false;
-      this.showDialogDeleteSuccess = false;
+      //   this.showDialogDeleteSuccess = false;
       this.showDialogDuplicateEmail = false;
     },
     showPassword() {
@@ -208,4 +185,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.input-container {
+  position: relative !important;
+}
+.material-icons {
+  margin: 0 10px;
+  color: #aaa;
+  cursor: default;
+  position: absolute !important;
+  content: "";
+  top: 16px;
+  right: -8px;
+}
+</style>

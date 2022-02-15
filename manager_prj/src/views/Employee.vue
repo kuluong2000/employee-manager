@@ -298,7 +298,14 @@
                                         readonly
                                       ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" md="12" class="pb-0 pt-1">
+                                    <v-col
+                                      cols="12"
+                                      md="12"
+                                      class="pb-0 pt-1"
+                                      v-if="
+                                        detailsItem.lastName && detailsItem.firstName
+                                      "
+                                    >
                                       <v-text-field
                                         label="Tên Nhân Viên"
                                         :value="
@@ -306,6 +313,19 @@
                                             ' ' +
                                             detailsItem.firstName
                                         "
+                                        required
+                                        readonly
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col
+                                      cols="12"
+                                      md="12"
+                                      class="pb-0 pt-1"
+                                      v-else
+                                    >
+                                      <v-text-field
+                                        label="Tên Nhân Viên"
+                                        value="Người dùng mới"
                                         required
                                         readonly
                                       ></v-text-field>
