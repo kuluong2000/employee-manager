@@ -13,11 +13,11 @@
                         class="text-center text-uppercase mb-3"
                         style="color:rgb(16, 37, 158)"
                       >
-                        Login in to Your Account
+                        Đăng Nhập
                       </h2>
                       <h5 class="text-center grey--text">
-                        Log in to your account so you can continue builiding.
-                        <br />and editing your onboarding flows
+                        Sử dụng tài khoản đã được công ty cấp để vào website
+                        <br />và trải nghiệm những dịch vụ tốt nhất của chúng tôi ^^
                       </h5>
                       <v-row
                         align="center"
@@ -29,24 +29,26 @@
                             label="Email"
                             outlined
                             dense
-                            color="rgb(16, 37, 158)"
+                            :color="colorEmail"
                             autocomplete="false"
                             class="mt-12 mb-1"
                             v-model="user.email"
-                            :rules="[requiredEmail]"
+                            @input="inputEmail"
                           />
-                          <!-- <h5 v-if="user.email !== 'sydung@gmail.com'" style="color: red;margin: -20px 0 20px">Vui lòng nhập đúng cú pháp</h5> -->
+                          <span class="error__email" v-show="emailShow"
+                            >* Vui lòng nhập đúng cú pháp email</span
+                          >
 
                           <div class="input-container">
                             <v-text-field
-                              label="Password"
+                              label="Mật khẩu"
                               outlined
                               dense
-                              color="rgb(16, 37, 158)"
+                              :color="colorPassword"
                               autocomplete="false"
                               :type="choose"
                               v-model="user.password"
-                              :rules="[requiredPassword]"
+                              @input="inputPassword"
                             />
                             <v-icon
                               class="material-icons visibility"
@@ -54,11 +56,13 @@
                               >{{ visibility }}</v-icon
                             >
                           </div>
-                          <!-- <h5 v-if="user.password !== '1234567890'" style="color: red; margin: -20px 0 20px">Vui lòng nhập trên 8 ký tự</h5> -->
+                          <span class="error_password" v-show="passShow"
+                            >* Mật khẩu phải lớn hơn hoặc bằng 8 kí tự</span
+                          >
                           <v-row>
                             <v-col cols="12" sm="7">
                               <v-checkbox
-                                label="Remember Me"
+                                label="Lưu tài khoản"
                                 class="mt-n1"
                                 color="blue"
                                 @click="setCookie"
@@ -82,7 +86,7 @@
                                     @click.stop="dialog = true"
                                     class="fg-pass"
                                   >
-                                    Forgot password
+                                    Quên mật khẩu
                                   </a>
 
                                   <v-dialog v-model="dialog" max-width="510">
@@ -115,6 +119,7 @@
                                           dense
                                           class="px-6"
                                           v-model="userPassword"
+                                          :type="choose"
                                         ></v-text-field>
                                         <v-icon
                                           class="showPass-icons visibility"
@@ -176,16 +181,17 @@
                             </v-col>
                           </v-row>
                           <v-btn
-                            color="rgb(16,37,158)"
-                            dark
+                            color="rgb(16, 37, 158)"
+                            style="color: #fff"
                             block
                             tile
+                            :disabled="showBtn"
                             @click="login"
-                            >Sign in</v-btn
+                            >Đăng Nhập</v-btn
                           >
 
                           <h5 class="text-center grey--text mt-4 mb-3">
-                            Or Log in using
+                            Hoặc đăng nhập bằng
                           </h5>
                           <div
                             class="d-flex justify-space-between align-center mx-10 mb-16"
@@ -209,15 +215,17 @@
                   <v-col cols="12" md="6" class="blue rounded-bl-xl bg-login">
                     <div style="text-align: center; padding: 180px 0">
                       <v-card-text class="white--text">
-                        <h1 class="text-center mb-5">Don't Have an Account Yet?</h1>
+                        <h1 class="text-center mb-5">
+                          Bạn Chưa Được Cấp Tài Khoản?
+                        </h1>
                         <h4 class="text-center">
-                          Let's get you all set up so you can start creating your
-                          your first<br />
-                          onboarding experience
+                          Hãy để chúng tôi giúp bạn tạo một tài khoản dành riêng cho
+                          bản thân nào<br />
+                          Vui lòng bấm nút bên dưới để Đăng Ký Tài Khoản
                         </h4>
                       </v-card-text>
                       <div class="text-center">
-                        <v-btn tile outlined dark @click="step++">SIGN UP</v-btn>
+                        <v-btn tile outlined dark @click="step++">Đăng Ký</v-btn>
                       </div>
                     </div>
                   </v-col>
@@ -228,14 +236,15 @@
                   <v-col cols="12" md="6" class="blue rounded-br-xl bg-login">
                     <div style="text-align: center; padding: 180px 0">
                       <v-card-text class="white--text">
-                        <h1 class="text-center mb-5">Alredy Signed up?</h1>
+                        <h1 class="text-center mb-5">Bạn Đã Có Tài Khoản?</h1>
                         <h4 class="text-center">
-                          Log in to your account so you can continue building and<br />
-                          editing your onboarding flows
+                          Hãy đăng nhập bằng tài khoản đã được công ty chúng tôi
+                          cấp<br />
+                          Vui lòng bấm nút bên dưới để Đăng Nhập Tài Khoản
                         </h4>
                       </v-card-text>
                       <div class="text-center">
-                        <v-btn tile outlined dark @click="step--">Log in</v-btn>
+                        <v-btn tile outlined dark @click="step--">Đăng Nhập</v-btn>
                       </div>
                     </div>
                   </v-col>
@@ -246,12 +255,12 @@
                         class="text-center text-uppercase mb-3"
                         style="color:rgb(16, 37, 158)"
                       >
-                        Sign Up for an Account
+                        Đăng Ký
                       </h2>
                       <h5 class="text-center grey--text mb-3">
-                        Let's get you all set up so you can start creatin your
+                        Đăng ký cho bản thân một tài khoản và đăng nhập vào website
                         <br />
-                        first onboarding experiance
+                        để trải nghiệm những dịch vụ tốt nhất của chúng tôi
                       </h5>
                       <v-row
                         align="center"
@@ -262,24 +271,24 @@
                           <v-row>
                             <v-col cols="12" sm="6">
                               <v-text-field
-                                label="First Name"
-                                outlined
-                                dense
-                                color="rgb(16, 37, 158)"
-                                autocomplete="false"
-                                class="mt-4"
-                                v-model="userSignUp.firstName"
-                              />
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                              <v-text-field
-                                label="Last Name"
+                                label="Họ"
                                 outlined
                                 dense
                                 color="rgb(16, 37, 158)"
                                 autocomplete="false"
                                 class="mt-4"
                                 v-model="userSignUp.lastName"
+                              />
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                              <v-text-field
+                                label="Tên"
+                                outlined
+                                dense
+                                color="rgb(16, 37, 158)"
+                                autocomplete="false"
+                                class="mt-4"
+                                v-model="userSignUp.firstName"
                               />
                             </v-col>
                           </v-row>
@@ -292,7 +301,7 @@
                             v-model="userSignUp.email"
                           />
                           <v-text-field
-                            label="Password"
+                            label="Mật khẩu"
                             outlined
                             dense
                             color="rgb(16, 37, 158)"
@@ -301,7 +310,7 @@
                             v-model="userSignUp.password"
                           />
                           <v-text-field
-                            label="Confirm Password"
+                            label="Xác nhận mật khẩu"
                             outlined
                             dense
                             color="rgb(16, 37, 158)"
@@ -312,7 +321,7 @@
                           <v-row>
                             <v-col cols="12" sm="7">
                               <v-checkbox
-                                label="I Accept AAE"
+                                label="Tôi đồng ý với điều khoản"
                                 class="mt-n1"
                                 color="rgb(16, 37, 158)"
                               >
@@ -322,17 +331,21 @@
                               <span
                                 class="caption ml-n4 float-right"
                                 style="color:rgb(16, 37, 158);"
-                                >Terms and Conditions</span
+                                >Điều khoản và điều kiện</span
                               >
                             </v-col>
                           </v-row>
-                          <!-- <v-btn color="blue" dark block tile @click="signup">Sign up</v-btn> -->
-                          <v-btn color="rgb(16, 37, 158)" dark block tile
-                            >Sign up</v-btn
+                          <v-btn
+                            color="rgb(16, 37, 158)"
+                            style="color: #fff"
+                            block
+                            tile
+                            :disabled="showBtn"
+                            >Đăng Ký</v-btn
                           >
 
                           <h5 class="text-center grey--text mt-4 mb-3">
-                            Or Sign up using
+                            Hoặc đăng ký bằng
                           </h5>
                           <div
                             class="d-flex justify-space-between align-center mx-10 mb-11"
@@ -405,9 +418,6 @@ export default {
   data() {
     return {
       step: 1,
-      requiredEmail: (value) => value.length > 0 || "You must input your email",
-      requiredPassword: (value) =>
-        value.length > 0 || "You must input your password",
       user: {
         email: "",
         password: "",
@@ -425,6 +435,11 @@ export default {
       otpCode: "",
       otpInput: "",
       checkBox: false,
+      colorEmail: "rgb(16, 37, 158)",
+      colorPassword: "rgb(16, 37, 158)",
+      emailShow: false,
+      passShow: false,
+      showBtn: true,
     };
   },
   computed: {
@@ -464,17 +479,62 @@ export default {
             });
             localStorage.setItem("user", JSON.stringify(userData));
             alert("Cập nhật thành công");
+            this.userEmail = "";
+            this.userPassword = "";
+            this.otpInput = "";
+            this.otpCode = this.showOTPCode();
+
             this.dialog = false;
           } else {
             alert("Mã xác thực không chính xác!!!");
             this.otpCode = this.showOTPCode();
+            this.otpInput = "";
           }
         } else {
           alert("Không tồn tại email này!! Vui lòng thử lại");
         }
       }
     },
-    async login() {
+    inputEmail() {
+      let dataInput = this.user.email;
+
+      // const regex = new RegExp("^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$")
+      const regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      if (regex.test(dataInput.trim())) {
+        this.emailShow = false;
+        this.colorEmail = "rgb(16, 37, 158)";
+        if (this.user.password.length < 8) {
+          this.showBtn = true;
+        }
+      } else {
+        this.emailShow = true;
+        this.colorEmail = "red";
+        this.showBtn = true;
+      }
+      if (dataInput.length === 0) {
+        this.emailShow = false;
+        this.colorEmail = "rgb(16, 37, 158)";
+        this.showBtn = true;
+      }
+    },
+    inputPassword() {
+      let dataPassword = this.user.password;
+      if (dataPassword.length < 8) {
+        this.colorPassword = "red";
+        this.passShow = true;
+        this.showBtn = true;
+      } else {
+        this.colorPassword = "rgb(16, 37, 158)";
+        this.passShow = false;
+        this.showBtn = false;
+      }
+      if (dataPassword.length === 0) {
+        this.colorPassword = "rgb(16, 37, 158)";
+        this.passShow = false;
+        this.showBtn = true;
+      }
+    },
+    login() {
       // using localStorage
       const datalocal = JSON.parse(localStorage.getItem("user"));
       const resEmail = datalocal.find((el) => el.email === this.user.email);
@@ -664,7 +724,7 @@ a {
 }
 .fg-pass {
   color: rgb(16, 37, 158);
-  text-decoration: underline;
+  text-decoration: none;
   margin-top: 11px;
 }
 .bg-section {
@@ -677,5 +737,19 @@ a {
 }
 .elevation-6 {
   box-shadow: 0px 2px 10px 1px rgb(216 213 213) !important;
+}
+.error__email {
+  position: absolute;
+  top: 42%;
+  transform: translateY(-50%);
+  color: red;
+  font-size: 12px;
+}
+.error_password {
+  position: absolute;
+  top: 54.5%;
+  transform: translateY(-50%);
+  color: red;
+  font-size: 12px;
 }
 </style>

@@ -348,7 +348,7 @@
                   </v-list-item-content>
                 </v-list-item>
               </v-col>
-              <v-sol cols="12" sm="6" align="center">
+              <v-col cols="12" sm="6" align="center">
                 <v-list-item two-line class="mt-10">
                   <v-list-item-content>
                     <v-list-item-title class="headline mb-1 black--text">
@@ -359,7 +359,7 @@
                     >
                   </v-list-item-content>
                 </v-list-item>
-              </v-sol>
+              </v-col>
             </v-row>
           </v-card>
         </v-col>

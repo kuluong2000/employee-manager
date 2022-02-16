@@ -2,14 +2,22 @@
   <transition name="fade" mode="out-in">
     <div key="5" v-show="show" class="overlay">
       <div class="dialog">
-        <div class="dialog__content">
+        <div class="dialog__content pb-0">
           <h2 class="dialog__title">Đổi Mật Khẩu</h2>
           <p class="dialog__description">Vui lòng nhập đầy đủ nội dung</p>
+          <v-text-field label="Mật khẩu cũ" outlined class="mt-5"></v-text-field>
+          <v-text-field
+            label="Mật khẩu mới"
+            outlined
+            style="margin-top: -10px"
+          ></v-text-field>
+          <v-text-field
+            label="Xác nhận mật khẩu mới"
+            outlined
+            style="margin-top: -10px"
+          ></v-text-field>
         </div>
-
-        <hr />
-
-        <div class="dialog__footer">
+        <div class="dialog__footer pt-0">
           <button @click="cancel" class="dialog__cancel">Đổi mật khẩu</button>
           <button @click="cancel" class="dialog__confirm">Thoát</button>
         </div>
@@ -28,6 +36,7 @@ export default {
   methods: {
     cancel() {
       this.show = false;
+      this.$router.push("/");
     },
   },
 };
@@ -93,9 +102,9 @@ export default {
   border-radius: 0.75rem;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 2.5rem;
+  margin-top: 12.5rem;
   max-width: 100%;
-  width: 25rem;
+  width: 30rem;
   animation: transitionIn 0.4s;
 }
 .dialog__content {
