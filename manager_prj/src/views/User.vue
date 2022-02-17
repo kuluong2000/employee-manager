@@ -24,7 +24,7 @@
               </template>
               <v-card>
                 <v-card-title class="pt-7">
-                  <span class="text-h5">Thêm mới tài khoản</span>
+                  <span class="text-h5">{{ formTitle }}</span>
                 </v-card-title>
                 <v-card-text>
                   <v-container>
@@ -34,15 +34,23 @@
                           label="Email*"
                           required
                           v-model="user.email"
+                          :disabled="readChange"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
-                        <v-text-field
-                          label="Password*"
-                          type="password"
-                          required
-                          v-model="user.password"
-                        ></v-text-field>
+                        <div class="input-container">
+                          <v-text-field
+                            label="Password*"
+                            :type="choose"
+                            required
+                            v-model="user.password"
+                          ></v-text-field>
+                          <v-icon
+                            class="material-icons visibility"
+                            @click="showPassword"
+                            >{{ visibility }}</v-icon
+                          >
+                        </div>
                       </v-col>
                       <v-col cols="12">
                         <v-select
@@ -58,7 +66,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="dialog = false">
+                  <v-btn color="blue darken-1" text @click="close">
                     Đóng
                   </v-btn>
                   <v-btn color="blue darken-1" text @click="createUser">
@@ -117,12 +125,20 @@
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12">
-                              <v-text-field
-                                label="Password"
-                                required
-                                :value="detailsItem.password"
-                                readonly
-                              ></v-text-field>
+                              <div class="input-container">
+                                <v-text-field
+                                  label="Password"
+                                  required
+                                  :value="detailsItem.password"
+                                  readonly
+                                  :type="choose"
+                                ></v-text-field>
+                                <v-icon
+                                  class="material-icons visibility"
+                                  @click="showPassword"
+                                  >{{ visibility }}</v-icon
+                                >
+                              </div>
                             </v-col>
                             <v-col cols="12">
                               <v-text-field
@@ -166,12 +182,12 @@
                   class="ma-2"
                   color="orange darken-2"
                   dark
-                  @click="showDialogUpdate = true"
+                  @click="editItem(item)"
                 >
                   Sửa
                   <v-icon dark right> mdi-pencil </v-icon>
                 </v-btn>
-                <v-btn class="ma-2" color="red" dark @click="handleRow(item)">
+                <v-btn class="ma-2 ms-0" color="red" dark @click="handleRow(item)">
                   Xóa
                   <v-icon dark right> mdi-delete </v-icon>
                 </v-btn>
@@ -197,9 +213,9 @@
       :show="showDialogUpdate"
       :cancel="cancel"
       :confirm="confirm"
-      text="Ok! Mình sẽ vào lại sau"
+      text="Oke ^^"
       title="Thông báo!"
-      description="Chức năng này hiện tại vẫn chưa cập nhật???"
+      description="Sửa dữ liệu thành công!!"
     ></popup>
     <popup
       :show="showDialogCreateRequired"
@@ -225,11 +241,21 @@
       title="Thông báo!"
       description="Xoá dữ liệu thành công!!"
     ></popup>
+    <popup
+      :show="showDialogDuplicateEmail"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Email này đã tồn tại!! Vui lòng chọn email khác"
+    ></popup>
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Popup from "../components/Popup.vue";
+import { mapState } from "vuex";
+
 export default {
   components: { Popup },
   data() {
@@ -262,18 +288,8 @@ export default {
           sortable: false,
         },
       ],
-      user: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        role: "",
-        position_id: "",
-        depart_id: "",
-        depart_name: "",
-        address: "",
-        imgUrl: "",
-      },
+      user: {},
+      defaultUser: {},
       deleteId: 0,
       detailsId: 0,
       account: [],
@@ -285,33 +301,57 @@ export default {
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
       showDialogDeleteSuccess: false,
+      showDialogDuplicateEmail: false,
       listRole: [],
       detailsItem: {},
+      editedIndex: -1,
+      readChange: false,
     };
   },
   methods: {
     async DetailsUser(item) {
       this.detailsId = item.id;
-      const res = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/user/${this.detailsId}`
-      );
-      this.detailsItem = res.data;
+      const resData = JSON.parse(localStorage.getItem("user"));
+      const details = [...resData].find((el) => el.id === this.detailsId);
+      this.detailsItem = details;
+    },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.user = Object.assign({}, this.defaultUser);
+        this.editedIndex = -1;
+      });
+    },
+    editItem(item) {
+      this.dialog = true;
+      this.editedIndex = this.account.indexOf(item);
+      this.user = Object.assign({}, item);
+      this.readChange = true;
+      // console.log(this.user);
     },
     handleRow(item) {
-      this.deleteId = item.id;
+      this.deleteId = item.email;
       this.showDialogDelete = true;
     },
-    async handleDelete() {
-      await axios.delete(`${process.env.VUE_APP_SERVER_URL}/user/${this.deleteId}`);
+    handleDelete() {
+      const resDataUser = JSON.parse(localStorage.getItem("user"));
+      const resDataEmp = JSON.parse(localStorage.getItem("employee"));
+      const indexDel = resDataUser.findIndex((el) => el.email === this.deleteId);
+      const index = resDataEmp.findIndex((el) => el.email === this.deleteId);
+      resDataEmp.splice(index, 1);
+      localStorage.setItem("employee", JSON.stringify(resDataEmp));
+      resDataUser.splice(indexDel, 1);
+      this.account = resDataUser;
+      localStorage.setItem("user", JSON.stringify(resDataUser));
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = true;
-      setTimeout(() => window.location.reload(), 1200);
     },
     cancel() {
       this.showDialogDelete = false;
       this.showDialogUpdate = false;
-      this.showDialogCreateRequired = false;
-      this.showDialogCreateSuccess = false;
+      // this.showDialogCreateRequired = false;
+      // this.showDialogCreateSuccess = false;
+      // this.showDialogDuplicateEmail = false;
     },
     confirm() {
       this.showDialogDelete = false;
@@ -319,47 +359,145 @@ export default {
       this.showDialogCreateRequired = false;
       this.showDialogCreateSuccess = false;
       this.showDialogDeleteSuccess = false;
+      this.showDialogDuplicateEmail = false;
+    },
+    showPassword() {
+      this.$store.dispatch("actionSetShowPassword");
+    },
+    userExists(email) {
+      const resUser = JSON.parse(localStorage.getItem("user"));
+      return resUser.some(function(el) {
+        return el.email === email;
+      });
     },
     async createUser() {
-      if (
-        this.user.email == "" ||
-        this.user.password == "" ||
-        this.user.role == ""
-      ) {
-        this.showDialogCreateRequired = true;
-        this.dialog = false;
+      if (this.editedIndex > -1) {
+        if (this.user.email === "" || this.user.password === "") {
+          this.showDialogCreateRequired = true;
+          this.dialog = false;
+        } else {
+          let resDataEm = JSON.parse(localStorage.getItem("employee"));
+          let resDataUser = JSON.parse(localStorage.getItem("user"));
+          let resDataPay = JSON.parse(localStorage.getItem("payment"));
+          const detailsUser = resDataUser[this.editedIndex];
+          resDataUser.splice(this.editedIndex, 1, {
+            id: detailsUser.id,
+            email: this.user.email,
+            password: this.user.password,
+            role: this.user.role,
+            timeLogin: detailsUser.timeLogin,
+          });
+          this.account = resDataUser;
+          localStorage.setItem("user", JSON.stringify(resDataUser));
+          const detailsEm = resDataEm[this.editedIndex];
+          resDataEm.splice(this.editedIndex, 1, {
+            id: detailsEm.id,
+            emp_ID: detailsEm.emp_ID,
+            firstName: detailsEm.firstName,
+            lastName: detailsEm.lastName,
+            email: this.user.email,
+            password: this.user.password,
+            imgUrl: detailsEm.imgUrl,
+            role: this.user.role,
+            depart_id: detailsEm.depart_id,
+            depart_name: detailsEm.depart_name,
+            position_id: detailsEm.position_id,
+            address: detailsEm.address,
+            phoneNumber: detailsEm.phoneNumber,
+            birthday: detailsEm.birthday,
+            gender: detailsEm.gender,
+            numberCard: detailsEm.numberCard,
+            nationality: detailsEm.nationality,
+            ethnic: detailsEm.ethnic,
+            religion: detailsEm.religion,
+            educationalLevel: detailsEm.educationalLevel,
+            academicLevel: detailsEm.academicLevel,
+          });
+          localStorage.setItem("employee", JSON.stringify(resDataEm));
+          let detailsIndex = resDataPay.findIndex(
+            (el) => el.emp_ID === detailsEm.emp_ID
+          );
+          let detailsPay = resDataPay.find((el) => el.emp_ID === detailsEm.emp_ID);
+          resDataPay.splice(detailsIndex, 1, {
+            id: detailsPay.id,
+            payment_ID: detailsPay.payment_ID,
+            emp_ID: detailsPay.emp_ID,
+            email: detailsPay.email,
+            fullName: detailsPay.fullName,
+            amount: detailsPay.amount,
+            allowance: detailsPay.allowance,
+            amount_total: Number(detailsPay.amount) + Number(detailsPay.allowance),
+            role: this.user.role,
+            description: detailsPay.description,
+          });
+          localStorage.setItem("payment", JSON.stringify(resDataPay));
+
+          this.showDialogUpdate = true;
+          this.dialog = false;
+        }
       } else {
-        let res = await axios.post(`${process.env.VUE_APP_SERVER_URL}/user`, {
-          email: this.user.email,
-          password: this.user.password,
-          role: this.user.role,
-        });
-        let res2 = await axios.post(`${process.env.VUE_APP_SERVER_URL}/employee`, {
-          firstName: this.user.firstName,
-          lastName: this.user.lastName,
-          email: this.user.email,
-          password: this.user.password,
-          role: this.user.role,
-          position_id: this.user.position_id,
-          depart_id: this.user.depart_id,
-          depart_name: this.user.depart_name,
-          address: this.user.address,
-          imgUrl: this.user.imgUrl,
-        });
-        console.log(res);
-        console.log(res2);
-        this.dialog = false;
-        this.showDialogCreateSuccess = true;
-        setTimeout(() => window.location.reload(), 1500);
+        if (
+          this.user.email == "" ||
+          this.user.password == "" ||
+          this.user.role == ""
+        ) {
+          this.showDialogCreateRequired = true;
+          this.dialog = false;
+        } else {
+          if (this.userExists(this.user.email) == true) {
+            this.showDialogDuplicateEmail = true;
+            this.dialog = false;
+          } else {
+            const resUser = JSON.parse(localStorage.getItem("user"));
+            const detailsIdUser = resUser[resUser.length - 1];
+            resUser.push({
+              id: detailsIdUser.id + 1,
+              email: this.user.email,
+              password: this.user.password,
+              role: this.user.role,
+              timeLogin: this.user.timeLogin,
+            });
+            this.account = resUser;
+            localStorage.setItem("user", JSON.stringify(resUser));
+            const resEm = JSON.parse(localStorage.getItem("employee"));
+            const detailsIdEm = resEm[resEm.length - 1];
+            resEm.push({
+              id: detailsIdEm.id + 1,
+              emp_ID: `NV${detailsIdEm.id + 1}`,
+              firstName: this.user.firstName,
+              lastName: this.user.lastName,
+              email: this.user.email,
+              password: this.user.password,
+              role: this.user.role,
+              position_id: this.user.position_id,
+              depart_id: this.user.depart_id,
+              depart_name: this.user.depart_name,
+              address: this.user.address,
+              imgUrl: this.user.imgUrl,
+            });
+            localStorage.setItem("employee", JSON.stringify(resEm));
+            this.dialog = false;
+            this.showDialogCreateSuccess = true;
+          }
+        }
       }
     },
   },
   async mounted() {
-    const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/user`);
-    this.account = res.data;
-    const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    let result = resPo.data.map((a) => a.role);
+    const res = JSON.parse(localStorage.getItem("user"));
+    this.account = res;
+    const resPo = JSON.parse(localStorage.getItem("position"));
+    let result = resPo.map((a) => a.role);
     this.listRole = result;
+  },
+  computed: {
+    ...mapState({
+      choose: (state) => state.choose,
+      visibility: (state) => state.visibility,
+    }),
+    formTitle() {
+      return this.editedIndex === -1 ? "Thêm mới tài khoản" : "Sửa tài khoản";
+    },
   },
 };
 </script>
@@ -368,5 +506,17 @@ h1 {
   text-transform: uppercase;
   text-align: center;
   margin: -10px 0 30px;
+}
+.input-container {
+  position: relative;
+}
+.material-icons {
+  margin: 0 10px;
+  color: #aaa;
+  cursor: default;
+  position: absolute;
+  content: "";
+  top: 16px;
+  right: -8px;
 }
 </style>

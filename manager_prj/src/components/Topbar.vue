@@ -137,7 +137,7 @@ export default {
     return {
       menus: [
         { title: "Thông Tin Nhân Viên", icon: "mdi-account", action: "profile" },
-        { title: "Đổi Mật Khẩu", icon: "mdi-key" },
+        { title: "Đổi Mật Khẩu", icon: "mdi-key",action:"changePassword" },
         { title: "Cài Đặt", icon: "mdi-cog" },
         { title: "Đăng Xuất", icon: "mdi-logout", action: "logout" },
       ],
@@ -185,7 +185,7 @@ export default {
   // },
   async mounted() {
     // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
-    const res = JSON.parse(localStorage.getItem("employee"))
+    const res = JSON.parse(localStorage.getItem("employee"));
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
     let id = dataLogin.email;
     let data = res;
@@ -202,7 +202,14 @@ export default {
         this.showDialog = true;
       }
       if (action === "profile") {
-        this.$router.push("/userInfo");
+        if (this.$route.name !== "userInfo") {
+          this.$router.push("/userInfo");
+        } else {
+          alert("Bạn đang ở trang này rồi");
+        }
+      }
+      if(action ==="changePassword"){
+        this.$router.push("/changepassword")
       }
     },
     cancel() {

@@ -23,10 +23,20 @@ const routes = [
           requiredAuth: true,
         },
       },
+
       {
         path: "/user",
         name: "user",
         component: () => import("../views/User"),
+        meta: {
+          requiredAuth: true,
+        },
+      },
+
+      {
+        path: "/changepassword",
+        component: () => import("../views/ChangePassword"),
+        name: "changepassword",
         meta: {
           requiredAuth: true,
         },
@@ -56,6 +66,11 @@ const routes = [
         },
       },
       {
+        path: "/report",
+        name: "report",
+        component: () => import("./../views/Report"),
+      },
+      {
         path: "/department",
         name: "department",
         component: () => import("./../views/Department"),
@@ -81,10 +96,21 @@ const routes = [
       },
     ],
   },
+
   {
     path: "/login",
     name: "login",
     component: () => import("./../views/Login"),
+  },
+  {
+    path: "*",
+    name: "404",
+    component: () => import("./../views/404"),
+  },
+  {
+    path: "/pageupdate",
+    name: "nopage",
+    component: () => import("./../views/NoPage"),
   },
 ];
 

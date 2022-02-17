@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div class="section-info">
     <v-container class="px-0 py-0">
-      <v-card class="pb-10">
+      <v-card class="pb-8">
         <h1 class="px-5 py-7 text-center">Thông Tin Nhân Viên</h1>
-        <v-row align="center" justify="center" class="">
-          <v-col cols="12" sm="4" class="text-center">
+        <v-row align="center" justify="center" class="pe-5">
+          <v-col cols="12" sm="3" class="text-center">
             <v-avatar
               class="mb-2"
               color="grey darken-1"
               size="250"
-              v-if="this.imgLink"
+              v-if="this.listDetail.imgUrl"
             >
-              <v-img aspect-ratio="30" :src="this.imgLink" />
+              <v-img aspect-ratio="30" :src="this.listDetail.imgUrl" />
             </v-avatar>
             <v-avatar class="mb-2" color="grey darken-1" size="250" v-else>
               <v-img
@@ -19,8 +19,11 @@
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
               />
             </v-avatar>
-            <h2 class="black--text mt-2 mb-6" v-if="this.firstName && this.lastName">
-              {{ this.lastName }} {{ this.firstName }}
+            <h2
+              class="black--text mt-2 mb-6"
+              v-if="this.listDetail.firstName && this.listDetail.lastName"
+            >
+              {{ this.listDetail.lastName }} {{ this.listDetail.firstName }}
             </h2>
             <h2 class="black--text mt-2 mb-6" v-else>Người dùng mới</h2>
             <v-row
@@ -40,7 +43,7 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="12" sm="4" class="text-center">
+          <v-col cols="12" sm="3" class="text-center">
             <v-form>
               <v-container>
                 <v-row>
@@ -48,8 +51,8 @@
                     <v-text-field
                       :counter="30"
                       label="Họ"
-                      :value="this.lastName"
                       required
+                      v-model="user.lastName"
                       class="pt-1"
                     ></v-text-field>
                   </v-col>
@@ -57,50 +60,58 @@
                     <v-text-field
                       :counter="30"
                       label="Tên"
-                      :value="this.firstName"
                       required
+                      v-model="user.firstName"
                     ></v-text-field>
                   </v-col>
 
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
                       label="E-mail"
-                      :value="this.email"
+                      :value="this.listDetail.email"
                       required
                       readonly
                     ></v-text-field>
                   </v-col>
 
                   <v-col cols="12" md="12" class="pb-0 pt-1">
-                    <v-text-field
-                      label="Password"
-                      :value="this.password"
-                      required
-                      readonly
-                    ></v-text-field>
+                    <div class="input-container">
+                      <v-text-field
+                        label="Password"
+                        required
+                        readonly
+                        :value="this.dataUserInfo.password"
+                        :type="choose"
+                      ></v-text-field>
+                      <v-icon
+                        class="material-icons visibility"
+                        @click="showPassword"
+                        >{{ visibility }}</v-icon
+                      >
+                    </div>
                   </v-col>
 
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
                       label="Số điện thoại"
-                      value="0346996951"
                       required
+                      v-model="user.phoneNumber"
                     ></v-text-field>
                   </v-col>
 
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
                       label="Địa Chỉ"
-                      :value="this.address"
                       required
+                      v-model="user.address"
                     ></v-text-field>
                   </v-col>
 
                   <v-col cols="12" md="12">
                     <v-select
                       :items="this.listRole"
+                      :value="this.listDetail.role"
                       label="Chức Vụ"
-                      :value="this.roleName"
                       required
                       readonly
                     ></v-select>
@@ -110,17 +121,92 @@
                     <v-select
                       :items="this.listDepartment"
                       label="Phòng Ban"
-                      :value="this.department"
+                      v-model="user.depart_name"
                       :menu-props="{ top: true, offsetY: true }"
                       required
-                      readonly
                     ></v-select>
                   </v-col>
                 </v-row>
               </v-container>
             </v-form>
           </v-col>
-          <v-col cols="12" sm="4" class="text-center">
+          <v-col cols="12" sm="3" class="text-center">
+            <v-form>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="12" class="pb-0 pt-1">
+                    <v-text-field
+                      label="Ngày Sinh"
+                      required
+                      v-model="user.birthday"
+                      class="pt-1"
+                      type="date"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="12" class="pb-0 pt-1">
+                    <v-select
+                      :items="['Nam', 'Nữ']"
+                      label="Giới Tính"
+                      required
+                      v-model="user.gender"
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="12" md="12" class="pb-0 pt-1">
+                    <v-text-field
+                      label="Số CMND/CCCD"
+                      required
+                      v-model="user.numberCard"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" md="12" class="pb-0 pt-1">
+                    <v-text-field
+                      label="Quốc Tịch"
+                      required
+                      v-model="user.nationality"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" md="12" class="pb-0 pt-1">
+                    <v-text-field
+                      label="Dân Tộc"
+                      required
+                      v-model="user.ethnic"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" md="12" class="pb-0 pt-1">
+                    <v-text-field
+                      label="Tôn Giáo"
+                      required
+                      v-model="user.religion"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" md="12">
+                    <v-select
+                      :items="['12/12']"
+                      label="Trình Độ Văn Hóa"
+                      required
+                      v-model="user.educationalLevel"
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="12" md="12">
+                    <v-select
+                      :items="['Cao Đẳng', 'Đại Học', 'Cao Học']"
+                      label="Trình Độ Học Vấn"
+                      :menu-props="{ top: true, offsetY: true }"
+                      required
+                      v-model="user.academicLevel"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-form>
+          </v-col>
+          <v-col cols="12" sm="3" class="text-center">
             <v-card class="mx-auto" max-width="400">
               <v-img
                 class="white--text align-end"
@@ -154,19 +240,46 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-btn color="blue-grey" class="ma-2 white--text mt-8">
+          <v-btn
+            color="blue-grey"
+            class="ma-2 white--text mt-8"
+            @click="updateInfo"
+            ref="buttonUpdate"
+          >
             Cập nhật thông tin
             <v-icon right dark> mdi-cloud-upload </v-icon>
           </v-btn>
         </v-row>
       </v-card>
     </v-container>
+    <popup
+      :show="showDialogUpdateSuccess"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Cập nhật thông tin thành công !!!"
+    >
+    </popup>
+    <popup
+      :show="showDialogDuplicateInf"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Không có gì để cập nhật !!!"
+    >
+    </popup>
   </div>
 </template>
 
 <script>
+import Popup from "./Popup.vue";
 // import axios from "axios";
+import { mapState } from "vuex";
+
 export default {
+  components: { Popup },
   name: "Infomation",
   data() {
     return {
@@ -192,67 +305,117 @@ export default {
           titleUrl: "https://www.instagram.com/",
         },
       ],
-      firstName: "",
-      lastName: "",
-      imgLink: "",
-      email: "",
-      password: "",
-      roleName: "",
-      department: "",
-      address: "",
       listRole: [],
       listDepartment: [],
+      listDetail: {},
+      user: {},
+      showDialogUpdateSuccess: false,
+      showDialogDuplicateInf: false,
+      dataUserInfo: {},
     };
   },
   async mounted() {
-    // const res = await axios.get(`${process.env.VUE_APP_SERVER_URL}/employee`);
-    const res = JSON.parse(localStorage.getItem("employee"))
+    const res = JSON.parse(localStorage.getItem("employee"));
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
+    this.dataUserInfo = dataLogin;
     let id = dataLogin.email;
     let data = res;
-    const index = data.find((el) => el.email === id);
-    //  const index =  data.map(el => el.email == id)
-    this.firstName = index.firstName;
-    this.lastName = index.lastName;
-    this.imgLink = index.imgUrl;
-    this.email = index.email;
-    this.password = index.password;
-    this.roleName = index.role;
-    this.address = index.address;
-    this.department = index.depart_name;
-    // const resPo = await axios.get(`${process.env.VUE_APP_SERVER_URL}/position`);
-    const resPo =JSON.parse(localStorage.getItem("employee"))
+    const detailEm = data.find((el) => el.email === id);
+    this.listDetail = detailEm;
+    console.log(this.listDetail);
+    this.user.firstName = this.listDetail.firstName;
+    this.user.lastName = this.listDetail.lastName;
+    this.user.address = this.listDetail.address;
+    this.user.depart_name = this.listDetail.depart_name;
+    this.user.phoneNumber = this.listDetail.phoneNumber;
+    this.user.birthday = this.listDetail.birthday;
+    this.user.gender = this.listDetail.gender;
+    this.user.numberCard = this.listDetail.numberCard;
+    this.user.nationality = this.listDetail.nationality;
+    this.user.ethnic = this.listDetail.ethnic;
+    this.user.religion = this.listDetail.religion;
+    this.user.educationalLevel = this.listDetail.educationalLevel;
+    this.user.academicLevel = this.listDetail.academicLevel;
+    const resPo = JSON.parse(localStorage.getItem("position"));
     let result = resPo.map((a) => a.role);
     this.listRole = result;
-    // const resDe = await axios.get(`${process.env.VUE_APP_SERVER_URL}/departments`);
     const resDe = JSON.parse(localStorage.getItem("departments"));
     let resultDe = resDe.map((a) => a.depart_name);
     this.listDepartment = resultDe;
-    console.log(this.roleName);
+    console.log(this.$refs.buttonUpdate);
   },
   methods: {
-    // async updateInfo() {
-    //   const dataLogin = JSON.parse(localStorage.getItem("user-info"));
-    //   let id = dataLogin.email;
-    //   let res2 = await axios.put(
-    //     `${process.env.VUE_APP_SERVER_URL}/employee/${id}`,
-    //     {
-    //       firstName: this.user.firstName,
-    //       lastName: this.user.lastName,
-    //       email: this.user.email,
-    //       password: this.user.password,
-    //       role: this.user.role,
-    //       position_id: this.user.position_id,
-    //       depart_id: this.user.depart_id,
-    //       depart_name: this.user.depart_name,
-    //       address: this.user.address,
-    //       imgUrl: this.user.imgUrl,
-    //     }
-    //   );
-    //   console.log(res2);
-    // },
+    updateInfo() {
+      const resDataInf = JSON.parse(localStorage.getItem("user-info"));
+      let resDataUser = JSON.parse(localStorage.getItem("employee"));
+      let index = resDataUser.findIndex((el) => el.email === resDataInf.email);
+      const detailUser = resDataUser.find((el) => el.email === resDataInf.email);
+      console.log(detailUser);
+      resDataUser.splice(index, 1, {
+        id: detailUser.id,
+        emp_ID: detailUser.emp_ID,
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        email: detailUser.email,
+        password: detailUser.password,
+        imgUrl: detailUser.imgUrl,
+        role: detailUser.role,
+        depart_id: detailUser.depart_id,
+        depart_name: this.user.depart_name,
+        position_id: detailUser.position_id,
+        address: this.user.address,
+        phoneNumber: this.user.phoneNumber,
+        birthday: this.user.birthday,
+        gender: this.user.gender,
+        numberCard: this.user.numberCard,
+        nationality: this.user.nationality,
+        ethnic: this.user.ethnic,
+        religion: this.user.religion,
+        educationalLevel: this.user.educationalLevel,
+        academicLevel: this.user.academicLevel,
+      });
+      localStorage.setItem("employee", JSON.stringify(resDataUser));
+      if (JSON.stringify(detailUser) === JSON.stringify(resDataUser[index])) {
+        this.showDialogDuplicateInf = true;
+      } else {
+        localStorage.setItem("employee", JSON.stringify(resDataUser));
+        this.showDialogUpdateSuccess = true;
+      }
+    },
+    confirm() {
+      this.showDialogUpdateSuccess = false;
+      this.showDialogDuplicateInf = false;
+    },
+    cancel() {
+      console.log("test");
+    },
+    showPassword() {
+      this.$store.dispatch("actionSetShowPassword");
+    },
+  },
+  computed: {
+    ...mapState({
+      choose: (state) => state.choose,
+      visibility: (state) => state.visibility,
+    }),
   },
 };
 </script>
 
-<style></style>
+<style>
+.section-info {
+  margin: -14px 0 -16px;
+}
+.input-container {
+  position: relative;
+}
+.material-icons {
+  margin: 0 10px;
+  color: #aaa;
+  cursor: default;
+  position: absolute !important;
+  content: "";
+  top: 16px;
+  right: -8px;
+}
+</style>
