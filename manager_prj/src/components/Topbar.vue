@@ -209,7 +209,7 @@ export default {
         }
       }
       if(action ==="changePassword"){
-        this.$router.push("/resetPassword")
+        this.$router.push("/changepassword")
       }
     },
     cancel() {

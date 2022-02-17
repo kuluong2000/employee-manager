@@ -34,22 +34,31 @@
                             class="mt-12 mb-1"
                             v-model="user.email"
                             @input="inputEmail"
-                            ref="inputEmail"
-                          /> <span class="error__email" v-show="emailShow">Email không hợp lệ</span>
-                          <!-- <h5 v-if="user.email !== 'sydung@gmail.com'" style="color: red;margin: -20px 0 20px">Vui lòng nhập đúng cú pháp</h5> -->
-                          <v-text-field
-                            label="Password"
-                            outlined
-                            dense
-                            :color="colorPassword"
-                            autocomplete="false"
-                            type="password"
-                            v-model="user.password"
-                            @input="inputPassword"
                           />
-                           <span class=" error_password" v-show="passShow">Mật khẩu phải lớn hơn hoặc bằng 8 kí tự</span>
-                          <!-- <h5 v-if="user.password !== '1234567890'" style="color: red; margin: -20px 0 20px">Vui lòng nhập trên 8 ký tự</h5> -->
-                        
+                          <span class="error__email" v-show="emailShow"
+                            >* Vui lòng nhập đúng cú pháp email</span
+                          >
+
+                          <div class="input-container">
+                            <v-text-field
+                              label="Mật khẩu"
+                              outlined
+                              dense
+                              :color="colorPassword"
+                              autocomplete="false"
+                              :type="choose"
+                              v-model="user.password"
+                              @input="inputPassword"
+                            />
+                            <v-icon
+                              class="material-icons visibility"
+                              @click="showPassword"
+                              >{{ visibility }}</v-icon
+                            >
+                          </div>
+                          <span class="error_password" v-show="passShow"
+                            >* Mật khẩu phải lớn hơn hoặc bằng 8 kí tự</span
+                          >
                           <v-row>
                             <v-col cols="12" sm="7">
                               <v-checkbox
@@ -171,7 +180,14 @@
                               </template>
                             </v-col>
                           </v-row>
-                          <v-btn color="blue" dark block tile @click="login">Sign in</v-btn
+                          <v-btn
+                            color="rgb(16, 37, 158)"
+                            style="color: #fff"
+                            block
+                            tile
+                            :disabled="showBtn"
+                            @click="login"
+                            >Đăng Nhập</v-btn
                           >
 
                           <h5 class="text-center grey--text mt-4 mb-3">
@@ -280,7 +296,7 @@
                             label="Email"
                             outlined
                             dense
-                          color="blue"
+                            color="rgb(16, 37, 158)"
                             autocomplete="false"
                             v-model="userSignUp.email"
                           />
@@ -404,28 +420,16 @@
 // import axios from "axios";
 import Popup from "../components/Popup.vue";
 import { mapState } from "vuex";
-
 export default {
   components: { Popup },
   data() {
     return {
       step: 1,
-      user: {},
-      userSignUp: {
-        firstName: "",
-        lastName: "",
+      user: {
         email: "",
         password: "",
-        passwordConfirm: "",
-        role: "",
-        position_id: "",
-        depart_id: "",
-        depart_name: "",
-        address: "",
-        imgUrl: "",
-        
       },
-    
+      userSignUp: {},
       showDialog: false,
       showDialogSignUp: false,
       showDialogPassword: false,
@@ -434,11 +438,17 @@ export default {
       showDialogRequiredEmail: false,
       month: "",
       minutes: "",
-      colorEmail:"blue",
-      colorPassword:"blue",
-      emailShow:false,
-      passShow:false
-
+      dialog: false,
+      userEmail: "",
+      userPassword: "",
+      otpCode: "",
+      otpInput: "",
+      checkBox: false,
+      colorEmail: "rgb(16, 37, 158)",
+      colorPassword: "rgb(16, 37, 158)",
+      emailShow: false,
+      passShow: false,
+      showBtn: false,
     };
   },
   computed: {
@@ -448,39 +458,90 @@ export default {
     }),
   },
   methods: {
-    // validation email 
-    inputEmail(){
+    showOTPCode() {
+      let string = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      let OTP = "";
+      // Find the length of string
+      var len = string.length;
+      for (let i = 0; i < 7; i++) {
+        OTP += string[Math.floor(Math.random() * len)];
+      }
+      return OTP;
+    },
+    updatePassword() {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      const dataEmail = userData.find((el) => el.email === this.userEmail);
+      if (this.userEmail === "" || this.userPassword === "") {
+        this.showDialogSignUp = true;
+        this.dialog = false;
+      } else {
+        if (dataEmail) {
+          if (this.otpInput === this.otpCode) {
+            let index = userData.findIndex((el) => el.email === this.userEmail);
+            userData.splice(index, 1, {
+              id: dataEmail.id,
+              email: dataEmail.email,
+              password: this.userPassword,
+              role: dataEmail.role,
+              timeLogin: dataEmail.timeLogin,
+            });
+            localStorage.setItem("user", JSON.stringify(userData));
+            this.showDialogSuccess = true;
+            this.userEmail = "";
+            this.userPassword = "";
+            this.otpInput = "";
+            this.otpCode = this.showOTPCode();
+            this.dialog = false;
+          } else {
+            alert("Mã xác thực không chính xác!!!");
+            this.otpCode = this.showOTPCode();
+            this.otpInput = "";
+          }
+        } else {
+          this.showDialogExistEmail = true;
+          this.dialog = false;
+        }
+      }
+    },
+    inputEmail() {
       let dataInput = this.user.email;
-  
       // const regex = new RegExp("^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$")
-      const regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-       if (regex.test(dataInput.trim())){
+      const regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      if (regex.test(dataInput.trim())) {
         this.emailShow = false;
-        this.colorEmail = "blue"
-      }else{
+        this.colorEmail = "rgb(16, 37, 158)";
+        if (this.user.password.length < 8) {
+          this.showBtn = true;
+        }
+      } else {
         this.emailShow = true;
-        this.colorEmail ="red"
+        this.colorEmail = "red";
+        this.showBtn = true;
       }
-      if(dataInput.length === 0){
-        this.emailShow = false
-         this.colorEmail ="blue"
+      if (dataInput.length === 0) {
+        this.emailShow = false;
+        this.colorEmail = "rgb(16, 37, 158)";
+        this.showBtn = false;
       }
     },
-    inputPassword(){
+    inputPassword() {
       let dataPassword = this.user.password;
-      if(dataPassword.length < 8){
-        this.colorPassword = "red"
-        this.passShow = true
-      }else{
-        this.colorPassword = "blue"
-        this.passShow = false
+      if (dataPassword.length < 8) {
+        this.colorPassword = "red";
+        this.passShow = true;
+        this.showBtn = true;
+      } else {
+        this.colorPassword = "rgb(16, 37, 158)";
+        this.passShow = false;
+        this.showBtn = false;
       }
-      if(dataPassword.length === 0 ){
-this.colorPassword = "blue"
-        this.passShow = false
+      if (dataPassword.length === 0) {
+        this.colorPassword = "rgb(16, 37, 158)";
+        this.passShow = false;
+        this.showBtn = false;
       }
     },
-     login() {
+    login() {
       // using localStorage
       const datalocal = JSON.parse(localStorage.getItem("user"));
       const resEmail = datalocal.find((el) => el.email === this.user.email);
@@ -576,11 +637,9 @@ this.colorPassword = "blue"
       this.showDialogSuccess = false;
       this.showDialogExistEmail = false;
     },
-
     showPassword() {
       this.$store.dispatch("actionSetShowPassword");
     },
-
     setCookie() {
       if (this.checkBox === true) {
         document.cookie =
@@ -597,11 +656,9 @@ this.colorPassword = "blue"
         }
       }
     },
-
     getCookieData() {
       let user = this.getCookie("myusername");
       let pswd = this.getCookie("mypassword");
-
       this.user.email = user;
       this.user.password = pswd;
     },
@@ -643,18 +700,59 @@ a {
   display: block;
   width: 100%;
 }
-.error__email{
-  position: fixed;
-    top: 45%;
-    transform: translateY(-50%);
-    color: red;
-    font-size: 11px;
+.input-container {
+  position: relative;
 }
-.error_password{
+.material-icons,
+.showPass-icons {
+  margin: 0 10px;
+  color: #aaa;
+  cursor: default;
   position: absolute;
-    top: 50%;
-    transform: translateY(60%);
-    color: red;
-    font-size: 11px;
+  content: "";
+  top: 8px;
+  right: 0px;
+}
+.material-icons {
+  right: 0;
+}
+.showPass-icons {
+  right: 22px;
+}
+.bg-login {
+  background: url("https://img4.thuthuatphanmem.vn/uploads/2020/07/05/anh-background-cong-nghe-xanh_035953035.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.fg-pass {
+  color: rgb(16, 37, 158);
+  text-decoration: none;
+  margin-top: 11px;
+}
+.bg-section {
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    url("https://png.pngtree.com/thumb_back/fw800/back_our/20190621/ourmid/pngtree-blue-atmosphere-technology-exhibition-board-background-template-image_193475.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.elevation-6 {
+  box-shadow: 0px 2px 10px 1px rgb(216 213 213) !important;
+}
+.error__email {
+  position: absolute;
+  top: 42%;
+  transform: translateY(-50%);
+  color: red;
+  font-size: 12px;
+}
+.error_password {
+  position: absolute;
+  top: 54.5%;
+  transform: translateY(-50%);
+  color: red;
+  font-size: 12px;
 }
 </style>
