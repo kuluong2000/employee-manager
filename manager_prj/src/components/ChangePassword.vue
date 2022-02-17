@@ -20,7 +20,8 @@
             </div>
             <div class="col-md-6">
               <form class="form-input" @submit.prevent="save">
-                <input type="text" placeholder="Mật khẩu cũ" class="form-input__item" v-model="oldPassword" />
+                <input type="password" placeholder="Mật khẩu cũ" class="form-input__item" v-model="oldPassword" />
+
                 <div class="form-input__list">
                   <input :type="choose" @input="input" ref="itemInput" placeholder="Nhập mật khẩu mới" class="form-input__item" v-model="newPassword" />
                   <b-icon :icon="icon" class="form-input__icon" v-show="showIcon" @click="changeIcon"></b-icon>
@@ -30,7 +31,7 @@
                   <b-icon :icon="icon" class="form-input__icon" v-show="showIcon"></b-icon>
                 </div> -->
                 <input :type="choose" placeholder="Xác nhận mật khẩu" class="form-input__item" v-model="confirmPassword" />
-                <v-checkbox v-model="selected" >Hiểm thị mật khẩu</v-checkbox>
+
                 <div class="form-action">
                   <button type="submit" class="form-action__save" ref="formAction">Đổi mật khẩu</button>
                   <button class="form-action__remove" @click="cancel">thoát</button>
@@ -125,11 +126,14 @@ export default {
     },
     input() {
       // const checkLength = this.$refs.checklegnth.className;
-      // const checkUpper = this.$refs.checkUpper;
+      // const checkUpper = this.$refs.checkUpper.className;
       // const checkNumber = this.$refs.checkNumber;
       // const checkSpecial = this.$refs.checkSpecial;
 
       const listInput = this.$refs.itemInput.value;
+      if (this.oldPassword.length > 0) {
+        this.showIcon = true;
+      }
       if (listInput.trim()) {
         this.showIcon = true;
       } else {
@@ -139,11 +143,11 @@ export default {
         this.checkLength = "valid";
       } else {
         this.checkLength = "unvalid";
-      }
-      if (/[A-Z]/.test(listInput.trim())) {
-        this.checkUpper = "valid";
-      } else {
-        this.checkUpper = "unvalid";
+        if (/[A-Z]/.test(listInput.trim())) {
+          this.checkUpper = "valid";
+        } else {
+          this.checkUpper = "unvalid";
+        }
       }
       if (/[0-9]/.test(listInput.trim())) {
         this.checkNumber = "valid";
@@ -156,6 +160,7 @@ export default {
         this.checkSpecial = "unvalid";
       }
     },
+
     changeIcon() {
       if (this.icon === "eye") {
         this.icon = "eye-slash";
