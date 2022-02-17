@@ -24,7 +24,7 @@
               </template>
               <v-card>
                 <v-card-title class="pt-7">
-                  <span class="text-h5">Thêm mới chức vụ</span>
+                  <span class="text-h5">{{ formTitle }}</span>
                 </v-card-title>
                 <v-card-text>
                   <v-container>
@@ -49,7 +49,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="dialog = false">
+                  <v-btn color="blue darken-1" text @click="close">
                     Đóng
                   </v-btn>
                   <v-btn color="blue darken-1" text @click="createPosition">
@@ -138,12 +138,12 @@
                   class="ma-2"
                   color="orange darken-2"
                   dark
-                  @click="showDialogUpdate = true"
+                  @click="editItem(item)"
                 >
                   Sửa
                   <v-icon dark right> mdi-pencil </v-icon>
                 </v-btn>
-                <v-btn class="ma-2" color="red" dark @click="handleRow(item)">
+                <v-btn class="ma-2 ms-0" color="red" dark @click="handleRow(item)">
                   Xóa
                   <v-icon dark right> mdi-delete </v-icon>
                 </v-btn>
@@ -189,6 +189,14 @@
       title="Thông báo!"
       description="Thêm dữ liệu thành công!!"
     ></popup>
+    <popup
+      :show="showDialogUpdate"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Sửa dữ liệu thành công!!"
+    ></popup>
   </div>
 </template>
 <script>
@@ -232,34 +240,76 @@ export default {
         position_id: "",
         role: "",
       },
+      positionItemDefault: {},
       showDialogDelete: false,
       showDialogDeleteSuccess: false,
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
+      showDialogUpdate: false,
       qtyPositon: [],
+      editedIndex: -1,
     };
   },
   async mounted() {
     const res = JSON.parse(localStorage.getItem("position"));
     this.position = res;
   },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "Thêm mới chức vụ" : "Sửa thông tin chức vụ";
+    },
+  },
   methods: {
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.positionItem = Object.assign({}, this.positionItemDefault);
+        this.editedIndex = -1;
+      });
+    },
+    editItem(item) {
+      this.dialog = true;
+      this.editedIndex = this.position.indexOf(item);
+      this.positionItem = Object.assign({}, item);
+      // console.log(this.user);
+    },
     async createPosition() {
-      if (this.positionItem.position_id == "" || this.positionItem.role == "") {
-        this.showDialogCreateRequired = true;
-        this.dialog = false;
+      if (this.editedIndex > -1) {
+        let result = Object.values(this.positionItem);
+        let resultRequired = result.find((el) => el === "");
+        if (resultRequired != undefined) {
+          this.showDialogCreateRequired = true;
+          this.dialog = false;
+        } else {
+          let resDataPo = JSON.parse(localStorage.getItem("position"));
+          const detailsPo = resDataPo[this.editedIndex];
+          resDataPo.splice(this.editedIndex, 1, {
+            id: detailsPo.id,
+            position_id: this.positionItem.position_id,
+            role: this.positionItem.role,
+          });
+          this.position = resDataPo;
+          localStorage.setItem("position", JSON.stringify(resDataPo));
+          this.showDialogUpdate = true;
+          this.dialog = false;
+        }
       } else {
-        const resPo = JSON.parse(localStorage.getItem("position"));
-        const detailsIdDe = resPo[resPo.length - 1];
-        resPo.push({
-          id: detailsIdDe.id + 1,
-          position_id: this.positionItem.position_id,
-          role: this.positionItem.role,
-        });
-        this.position = resPo;
-        localStorage.setItem("position", JSON.stringify(resPo));
-        this.dialog = false;
-        this.showDialogCreateSuccess = true;
+        if (this.positionItem.position_id == "" || this.positionItem.role == "") {
+          this.showDialogCreateRequired = true;
+          this.dialog = false;
+        } else {
+          const resPo = JSON.parse(localStorage.getItem("position"));
+          const detailsIdDe = resPo[resPo.length - 1];
+          resPo.push({
+            id: detailsIdDe.id + 1,
+            position_id: this.positionItem.position_id,
+            role: this.positionItem.role,
+          });
+          this.position = resPo;
+          localStorage.setItem("position", JSON.stringify(resPo));
+          this.dialog = false;
+          this.showDialogCreateSuccess = true;
+        }
       }
     },
     async DetailsUser(item) {
@@ -294,6 +344,7 @@ export default {
       this.showDialogDeleteSuccess = false;
       this.showDialogCreateRequired = false;
       this.showDialogCreateSuccess = false;
+      this.showDialogUpdate = false;
     },
   },
 };

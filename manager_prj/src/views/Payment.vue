@@ -71,7 +71,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="dialog = false">
+                  <v-btn color="blue darken-1" text @click="close">
                     Đóng
                   </v-btn>
                   <v-btn color="blue darken-1" text @click="createPayment">
@@ -297,11 +297,16 @@
                       </v-card>
                     </template>
                   </v-dialog>
-                  <v-btn class="ma-2" color="orange darken-2" dark>
+                  <v-btn
+                    class="ma-2"
+                    color="orange darken-2"
+                    dark
+                    @click="editItem(item)"
+                  >
                     Sửa
                     <v-icon dark right> mdi-pencil </v-icon>
                   </v-btn>
-                  <v-btn class="ma-2" color="red" dark @click="handleRow(item)">
+                  <v-btn class="ma-2 ms-0" color="red" dark @click="handleRow(item)">
                     Xóa
                     <v-icon dark right> mdi-delete </v-icon>
                   </v-btn>
@@ -563,6 +568,14 @@
       title="Thông báo!"
       description="Không có nhân viên này trong danh sách!!"
     ></popup>
+    <popup
+      :show="showDialogUpdate"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Sửa dữ liệu thành công!!"
+    ></popup>
   </div>
 </template>
 <script>
@@ -630,7 +643,9 @@ export default {
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
       showDialogIdFail: false,
+      showDialogUpdate: false,
       payList: {},
+      payListDefault: {},
       linkUser: [
         {
           imgUrl:
@@ -653,6 +668,7 @@ export default {
           titleUrl: "https://www.instagram.com/",
         },
       ],
+      editedIndex: -1,
     };
   },
   async mounted() {
@@ -671,14 +687,34 @@ export default {
       this.payment = res;
     }
   },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1
+        ? "Thêm mới tiền lương"
+        : "Sửa thông tin tiền lương";
+    },
+  },
   methods: {
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.payList = Object.assign({}, this.payListDefault);
+        this.editedIndex = -1;
+      });
+    },
+    editItem(item) {
+      this.dialog = true;
+      this.editedIndex = this.payment.indexOf(item);
+      this.payList = Object.assign({}, item);
+      // console.log(this.user);
+    },
     async DetailsPayment(item) {
       this.detailsId = item.id;
       const resData = JSON.parse(localStorage.getItem("payment"));
-      const details = [...resData].find((el) => el.id === this.detailsId);
+      const details = resData.find((el) => el.id === this.detailsId);
       this.detailsPaymentItem = details;
       const dataEm = JSON.parse(localStorage.getItem("employee"));
-      const resEm = [...dataEm].find(
+      const resEm = dataEm.find(
         (el) => el.emp_ID === this.detailsPaymentItem.emp_ID
       );
       this.detailsEmployItem = resEm;
@@ -697,58 +733,70 @@ export default {
       this.showDialogDeleteSuccess = true;
     },
     async createPayment() {
-      if (
-        this.payList.payment_ID == "" ||
-        this.payList.emp_ID == "" ||
-        this.payList.amount == "" ||
-        this.payList.allowance == "" ||
-        this.payList.description == ""
-      ) {
-        this.showDialogCreateRequired = true;
-        this.dialog = false;
-      } else {
-        // const resEm = await axios.get(
-        //   `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.payList.emp_ID}`
-        // );
-        // this.employData = resEm.data[0];
-        const datalocal = JSON.parse(localStorage.getItem("employee"));
-        const resEm = [...datalocal].find((el) => el.emp_ID === this.payList.emp_ID);
-        this.employData = resEm;
-        if (this.employData) {
-          // await axios.post(`${process.env.VUE_APP_SERVER_URL}/payment`, {
-          //   payment_ID: this.payList.payment_ID,
-          //   emp_ID: this.payList.emp_ID,
-          //   email: this.employData.email,
-          //   fullName: this.employData.lastName + " " + this.employData.firstName,
-          //   amount: this.payList.amount,
-          //   allowance: this.payList.allowance,
-          //   amount_total:
-          //     Number(this.payList.amount) + Number(this.payList.allowance),
-          //   role: this.employData.role,
-          //   description: this.payList.description,
-          // });
-          const resPay = JSON.parse(localStorage.getItem("payment"));
-          const detailsIdFa = resPay[resPay.length - 1];
-          resPay.push({
-            id: detailsIdFa.id + 1,
-            payment_ID: `SA${detailsIdFa.id + 1}`,
-            emp_ID: this.payList.emp_ID,
-            email: this.employData.email,
-            fullName: this.employData.lastName + " " + this.employData.firstName,
-            amount: this.payList.amount,
-            allowance: this.payList.allowance,
-            amount_total:
-              Number(this.payList.amount) + Number(this.payList.allowance),
-            role: this.employData.role,
-            description: this.payList.description,
-          });
-          this.payment = resPay;
-          localStorage.setItem("payment", JSON.stringify(resPay));
+      const datalocal = JSON.parse(localStorage.getItem("employee"));
+      const resEm = datalocal.find((el) => el.emp_ID === this.payList.emp_ID);
+      this.employData = resEm;
+      let result = Object.values(this.payList);
+      if (this.editedIndex > -1) {
+        let resultRequired = result.find((el) => el === "");
+        if (resultRequired != undefined) {
+          this.showDialogCreateRequired = true;
           this.dialog = false;
-          this.showDialogCreateSuccess = true;
         } else {
-          this.showDialogIdFail = true;
+          if (this.employData) {
+            let resDataPay = JSON.parse(localStorage.getItem("payment"));
+            const detailsPay = resDataPay[this.editedIndex];
+            resDataPay.splice(this.editedIndex, 1, {
+              id: detailsPay.id,
+              payment_ID: detailsPay.payment_ID,
+              emp_ID: this.payList.emp_ID,
+              email: this.employData.email,
+              fullName: this.employData.lastName + " " + this.employData.firstName,
+              amount: this.payList.amount,
+              allowance: this.payList.allowance,
+              amount_total:
+                Number(this.payList.amount) + Number(this.payList.allowance),
+              role: this.employData.role,
+              description: this.payList.description,
+            });
+            this.payment = resDataPay;
+            localStorage.setItem("payment", JSON.stringify(resDataPay));
+            this.showDialogUpdate = true;
+            this.dialog = false;
+          } else {
+            this.showDialogIdFail = true;
+            this.dialog = false;
+          }
+        }
+      } else {
+        if (result.length < 5) {
+          this.showDialogCreateRequired = true;
           this.dialog = false;
+        } else {
+          if (this.employData) {
+            const resPay = JSON.parse(localStorage.getItem("payment"));
+            const detailsIdFa = resPay[resPay.length - 1];
+            resPay.push({
+              id: detailsIdFa.id + 1,
+              payment_ID: `SA${detailsIdFa.id + 1}`,
+              emp_ID: this.payList.emp_ID,
+              email: this.employData.email,
+              fullName: this.employData.lastName + " " + this.employData.firstName,
+              amount: this.payList.amount,
+              allowance: this.payList.allowance,
+              amount_total:
+                Number(this.payList.amount) + Number(this.payList.allowance),
+              role: this.employData.role,
+              description: this.payList.description,
+            });
+            this.payment = resPay;
+            localStorage.setItem("payment", JSON.stringify(resPay));
+            this.dialog = false;
+            this.showDialogCreateSuccess = true;
+          } else {
+            this.showDialogIdFail = true;
+            this.dialog = false;
+          }
         }
       }
     },
@@ -762,6 +810,7 @@ export default {
       this.showDialogDelete = false;
       this.showDialogCreateRequired = false;
       this.showDialogIdFail = false;
+      this.showDialogUpdate = false;
     },
     confirmSuccess() {
       this.showDialogCreateSuccess = false;

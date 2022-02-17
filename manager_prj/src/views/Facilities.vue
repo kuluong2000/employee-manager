@@ -29,7 +29,7 @@
               </template>
               <v-card>
                 <v-card-title class="pt-7">
-                  <span class="text-h5">Thêm mới cơ sở vật chất</span>
+                  <span class="text-h5">{{ formTitle }}</span>
                 </v-card-title>
                 <v-card-text>
                   <v-container>
@@ -97,7 +97,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="dialog = false">
+                  <v-btn color="blue darken-1" text @click="close">
                     Đóng
                   </v-btn>
                   <v-btn color="blue darken-1" text @click="createFacilities">
@@ -120,6 +120,18 @@
                 lastIcon: 'mdi-arrow-collapse-right',
               }"
             >
+              <template v-slot:[`item.image`]="{ item }">
+                <img
+                  v-if="item.image"
+                  :src="item.image"
+                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px"
+                />
+                <img
+                  v-else
+                  src="https://png.pngtree.com/png-clipart/20190920/original/pngtree-education-mobile-computer-flat-internet-thinking-png-png-image_4617860.jpg"
+                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px;"
+                />
+              </template>
               <template v-slot:[`item.actions`]="{ item }">
                 <div v-if="roleEm !== 'Nhân Viên'">
                   <v-dialog max-width="1000" persistent>
@@ -152,8 +164,9 @@
                                 <div class="mb-5" v-else>
                                   <v-img
                                     aspect-ratio="30"
-                                    src="https://taimienphi.vn/tmp/cf/aut/anh-gai-xinh-1.jpg"
+                                    src="https://qandme.net/images/facility-icon-stroke.png"
                                     height="300px"
+                                    contain
                                   />
                                 </div>
                                 <h1 class="black--text mt-0 mb-12">
@@ -162,12 +175,24 @@
                                 <v-row>
                                   <v-col cols="12" sm="3">
                                     <v-avatar
+                                      v-if="detailsEmployItem.imgUrl"
                                       size="155px"
                                       class="text-left float-left"
                                     >
                                       <img
                                         alt="Avatar"
                                         :src="detailsEmployItem.imgUrl"
+                                        style="object-fit: cover;"
+                                      />
+                                    </v-avatar>
+                                    <v-avatar
+                                      v-else
+                                      size="155px"
+                                      class="text-left float-left"
+                                    >
+                                      <img
+                                        alt="Avatar"
+                                        src="http://ativn.edu.vn/wp-content/uploads/2018/03/user-male-icon-300x300.png"
                                         style="object-fit: cover;"
                                       /> </v-avatar
                                   ></v-col>
@@ -304,11 +329,16 @@
                       </v-card>
                     </template>
                   </v-dialog>
-                  <v-btn class="ma-2" color="orange darken-2" dark>
+                  <v-btn
+                    class="ma-2"
+                    color="orange darken-2"
+                    dark
+                    @click="editItem(item)"
+                  >
                     Sửa
                     <v-icon dark right> mdi-pencil </v-icon>
                   </v-btn>
-                  <v-btn class="ma-2" color="red" dark @click="handleRow(item)">
+                  <v-btn class="ma-2 ms-0" color="red" dark @click="handleRow(item)">
                     Xóa
                     <v-icon dark right> mdi-delete </v-icon>
                   </v-btn>
@@ -551,6 +581,14 @@
       title="Thông báo!"
       description="Không có nhân viên này trong danh sách!!"
     ></popup>
+    <popup
+      :show="showDialogUpdate"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Sửa dữ liệu thành công!!"
+    ></popup>
   </div>
 </template>
 <script>
@@ -578,6 +616,11 @@ export default {
           align: "center",
         },
         {
+          text: "Hình Ảnh",
+          value: "image",
+          align: "center",
+        },
+        {
           text: "Giá Tiền",
           value: "price",
           align: "center",
@@ -592,11 +635,7 @@ export default {
           value: "innitiated_date",
           align: "center",
         },
-        {
-          text: "Nhân Viên Quản Lý",
-          value: "fullName",
-          align: "center",
-        },
+
         {
           text: "Chức Năng",
           value: "actions",
@@ -613,21 +652,15 @@ export default {
       detailsEmployItem: {},
       employData: {},
       dialog: false,
-      facilitiesItem: {
-        facilities_id: "",
-        title: "",
-        price: "",
-        qty: "",
-        image: "",
-        innitiated_date: "",
-        fullName: "",
-        emp_ID: "",
-      },
+      facilitiesItem: {},
+      facilitiesItemDefault: {},
       showDialogDelete: false,
       showDialogDeleteSuccess: false,
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
       showDialogIdFail: false,
+      showDialogUpdate: false,
+      editedIndex: -1,
     };
   },
   async mounted() {
@@ -649,13 +682,26 @@ export default {
     async DetailsUser(item) {
       this.detailsId = item.id;
       const resData = JSON.parse(localStorage.getItem("facilities"));
-      const details = [...resData].find((el) => el.id === this.detailsId);
+      const details = resData.find((el) => el.id === this.detailsId);
       this.detailsFaItem = details;
       const dataEm = JSON.parse(localStorage.getItem("employee"));
       const resEm = [...dataEm].find(
         (el) => el.emp_ID === this.detailsFaItem.emp_ID
       );
       this.detailsEmployItem = resEm;
+    },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.facilitiesItem = Object.assign({}, this.facilitiesItemDefault);
+        this.editedIndex = -1;
+      });
+    },
+    editItem(item) {
+      this.dialog = true;
+      this.editedIndex = this.facilities.indexOf(item);
+      this.facilitiesItem = Object.assign({}, item);
+      // console.log(this.user);
     },
     handleRow(item) {
       this.deleteId = item.id;
@@ -671,75 +717,90 @@ export default {
       this.showDialogDeleteSuccess = true;
     },
     async createFacilities() {
-      if (
-        this.facilitiesItem.facilities_id == "" ||
-        this.facilitiesItem.title == "" ||
-        this.facilitiesItem.price == "" ||
-        this.facilitiesItem.qty == "" ||
-        this.facilitiesItem.emp_ID == "" ||
-        this.facilitiesItem.innitiated_date == ""
-      ) {
-        this.showDialogCreateRequired = true;
-        this.dialog = false;
-      } else {
-        // const resEm = await axios.get(
-        //   `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.facilitiesItem.emp_ID}`
-        // );
-        const datalocal = JSON.parse(localStorage.getItem("employee"));
-        const resEm = [...datalocal].find(
-          (el) => el.emp_ID === this.facilitiesItem.emp_ID
-        );
-        this.employData = resEm;
-        if (this.employData) {
-          // const resFa = await axios.post(
-          //   `${process.env.VUE_APP_SERVER_URL}/facilities`,
-          //   {
-          //     facilities_id: this.facilitiesItem.facilities_id,
-          //     title: this.facilitiesItem.title,
-          //     price: this.facilitiesItem.price,
-          //     qty: this.facilitiesItem.qty,
-          //     image: this.facilitiesItem.image,
-          //     innitiated_date: this.facilitiesItem.innitiated_date,
-          //     emp_ID: this.facilitiesItem.emp_ID,
-          //     fullName: this.employData.lastName + " " + this.employData.firstName,
-          //   }
-          // );
-          // console.log(resFa);
-          const resFa = JSON.parse(localStorage.getItem("facilities"));
-          const detailsIdFa = resFa[resFa.length - 1];
-          resFa.push({
-            id: detailsIdFa.id + 1,
-            facilities_id: this.facilitiesItem.facilities_id,
-            title: this.facilitiesItem.title,
-            price: this.facilitiesItem.price,
-            qty: this.facilitiesItem.qty,
-            image: this.facilitiesItem.image,
-            innitiated_date: this.facilitiesItem.innitiated_date,
-            emp_ID: this.facilitiesItem.emp_ID,
-            fullName: this.employData.lastName + " " + this.employData.firstName,
-          });
-          this.facilities = resFa;
-          localStorage.setItem("facilities", JSON.stringify(resFa));
+      const datalocal = JSON.parse(localStorage.getItem("employee"));
+      const resEm = datalocal.find((el) => el.emp_ID === this.facilitiesItem.emp_ID);
+      this.employData = resEm;
+      if (this.editedIndex > -1) {
+        let result = Object.values(this.facilitiesItem);
+        let resultRequired = result.find((el) => el === "");
+        if (resultRequired != undefined) {
+          this.showDialogCreateRequired = true;
           this.dialog = false;
-          this.showDialogCreateSuccess = true;
         } else {
-          this.showDialogIdFail = true;
+          if (this.employData) {
+            let resDataFa = JSON.parse(localStorage.getItem("facilities"));
+            const detailsFa = resDataFa[this.editedIndex];
+            resDataFa.splice(this.editedIndex, 1, {
+              id: detailsFa.id + 1,
+              facilities_id: this.facilitiesItem.facilities_id,
+              title: this.facilitiesItem.title,
+              price: this.facilitiesItem.price,
+              qty: this.facilitiesItem.qty,
+              image: this.facilitiesItem.image,
+              innitiated_date: this.facilitiesItem.innitiated_date,
+              emp_ID: this.facilitiesItem.emp_ID,
+              fullName: this.employData.lastName + " " + this.employData.firstName,
+            });
+            this.facilities = resDataFa;
+            localStorage.setItem("facilities", JSON.stringify(resDataFa));
+            this.showDialogUpdate = true;
+            this.dialog = false;
+          } else {
+            this.showDialogIdFail = true;
+            this.dialog = false;
+          }
+        }
+      } else {
+        let result = Object.values(this.facilitiesItem);
+        if (result.length < 6) {
+          this.showDialogCreateRequired = true;
           this.dialog = false;
+        } else {
+          if (this.employData) {
+            const resFa = JSON.parse(localStorage.getItem("facilities"));
+            const detailsIdFa = resFa[resFa.length - 1];
+            resFa.push({
+              id: detailsIdFa.id + 1,
+              facilities_id: this.facilitiesItem.facilities_id,
+              title: this.facilitiesItem.title,
+              price: this.facilitiesItem.price,
+              qty: this.facilitiesItem.qty,
+              image: this.facilitiesItem.image,
+              innitiated_date: this.facilitiesItem.innitiated_date,
+              emp_ID: this.facilitiesItem.emp_ID,
+              fullName: this.employData.lastName + " " + this.employData.firstName,
+            });
+            this.facilities = resFa;
+            localStorage.setItem("facilities", JSON.stringify(resFa));
+            this.dialog = false;
+            this.showDialogCreateSuccess = true;
+          } else {
+            this.showDialogIdFail = true;
+            this.dialog = false;
+          }
         }
       }
     },
     cancel() {
       this.showDialogDelete = false;
-      this.showDialogCreateRequired = false;
-      this.showDialogCreateSuccess = false;
-      this.showDialogIdFail = false;
+      // this.showDialogCreateRequired = false;
+      // this.showDialogCreateSuccess = false;
+      // this.showDialogIdFail = false;
     },
     confirm() {
+      this.showDialogUpdate = false;
       this.showDialogDelete = false;
       this.showDialogDeleteSuccess = false;
       this.showDialogCreateRequired = false;
       this.showDialogCreateSuccess = false;
       this.showDialogIdFail = false;
+    },
+  },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1
+        ? "Thêm mới cơ sở vật chất"
+        : "Sửa thông tin cơ sở vật chất";
     },
   },
 };

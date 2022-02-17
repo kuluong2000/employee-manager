@@ -14,8 +14,10 @@
         <div class="w3layouts-errortext">
           <h2><span>4</span> <span>0</span> <span>4</span></h2>
           <h3>
-            Xin Lỗi!! Trang Này Hiện Không Tồn Tại <br /><router-link to="/"
-              >Về Lại Trang Chủ</router-link
+            Xin Lỗi!! Trang Này Hiện Không Tồn Tại <br /><router-link
+              to="/"
+              class="homePage"
+              >Về Trang Chủ</router-link
             >
           </h3>
           <p class="w3lstext mb-1">
@@ -114,14 +116,18 @@ img {
   font-family: "Open Sans", sans-serif;
   /* background: url("https://cdn.pixabay.com/photo/2017/04/10/10/08/universe-2218012_960_720.jpg")
     no-repeat center 0px; */
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://cdn.pixabay.com/photo/2017/04/10/10/08/universe-2218012_960_720.jpg")
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("https://png.pngtree.com/thumb_back/fw800/back_our/20190620/ourmid/pngtree-blue-tech-line-background-promotion-banner-image_144856.jpg")
       no-repeat center 0px;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
   background-attachment: fixed;
   min-height: 100vh;
+}
+.homePage {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 16px !important;
 }
 /*-- main --*/
 .agileinfo-row {
@@ -168,9 +174,9 @@ img {
 }
 .w3layouts-errortext h2 span {
   background: #fff;
-  color: rgb(11, 97, 11);
+  color: #0214bd;
   padding: 0.1em 0.3em;
-  border: 15px solid rgb(11, 97, 11);
+  border: 15px solid #0214bd;
   -webkit-box-shadow: 0px 0px 10px 1px #000;
   -moz-box-shadow: 0px 0px 10px 1px #000;
   box-shadow: 0px 0px 10px 1px #000;
@@ -188,7 +194,7 @@ img {
   font-size: 0.6em;
   color: #fff;
   font-weight: 100;
-  background: rgb(11, 97, 11);
+  background: #0214bd;
   display: inline-block;
   padding: 0.5em 1em;
   margin-top: 1em;
@@ -198,7 +204,7 @@ img {
   transition: 0.6s all;
 }
 .w3layouts-errortext h3 a:hover {
-  color: rgb(11, 97, 11);
+  color: #0214bd;
   background: #fff;
 }
 p.w3lstext {

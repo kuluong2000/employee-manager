@@ -14,9 +14,8 @@ export default new Vuex.Store({
     accountList: [],
   },
   mutations: {
-    renderDataUser(state) {
-      const res = JSON.parse(localStorage.getItem("user"));
-      state.accountList = res;
+    renderDataUser(state, info) {
+      state.accountList = info;
     },
     setDialog(state, info) {
       state.showDialog = info;
@@ -41,8 +40,8 @@ export default new Vuex.Store({
     actionSetShowPassword({ commit }) {
       commit("setShowPassword");
     },
-    actionRenderDataUser({ commit }) {
-      commit("renderDataUser");
+    actionRenderDataUser({ commit }, info) {
+      commit("renderDataUser", info);
     },
     actionSetAccountList({ commit }, accountList) {
       commit("setAccountList", accountList);

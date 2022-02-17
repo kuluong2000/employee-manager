@@ -64,7 +64,7 @@
                               <v-checkbox
                                 label="Lưu tài khoản"
                                 class="mt-n1"
-                                color="blue"
+                                color="rgb(16, 37, 158)"
                                 @click="setCookie"
                                 v-model="checkBox"
                               >
@@ -137,10 +137,10 @@
                                             v-model="otpInput"
                                           ></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" sm="5" class="pe-5">
+                                        <v-col cols="12" sm="5" class="pe-5 ps-0">
                                           <v-card
                                             class="mx-auto px-0 py-1 otp-code"
-                                            max-width="165"
+                                            max-width="172"
                                             style="background: url('https://codingnepalweb.com/demos/custom-captcha-in-javascript/captcha-bg.png')"
                                           >
                                             <v-card-text class="px-3 py-1">
@@ -386,7 +386,7 @@
       :cancel="cancel"
       :confirm="confirm"
       title="Thông báo?"
-      text="Ok! Mình sẽ kiểm tra lại"
+      text="Oke ^^"
       description="Vui lòng điền đầy đủ thông tin !!!"
     ></popup>
     <popup
@@ -394,7 +394,7 @@
       :cancel="cancel"
       :confirm="confirm"
       title="Thông báo?"
-      text="Ok! Mình sẽ kiểm tra lại"
+      text="Oke ^^"
       description="Kiểm tra lại mật khẩu vừa nhập !!!"
     ></popup>
     <popup
@@ -402,8 +402,16 @@
       :cancel="cancel"
       :confirm="confirm"
       title="Thông báo?"
-      text="OKE ^^"
-      description="Đăng ký thành công !!!"
+      text="Oke ^^"
+      description="Cập nhật thành công !!!"
+    ></popup>
+    <popup
+      :show="showDialogExistEmail"
+      :cancel="cancel"
+      :confirm="confirm"
+      title="Thông báo?"
+      text="Oke ^^"
+      description="Không tồn tại email này!!! Vui lòng kiểm tra lại"
     ></popup>
   </div>
 </template>
@@ -427,6 +435,8 @@ export default {
       showDialogSignUp: false,
       showDialogPassword: false,
       showDialogSuccess: false,
+      showDialogExistEmail: false,
+      showDialogRequiredEmail: false,
       month: "",
       minutes: "",
       dialog: false,
@@ -439,7 +449,7 @@ export default {
       colorPassword: "rgb(16, 37, 158)",
       emailShow: false,
       passShow: false,
-      showBtn: true,
+      showBtn: false,
     };
   },
   computed: {
@@ -463,9 +473,9 @@ export default {
     updatePassword() {
       const userData = JSON.parse(localStorage.getItem("user"));
       const dataEmail = userData.find((el) => el.email === this.userEmail);
-      console.log(dataEmail);
-      if (this.userEmail === "") {
-        alert("Vui lòng nhập thông tin email");
+      if (this.userEmail === "" || this.userPassword === "") {
+        this.showDialogSignUp = true;
+        this.dialog = false;
       } else {
         if (dataEmail) {
           if (this.otpInput === this.otpCode) {
@@ -478,12 +488,11 @@ export default {
               timeLogin: dataEmail.timeLogin,
             });
             localStorage.setItem("user", JSON.stringify(userData));
-            alert("Cập nhật thành công");
+            this.showDialogSuccess = true;
             this.userEmail = "";
             this.userPassword = "";
             this.otpInput = "";
             this.otpCode = this.showOTPCode();
-
             this.dialog = false;
           } else {
             alert("Mã xác thực không chính xác!!!");
@@ -491,7 +500,8 @@ export default {
             this.otpInput = "";
           }
         } else {
-          alert("Không tồn tại email này!! Vui lòng thử lại");
+          this.showDialogExistEmail = true;
+          this.dialog = false;
         }
       }
     },
@@ -514,7 +524,7 @@ export default {
       if (dataInput.length === 0) {
         this.emailShow = false;
         this.colorEmail = "rgb(16, 37, 158)";
-        this.showBtn = true;
+        this.showBtn = false;
       }
     },
     inputPassword() {
@@ -531,7 +541,7 @@ export default {
       if (dataPassword.length === 0) {
         this.colorPassword = "rgb(16, 37, 158)";
         this.passShow = false;
-        this.showBtn = true;
+        this.showBtn = false;
       }
     },
     login() {
@@ -624,11 +634,11 @@ export default {
       this.showDialogSuccess = false;
     },
     confirm() {
-      console.log("confirm");
       this.showDialog = false;
       this.showDialogSignUp = false;
       this.showDialogPassword = false;
       this.showDialogSuccess = false;
+      this.showDialogExistEmail = false;
     },
 
     showPassword() {
