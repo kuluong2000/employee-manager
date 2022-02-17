@@ -24,7 +24,7 @@
               </template>
               <v-card>
                 <v-card-title class="pt-7">
-                  <span class="text-h5">Thêm mới phòng ban</span>
+                  <span class="text-h5">{{ formTitle }}</span>
                 </v-card-title>
                 <v-card-text>
                   <v-container>
@@ -63,7 +63,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="dialog = false">
+                  <v-btn color="blue darken-1" text @click="close">
                     Đóng
                   </v-btn>
                   <v-btn color="blue darken-1" text @click="createDepartment">
@@ -86,6 +86,18 @@
                 lastIcon: 'mdi-arrow-collapse-right',
               }"
             >
+              <template v-slot:[`item.depart_image`]="{ item }">
+                <img
+                  v-if="item.depart_image"
+                  :src="item.depart_image"
+                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px"
+                />
+                <img
+                  v-else
+                  src="https://png.pngtree.com/png-clipart/20190925/original/pngtree-office-icon-for-your-project-png-image_4897910.jpg"
+                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px;"
+                />
+              </template>
               <template v-slot:[`item.actions`]="{ item }">
                 <div v-if="roleEm !== 'Trưởng Phòng'">
                   <v-dialog max-width="1000" persistent>
@@ -188,11 +200,16 @@
                       </v-card>
                     </template>
                   </v-dialog>
-                  <v-btn class="ma-2" color="orange darken-2" dark>
+                  <v-btn
+                    class="ma-2"
+                    color="orange darken-2"
+                    dark
+                    @click="editItem(item)"
+                  >
                     Sửa
                     <v-icon dark right> mdi-pencil </v-icon>
                   </v-btn>
-                  <v-btn class="ma-2" color="red" dark @click="handleRow(item)">
+                  <v-btn class="ma-2 ms-0" color="red" dark @click="handleRow(item)">
                     Xóa
                     <v-icon dark right> mdi-delete </v-icon>
                   </v-btn>
@@ -245,6 +262,14 @@
       title="Thông báo!"
       description="Thêm dữ liệu thành công!!"
     ></popup>
+    <popup
+      :show="showDialogUpdate"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Sửa dữ liệu thành công!!"
+    ></popup>
   </div>
 </template>
 <script>
@@ -268,6 +293,11 @@ export default {
         {
           text: "Tên Phòng Ban",
           value: "depart_name",
+          align: "center",
+        },
+        {
+          text: "Hình Ảnh",
+          value: "depart_image",
           align: "center",
         },
         {
@@ -295,11 +325,14 @@ export default {
         depart_address: "",
         depart_image: "",
       },
+      departmentItemDefault: {},
       showDialogDelete: false,
       showDialogDeleteSuccess: false,
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
+      showDialogUpdate: false,
       qtyDepartment: [],
+      editedIndex: -1,
     };
   },
   async mounted() {
@@ -308,30 +341,69 @@ export default {
     const dataDe = JSON.parse(localStorage.getItem("user-info"));
     this.roleEm = dataDe.role;
   },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1
+        ? "Thêm mới phòng ban"
+        : "Sửa thông tin phòng ban";
+    },
+  },
   methods: {
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.departmentItem = Object.assign({}, this.departmentItemDefault);
+        this.editedIndex = -1;
+      });
+    },
+    editItem(item) {
+      this.dialog = true;
+      this.editedIndex = this.department.indexOf(item);
+      this.departmentItem = Object.assign({}, item);
+      // console.log(this.user);
+    },
     async createDepartment() {
-      if (
-        this.departmentItem.depart_id == "" ||
-        this.departmentItem.depart_name == "" ||
-        this.departmentItem.depart_address == "" ||
-        this.departmentItem.depart_image == ""
-      ) {
-        this.showDialogCreateRequired = true;
-        this.dialog = false;
+      if (this.editedIndex > -1) {
+        let result = Object.values(this.departmentItem);
+        let resultRequired = result.find((el) => el === "");
+        if (resultRequired != undefined) {
+          this.showDialogCreateRequired = true;
+          this.dialog = false;
+        } else {
+          let resDataDe = JSON.parse(localStorage.getItem("departments"));
+          const detailsDe = resDataDe[this.editedIndex];
+          resDataDe.splice(this.editedIndex, 1, {
+            id: detailsDe.id,
+            depart_id: this.departmentItem.depart_id + "" + detailsDe.id,
+            depart_name: this.departmentItem.depart_name,
+            depart_address: this.departmentItem.depart_address,
+            depart_image: this.departmentItem.depart_image,
+          });
+          this.department = resDataDe;
+          localStorage.setItem("departments", JSON.stringify(resDataDe));
+          this.showDialogUpdate = true;
+          this.dialog = false;
+        }
       } else {
-        const resDe = JSON.parse(localStorage.getItem("departments"));
-        const detailsIdDe = resDe[resDe.length - 1];
-        resDe.push({
-          id: detailsIdDe.id + 1,
-          depart_id: this.departmentItem.depart_id,
-          depart_name: this.departmentItem.depart_name,
-          depart_address: this.departmentItem.depart_address,
-          depart_image: this.departmentItem.depart_image,
-        });
-        this.department = resDe;
-        localStorage.setItem("departments", JSON.stringify(resDe));
-        this.dialog = false;
-        this.showDialogCreateSuccess = true;
+        let result = Object.values(this.departmentItem);
+        if (result.length < 4) {
+          this.showDialogCreateRequired = true;
+          this.dialog = false;
+        } else {
+          const resDe = JSON.parse(localStorage.getItem("departments"));
+          const detailsIdDe = resDe[resDe.length - 1];
+          resDe.push({
+            id: detailsIdDe.id + 1,
+            depart_id: this.departmentItem.depart_id + "" + (detailsIdDe.id + 1),
+            depart_name: this.departmentItem.depart_name,
+            depart_address: this.departmentItem.depart_address,
+            depart_image: this.departmentItem.depart_image,
+          });
+          this.department = resDe;
+          localStorage.setItem("departments", JSON.stringify(resDe));
+          this.dialog = false;
+          this.showDialogCreateSuccess = true;
+        }
       }
     },
     async DetailsUser(item) {
@@ -368,6 +440,7 @@ export default {
       this.showDialogDeleteSuccess = false;
       this.showDialogCreateRequired = false;
       this.showDialogCreateSuccess = false;
+      this.showDialogUpdate = false;
     },
   },
 };

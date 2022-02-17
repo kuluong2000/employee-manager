@@ -36,14 +36,6 @@
                     <v-row>
                       <v-col cols="12" md="12" class="pb-0 pt-1">
                         <v-text-field
-                          label="Mã Lương"
-                          v-model="payList.payment_ID"
-                          required
-                          class="pt-1"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="12" class="pb-0 pt-1">
-                        <v-text-field
                           label="Mã Nhân Viên"
                           v-model="payList.emp_ID"
                           required
@@ -79,7 +71,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="dialog = false">
+                  <v-btn color="blue darken-1" text @click="close">
                     Đóng
                   </v-btn>
                   <v-btn color="blue darken-1" text @click="createPayment">
@@ -258,6 +250,7 @@
                                         <v-text-field
                                           label="Email"
                                           :value="detailsPaymentItem.email"
+                                          class="pt-1"
                                           required
                                           readonly
                                         ></v-text-field>
@@ -268,6 +261,7 @@
                                           label="Tên Nhân Viên"
                                           :value="detailsPaymentItem.fullName"
                                           required
+                                          class="pt-1"
                                           readonly
                                         ></v-text-field>
                                       </v-col>
@@ -276,6 +270,14 @@
                                         <v-text-field
                                           label="Chức Vụ"
                                           :value="detailsPaymentItem.role"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Phòng Ban"
+                                          :value="detailsEmployItem.depart_name"
                                           required
                                           readonly
                                         ></v-text-field>
@@ -295,20 +297,226 @@
                       </v-card>
                     </template>
                   </v-dialog>
-                  <v-btn class="ma-2" color="orange darken-2" dark>
+                  <v-btn
+                    class="ma-2"
+                    color="orange darken-2"
+                    dark
+                    @click="editItem(item)"
+                  >
                     Sửa
                     <v-icon dark right> mdi-pencil </v-icon>
                   </v-btn>
-                  <v-btn class="ma-2" color="red" dark @click="handleRow(item)">
+                  <v-btn class="ma-2 ms-0" color="red" dark @click="handleRow(item)">
                     Xóa
                     <v-icon dark right> mdi-delete </v-icon>
                   </v-btn>
                 </div>
                 <div v-else>
-                  <v-btn class="ma-2" color="primary" dark>
+                  <!-- <v-btn class="ma-2" color="primary" dark>
                     Chi Tiết
                     <v-icon dark right> mdi-eye </v-icon>
-                  </v-btn>
+                  </v-btn> -->
+                  <v-dialog max-width="1200" persistent>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        color="primary"
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="DetailsPayment(item)"
+                        >Chi Tiết <v-icon dark right> mdi-eye </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:default="dialog">
+                      <v-card>
+                        <v-card-text class="pb-2">
+                          <v-container class="px-0 pt-5 pb-0">
+                            <h1 class="px-5 pt-5 pb-5 text-center primary--text">
+                              Thông Tin Tiền Lương Nhân Viên
+                            </h1>
+                            <v-row align="start" justify="center">
+                              <v-col cols="12" sm="4" class="text-center">
+                                <v-avatar
+                                  class="mb-2"
+                                  color="grey darken-1"
+                                  size="200"
+                                  v-if="detailsEmployItem.imgUrl"
+                                >
+                                  <v-img
+                                    aspect-ratio="30"
+                                    :src="detailsEmployItem.imgUrl"
+                                  />
+                                </v-avatar>
+                                <v-avatar
+                                  class="mb-2"
+                                  color="grey darken-1"
+                                  size="250"
+                                  v-else
+                                >
+                                  <v-img
+                                    aspect-ratio="30"
+                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_8jyrBjic0ELBWNbA2JH7ufzOb3jkJvN8Q&usqp=CAU"
+                                  />
+                                </v-avatar>
+                                <h2
+                                  class="black--text mt-2 mb-6"
+                                  v-if="
+                                    detailsEmployItem.firstName &&
+                                      detailsEmployItem.lastName
+                                  "
+                                >
+                                  {{ detailsEmployItem.lastName }}
+                                  {{ detailsEmployItem.firstName }}
+                                </h2>
+                                <h2 class="black--text mt-2 mb-6" v-else>
+                                  Người dùng mới
+                                </h2>
+                                <v-row
+                                  align="center"
+                                  justify="center"
+                                  v-for="(link, index) in linkUser"
+                                  :key="index"
+                                  class="mt-0 ms-5"
+                                >
+                                  <v-col cols="12" sm="2" class="text-end px-0 mb-2">
+                                    <v-avatar
+                                      class="mb"
+                                      color="grey darken-1"
+                                      size="30"
+                                    >
+                                      <v-img aspect-ratio="30" :src="link.imgUrl" />
+                                    </v-avatar>
+                                  </v-col>
+                                  <v-col cols="12" sm="10" class="text-start">
+                                    <h4 class="primary--text">
+                                      {{ link.titleUrl }}
+                                    </h4>
+                                  </v-col>
+                                </v-row>
+                              </v-col>
+                              <v-col cols="12" sm="4" class="text-center">
+                                <v-form>
+                                  <v-container>
+                                    <v-row>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="ID"
+                                          :value="detailsPaymentItem.id"
+                                          required
+                                          class="pt-1"
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Mã Tiền Lương"
+                                          :value="detailsPaymentItem.payment_ID"
+                                          required
+                                          class="pt-1"
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Lương Cơ Bản"
+                                          :value="detailsPaymentItem.amount"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Lương Phụ Cấp"
+                                          :value="detailsPaymentItem.allowance"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Tổng Lương"
+                                          :value="detailsPaymentItem.amount_total"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Chi Tiết"
+                                          :value="detailsPaymentItem.description"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Mã Nhân Viên"
+                                          :value="detailsPaymentItem.emp_ID"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                    </v-row>
+                                  </v-container>
+                                </v-form>
+                              </v-col>
+                              <v-col cols="12" sm="4" class="text-center">
+                                <v-form>
+                                  <v-container>
+                                    <v-row>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Email"
+                                          :value="detailsPaymentItem.email"
+                                          class="pt-1"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Tên Nhân Viên"
+                                          :value="detailsPaymentItem.fullName"
+                                          required
+                                          class="pt-1"
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Chức Vụ"
+                                          :value="detailsPaymentItem.role"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="12" class="pb-0 pt-1">
+                                        <v-text-field
+                                          label="Phòng Ban"
+                                          :value="detailsEmployItem.depart_name"
+                                          required
+                                          readonly
+                                        ></v-text-field>
+                                      </v-col>
+                                    </v-row>
+                                  </v-container>
+                                </v-form>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                        </v-card-text>
+                        <v-card-actions class="justify-end">
+                          <v-btn text @click="dialog.value = false" color="primary"
+                            >Đóng</v-btn
+                          >
+                        </v-card-actions>
+                      </v-card>
+                    </template>
+                  </v-dialog>
                 </div>
               </template>
               <template v-slot:no-data>
@@ -359,6 +567,14 @@
       text="Ok! Mình sẽ kiểm tra lại"
       title="Thông báo!"
       description="Không có nhân viên này trong danh sách!!"
+    ></popup>
+    <popup
+      :show="showDialogUpdate"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Sửa dữ liệu thành công!!"
     ></popup>
   </div>
 </template>
@@ -427,18 +643,9 @@ export default {
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
       showDialogIdFail: false,
-      payList: {
-        id: "",
-        payment_ID: "",
-        emp_ID: "",
-        email: "",
-        firstName: "",
-        amount: "",
-        allowance: "",
-        amount_total: "",
-        role: "",
-        description: "",
-      },
+      showDialogUpdate: false,
+      payList: {},
+      payListDefault: {},
       linkUser: [
         {
           imgUrl:
@@ -461,6 +668,7 @@ export default {
           titleUrl: "https://www.instagram.com/",
         },
       ],
+      editedIndex: -1,
     };
   },
   async mounted() {
@@ -479,14 +687,34 @@ export default {
       this.payment = res;
     }
   },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1
+        ? "Thêm mới tiền lương"
+        : "Sửa thông tin tiền lương";
+    },
+  },
   methods: {
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.payList = Object.assign({}, this.payListDefault);
+        this.editedIndex = -1;
+      });
+    },
+    editItem(item) {
+      this.dialog = true;
+      this.editedIndex = this.payment.indexOf(item);
+      this.payList = Object.assign({}, item);
+      // console.log(this.user);
+    },
     async DetailsPayment(item) {
       this.detailsId = item.id;
       const resData = JSON.parse(localStorage.getItem("payment"));
-      const details = [...resData].find((el) => el.id === this.detailsId);
+      const details = resData.find((el) => el.id === this.detailsId);
       this.detailsPaymentItem = details;
       const dataEm = JSON.parse(localStorage.getItem("employee"));
-      const resEm = [...dataEm].find(
+      const resEm = dataEm.find(
         (el) => el.emp_ID === this.detailsPaymentItem.emp_ID
       );
       this.detailsEmployItem = resEm;
@@ -505,58 +733,70 @@ export default {
       this.showDialogDeleteSuccess = true;
     },
     async createPayment() {
-      if (
-        this.payList.payment_ID == "" ||
-        this.payList.emp_ID == "" ||
-        this.payList.amount == "" ||
-        this.payList.allowance == "" ||
-        this.payList.description == ""
-      ) {
-        this.showDialogCreateRequired = true;
-        this.dialog = false;
-      } else {
-        // const resEm = await axios.get(
-        //   `${process.env.VUE_APP_SERVER_URL}/employee?emp_ID=${this.payList.emp_ID}`
-        // );
-        // this.employData = resEm.data[0];
-        const datalocal = JSON.parse(localStorage.getItem("employee"));
-        const resEm = [...datalocal].find((el) => el.emp_ID === this.payList.emp_ID);
-        this.employData = resEm;
-        if (this.employData) {
-          // await axios.post(`${process.env.VUE_APP_SERVER_URL}/payment`, {
-          //   payment_ID: this.payList.payment_ID,
-          //   emp_ID: this.payList.emp_ID,
-          //   email: this.employData.email,
-          //   fullName: this.employData.lastName + " " + this.employData.firstName,
-          //   amount: this.payList.amount,
-          //   allowance: this.payList.allowance,
-          //   amount_total:
-          //     Number(this.payList.amount) + Number(this.payList.allowance),
-          //   role: this.employData.role,
-          //   description: this.payList.description,
-          // });
-          const resPay = JSON.parse(localStorage.getItem("payment"));
-          const detailsIdFa = resPay[resPay.length - 1];
-          resPay.push({
-            id: detailsIdFa.id + 1,
-            payment_ID: this.payList.payment_ID,
-            emp_ID: this.payList.emp_ID,
-            email: this.employData.email,
-            fullName: this.employData.lastName + " " + this.employData.firstName,
-            amount: this.payList.amount,
-            allowance: this.payList.allowance,
-            amount_total:
-              Number(this.payList.amount) + Number(this.payList.allowance),
-            role: this.employData.role,
-            description: this.payList.description,
-          });
-          this.payment = resPay;
-          localStorage.setItem("payment", JSON.stringify(resPay));
+      const datalocal = JSON.parse(localStorage.getItem("employee"));
+      const resEm = datalocal.find((el) => el.emp_ID === this.payList.emp_ID);
+      this.employData = resEm;
+      let result = Object.values(this.payList);
+      if (this.editedIndex > -1) {
+        let resultRequired = result.find((el) => el === "");
+        if (resultRequired != undefined) {
+          this.showDialogCreateRequired = true;
           this.dialog = false;
-          this.showDialogCreateSuccess = true;
         } else {
-          this.showDialogIdFail = true;
+          if (this.employData) {
+            let resDataPay = JSON.parse(localStorage.getItem("payment"));
+            const detailsPay = resDataPay[this.editedIndex];
+            resDataPay.splice(this.editedIndex, 1, {
+              id: detailsPay.id,
+              payment_ID: detailsPay.payment_ID,
+              emp_ID: this.payList.emp_ID,
+              email: this.employData.email,
+              fullName: this.employData.lastName + " " + this.employData.firstName,
+              amount: this.payList.amount,
+              allowance: this.payList.allowance,
+              amount_total:
+                Number(this.payList.amount) + Number(this.payList.allowance),
+              role: this.employData.role,
+              description: this.payList.description,
+            });
+            this.payment = resDataPay;
+            localStorage.setItem("payment", JSON.stringify(resDataPay));
+            this.showDialogUpdate = true;
+            this.dialog = false;
+          } else {
+            this.showDialogIdFail = true;
+            this.dialog = false;
+          }
+        }
+      } else {
+        if (result.length < 5) {
+          this.showDialogCreateRequired = true;
           this.dialog = false;
+        } else {
+          if (this.employData) {
+            const resPay = JSON.parse(localStorage.getItem("payment"));
+            const detailsIdFa = resPay[resPay.length - 1];
+            resPay.push({
+              id: detailsIdFa.id + 1,
+              payment_ID: `SA${detailsIdFa.id + 1}`,
+              emp_ID: this.payList.emp_ID,
+              email: this.employData.email,
+              fullName: this.employData.lastName + " " + this.employData.firstName,
+              amount: this.payList.amount,
+              allowance: this.payList.allowance,
+              amount_total:
+                Number(this.payList.amount) + Number(this.payList.allowance),
+              role: this.employData.role,
+              description: this.payList.description,
+            });
+            this.payment = resPay;
+            localStorage.setItem("payment", JSON.stringify(resPay));
+            this.dialog = false;
+            this.showDialogCreateSuccess = true;
+          } else {
+            this.showDialogIdFail = true;
+            this.dialog = false;
+          }
         }
       }
     },
@@ -570,6 +810,7 @@ export default {
       this.showDialogDelete = false;
       this.showDialogCreateRequired = false;
       this.showDialogIdFail = false;
+      this.showDialogUpdate = false;
     },
     confirmSuccess() {
       this.showDialogCreateSuccess = false;

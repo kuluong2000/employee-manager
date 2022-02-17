@@ -34,6 +34,14 @@ const routes = [
       },
 
       {
+        path: "/changepassword",
+        component: () => import("../views/ChangePassword"),
+        name: "changepassword",
+        meta: {
+          requiredAuth: true,
+        },
+      },
+      {
         path: "/userInfo",
         name: "userInfo",
         component: () => import("../components/Infomation"),
@@ -77,14 +85,6 @@ const routes = [
         path: "/payment",
         name: "payment",
         component: () => import("./../views/Payment"),
-        meta: {
-          requiredAuth: true,
-        },
-      },
-      {
-        path: "/resetPassword",
-        component: () => import("../components/ChangePassword"),
-        name: "resetPassword",
         meta: {
           requiredAuth: true,
         },

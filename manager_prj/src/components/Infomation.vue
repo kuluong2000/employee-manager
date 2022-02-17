@@ -51,7 +51,6 @@
                     <v-text-field
                       :counter="30"
                       label="Họ"
-                      :value="this.listDetail.lastName"
                       required
                       v-model="user.lastName"
                       class="pt-1"
@@ -61,7 +60,6 @@
                     <v-text-field
                       :counter="30"
                       label="Tên"
-                      :value="this.listDetail.firstName"
                       required
                       v-model="user.firstName"
                     ></v-text-field>
@@ -77,18 +75,25 @@
                   </v-col>
 
                   <v-col cols="12" md="12" class="pb-0 pt-1">
-                    <v-text-field
-                      label="Password"
-                      :value="this.listDetail.password"
-                      required
-                      readonly
-                    ></v-text-field>
+                    <div class="input-container">
+                      <v-text-field
+                        label="Password"
+                        required
+                        readonly
+                        :value="this.dataUserInfo.password"
+                        :type="choose"
+                      ></v-text-field>
+                      <v-icon
+                        class="material-icons visibility"
+                        @click="showPassword"
+                        >{{ visibility }}</v-icon
+                      >
+                    </div>
                   </v-col>
 
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
                       label="Số điện thoại"
-                      :value="this.listDetail.phoneNumber"
                       required
                       v-model="user.phoneNumber"
                     ></v-text-field>
@@ -97,7 +102,6 @@
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
                       label="Địa Chỉ"
-                      :hint="this.listDetail.address"
                       required
                       v-model="user.address"
                     ></v-text-field>
@@ -106,8 +110,8 @@
                   <v-col cols="12" md="12">
                     <v-select
                       :items="this.listRole"
-                      label="Chức Vụ"
                       :value="this.listDetail.role"
+                      label="Chức Vụ"
                       required
                       readonly
                     ></v-select>
@@ -117,10 +121,9 @@
                     <v-select
                       :items="this.listDepartment"
                       label="Phòng Ban"
-                      :value="this.listDetail.depart_name"
+                      v-model="user.depart_name"
                       :menu-props="{ top: true, offsetY: true }"
                       required
-                      readonly
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -134,17 +137,16 @@
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
                       label="Ngày Sinh"
-                      :value="this.listDetail.birthday"
                       required
                       v-model="user.birthday"
                       class="pt-1"
+                      type="date"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-select
                       :items="['Nam', 'Nữ']"
                       label="Giới Tính"
-                      :value="this.listDetail.gender"
                       required
                       v-model="user.gender"
                     ></v-select>
@@ -153,7 +155,6 @@
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
                       label="Số CMND/CCCD"
-                      :value="this.listDetail.numberCard"
                       required
                       v-model="user.numberCard"
                     ></v-text-field>
@@ -162,7 +163,6 @@
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
                       label="Quốc Tịch"
-                      :value="this.listDetail.nationality"
                       required
                       v-model="user.nationality"
                     ></v-text-field>
@@ -171,7 +171,6 @@
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
                       label="Dân Tộc"
-                      :value="this.listDetail.ethnic"
                       required
                       v-model="user.ethnic"
                     ></v-text-field>
@@ -180,7 +179,6 @@
                   <v-col cols="12" md="12" class="pb-0 pt-1">
                     <v-text-field
                       label="Tôn Giáo"
-                      :value="this.listDetail.religion"
                       required
                       v-model="user.religion"
                     ></v-text-field>
@@ -190,7 +188,6 @@
                     <v-select
                       :items="['12/12']"
                       label="Trình Độ Văn Hóa"
-                      :value="this.listDetail.educationalLevel"
                       required
                       v-model="user.educationalLevel"
                     ></v-select>
@@ -200,7 +197,6 @@
                     <v-select
                       :items="['Cao Đẳng', 'Đại Học', 'Cao Học']"
                       label="Trình Độ Học Vấn"
-                      :value="this.listDetail.academicLevel"
                       :menu-props="{ top: true, offsetY: true }"
                       required
                       v-model="user.academicLevel"
@@ -280,6 +276,8 @@
 <script>
 import Popup from "./Popup.vue";
 // import axios from "axios";
+import { mapState } from "vuex";
+
 export default {
   components: { Popup },
   name: "Infomation",
@@ -310,27 +308,16 @@ export default {
       listRole: [],
       listDepartment: [],
       listDetail: {},
-      user: {
-        firstName: "",
-        lastName: "",
-        address: "",
-        phoneNumber: "",
-        birthday: "",
-        gender: "",
-        numberCard: "",
-        nationality: "",
-        ethnic: "",
-        religion: "",
-        educationalLevel: "",
-        academicLevel: "",
-      },
+      user: {},
       showDialogUpdateSuccess: false,
       showDialogDuplicateInf: false,
+      dataUserInfo: {},
     };
   },
   async mounted() {
     const res = JSON.parse(localStorage.getItem("employee"));
     const dataLogin = JSON.parse(localStorage.getItem("user-info"));
+    this.dataUserInfo = dataLogin;
     let id = dataLogin.email;
     let data = res;
     const detailEm = data.find((el) => el.email === id);
@@ -339,6 +326,7 @@ export default {
     this.user.firstName = this.listDetail.firstName;
     this.user.lastName = this.listDetail.lastName;
     this.user.address = this.listDetail.address;
+    this.user.depart_name = this.listDetail.depart_name;
     this.user.phoneNumber = this.listDetail.phoneNumber;
     this.user.birthday = this.listDetail.birthday;
     this.user.gender = this.listDetail.gender;
@@ -373,7 +361,7 @@ export default {
         imgUrl: detailUser.imgUrl,
         role: detailUser.role,
         depart_id: detailUser.depart_id,
-        depart_name: detailUser.depart_name,
+        depart_name: this.user.depart_name,
         position_id: detailUser.position_id,
         address: this.user.address,
         phoneNumber: this.user.phoneNumber,
@@ -401,6 +389,15 @@ export default {
     cancel() {
       console.log("test");
     },
+    showPassword() {
+      this.$store.dispatch("actionSetShowPassword");
+    },
+  },
+  computed: {
+    ...mapState({
+      choose: (state) => state.choose,
+      visibility: (state) => state.visibility,
+    }),
   },
 };
 </script>
@@ -408,5 +405,17 @@ export default {
 <style>
 .section-info {
   margin: -14px 0 -16px;
+}
+.input-container {
+  position: relative;
+}
+.material-icons {
+  margin: 0 10px;
+  color: #aaa;
+  cursor: default;
+  position: absolute !important;
+  content: "";
+  top: 16px;
+  right: -8px;
 }
 </style>

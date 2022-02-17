@@ -24,12 +24,12 @@
               </template>
               <v-card>
                 <v-card-title class="pt-7">
-                  <span class="text-h5">Thêm mới nhân viên</span>
+                  <span class="text-h5">{{ formTitle }}</span>
                 </v-card-title>
                 <v-card-text>
                   <v-container>
                     <v-row>
-                      <v-col cols="12" sm="4" class="text-center">
+                      <v-col cols="12" sm="6" class="text-center">
                         <v-container>
                           <v-row>
                             <v-col cols="12" md="12" class="pb-0 pt-1">
@@ -55,15 +55,7 @@
                                 label="E-mail"
                                 v-model="user.email"
                                 required
-                              ></v-text-field>
-                            </v-col>
-
-                            <v-col cols="12" md="12" class="pb-0 pt-1">
-                              <v-text-field
-                                label="Password"
-                                v-model="user.password"
-                                type="password"
-                                required
+                                :disabled="readChange"
                               ></v-text-field>
                             </v-col>
 
@@ -101,12 +93,6 @@
                                 required
                               ></v-select>
                             </v-col>
-                          </v-row>
-                        </v-container>
-                      </v-col>
-                      <v-col cols="12" sm="4" class="text-center">
-                        <v-container>
-                          <v-row>
                             <v-col cols="12" md="12" class="pb-0 pt-1">
                               <v-text-field
                                 label="Số Điện Thoại"
@@ -115,6 +101,12 @@
                                 class="pt-1"
                               ></v-text-field>
                             </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-col>
+                      <v-col cols="12" sm="6" class="text-center">
+                        <v-container>
+                          <v-row>
                             <v-col cols="12" md="12" class="pb-0 pt-1">
                               <v-text-field
                                 label="Ngày Sinh"
@@ -173,12 +165,7 @@
                                 v-model="user.educationalLevel"
                               ></v-select>
                             </v-col>
-                          </v-row>
-                        </v-container>
-                      </v-col>
-                      <v-col cols="12" sm="4" class="text-center">
-                        <v-container>
-                          <v-row>
+
                             <v-col cols="12" md="12" class="pb-0 pt-1">
                               <v-select
                                 class="pt-1"
@@ -192,27 +179,12 @@
                           </v-row>
                         </v-container>
                       </v-col>
-                      <!-- <v-col cols="12" sm="4" class="text-center">
-                        <v-container>
-                          <v-row>
-                            <v-col cols="12" md="12" class="pb-0 pt-0">
-                              <v-select
-                                :items="['Cao Đẳng', 'Đại Học', 'Cao Học']"
-                                label="Trình Độ Học Vấn"
-                                :menu-props="{ top: true, offsetY: true }"
-                                required
-                                v-model="user.academicLevel"
-                              ></v-select>
-                            </v-col>
-                          </v-row>
-                        </v-container>
-                      </v-col> -->
                     </v-row>
                   </v-container>
                 </v-card-text>
                 <v-card-actions class="pt-0 pb-4">
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="dialog = false">
+                  <v-btn color="blue darken-1" text @click="close">
                     Đóng
                   </v-btn>
                   <v-btn color="blue darken-1" text @click="createUser">
@@ -235,6 +207,18 @@
                 lastIcon: 'mdi-arrow-collapse-right',
               }"
             >
+              <template v-slot:[`item.imgUrl`]="{ item }">
+                <img
+                  v-if="item.imgUrl"
+                  :src="item.imgUrl"
+                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px"
+                />
+                <img
+                  v-else
+                  src="http://ativn.edu.vn/wp-content/uploads/2018/03/user-male-icon-300x300.png"
+                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px;"
+                />
+              </template>
               <template v-slot:[`item.actions`]="{ item }">
                 <v-dialog max-width="1600" persistent>
                   <template v-slot:activator="{ on, attrs }">
@@ -327,7 +311,14 @@
                                         readonly
                                       ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" md="12" class="pb-0 pt-1">
+                                    <v-col
+                                      cols="12"
+                                      md="12"
+                                      class="pb-0 pt-1"
+                                      v-if="
+                                        detailsItem.lastName && detailsItem.firstName
+                                      "
+                                    >
                                       <v-text-field
                                         label="Tên Nhân Viên"
                                         :value="
@@ -335,6 +326,19 @@
                                             ' ' +
                                             detailsItem.firstName
                                         "
+                                        required
+                                        readonly
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col
+                                      cols="12"
+                                      md="12"
+                                      class="pb-0 pt-1"
+                                      v-else
+                                    >
+                                      <v-text-field
+                                        label="Tên Nhân Viên"
+                                        value="Người dùng mới"
                                         required
                                         readonly
                                       ></v-text-field>
@@ -350,12 +354,20 @@
                                     </v-col>
 
                                     <v-col cols="12" md="12" class="pb-0 pt-1">
-                                      <v-text-field
-                                        label="Password"
-                                        :value="detailsItem.password"
-                                        required
-                                        readonly
-                                      ></v-text-field>
+                                      <div class="input-container">
+                                        <v-text-field
+                                          label="Password"
+                                          :value="detailsItem.password"
+                                          required
+                                          readonly
+                                          :type="choose"
+                                        ></v-text-field>
+                                        <v-icon
+                                          class="material-icons visibility"
+                                          @click="showPassword"
+                                          >{{ visibility }}</v-icon
+                                        >
+                                      </div>
                                     </v-col>
 
                                     <v-col cols="12" md="12" class="pb-0 pt-1">
@@ -522,11 +534,16 @@
                     </v-card>
                   </template>
                 </v-dialog>
-                <v-btn class="ma-2" color="orange darken-2" dark>
+                <v-btn
+                  class="ma-2"
+                  color="orange darken-2"
+                  dark
+                  @click="editItem(item)"
+                >
                   Sửa
                   <v-icon dark right> mdi-pencil </v-icon>
                 </v-btn>
-                <v-btn class="ma-2" color="red" dark @click="handleRow(item)">
+                <v-btn class="ma-2 ms-0" color="red" dark @click="handleRow(item)">
                   Xóa
                   <v-icon dark right> mdi-delete </v-icon>
                 </v-btn>
@@ -580,11 +597,21 @@
       title="Thông báo!"
       description="Email này đã tồn tại!! Vui lòng chọn email khác"
     ></popup>
+    <popup
+      :show="showDialogUpdate"
+      :cancel="cancel"
+      :confirm="confirm"
+      text="Oke ^^"
+      title="Thông báo!"
+      description="Sửa dữ liệu thành công!!"
+    ></popup>
   </div>
 </template>
 <script>
 // import axios from "axios";
 import Popup from "../components/Popup.vue";
+import { mapState } from "vuex";
+
 export default {
   components: { Popup },
   data() {
@@ -606,8 +633,8 @@ export default {
           align: "center",
         },
         {
-          text: "Email",
-          value: "email",
+          text: "Hình Ảnh",
+          value: "imgUrl",
           align: "center",
         },
         {
@@ -641,11 +668,13 @@ export default {
       dialog: false,
       detailsItem: {},
       user: {},
+      defaultUser: {},
       showDialogDelete: false,
       showDialogDeleteSuccess: false,
       showDialogCreateRequired: false,
       showDialogCreateSuccess: false,
       showDialogDuplicateEmail: false,
+      showDialogUpdate: false,
       linkUser: [
         {
           imgUrl:
@@ -668,32 +697,36 @@ export default {
           titleUrl: "https://www.instagram.com/",
         },
       ],
+      editedIndex: -1,
+      readChange: false,
     };
   },
   methods: {
-    // async DetailsUser(item) {
-    //   this.detailsId = item.id;
-    //   // const res = await axios.get(
-    //   //   `${process.env.VUE_APP_SERVER_URL}/employee/${this.detailsId}`
-    //   // );
-    //   const resData = JSON.parse(localStorage.getItem("employee"));
-    //   const details = [...resData].find(el => el)
-    //   this.detailsItem = res.data;
-    // },
     DetailsUser(item) {
       this.detailsId = item.id;
       const resData = JSON.parse(localStorage.getItem("employee"));
       const details = [...resData].find((el) => el.id === this.detailsId);
       this.detailsItem = details;
     },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.user = Object.assign({}, this.defaultUser);
+        this.editedIndex = -1;
+      });
+    },
+    editItem(item) {
+      this.dialog = true;
+      this.editedIndex = this.employee.indexOf(item);
+      this.user = Object.assign({}, item);
+      this.readChange = true;
+      // console.log(this.user);
+    },
     handleRow(item) {
       this.deleteId = item.email;
       this.showDialogDelete = true;
     },
     async handleDelete() {
-      // await axios.delete(
-      //   `${process.env.VUE_APP_SERVER_URL}/employee/${this.deleteId}`
-      // );
       const resDataUser = JSON.parse(localStorage.getItem("user"));
       const resDataEmp = JSON.parse(localStorage.getItem("employee"));
       const indexDel = resDataUser.findIndex((el) => el.email === this.deleteId);
@@ -713,39 +746,31 @@ export default {
       });
     },
     async createUser() {
-      let result = Object.values(this.user);
-      if (result.length < 17) {
-        this.showDialogCreateRequired = true;
-        this.dialog = false;
-      } else {
-        if (this.userExists(this.user.email) == true) {
-          this.showDialogDuplicateEmail = true;
+      if (this.editedIndex > -1) {
+        let result = Object.values(this.user);
+        let resultRequired = result.find((el) => el === "");
+        if (resultRequired != undefined) {
+          this.showDialogCreateRequired = true;
           this.dialog = false;
         } else {
-          const resUser = JSON.parse(localStorage.getItem("user"));
-          const detailsIdUser = resUser[resUser.length - 1];
-          resUser.push({
-            id: detailsIdUser.id + 1,
-            email: this.user.email,
-            password: this.user.password,
-            role: this.user.role,
-          });
-          localStorage.setItem("user", JSON.stringify(resUser));
-          const resEm = JSON.parse(localStorage.getItem("employee"));
-          const detailsIdEm = resEm[resEm.length - 1];
-          resEm.push({
-            id: detailsIdEm.id + 1,
-            emp_ID: `NV${detailsIdEm.id + 1}`,
+          let resDataEm = JSON.parse(localStorage.getItem("employee"));
+          let resDataUser = JSON.parse(localStorage.getItem("user"));
+          let resDataPay = JSON.parse(localStorage.getItem("payment"));
+          //Employee
+          const detailsEm = resDataEm[this.editedIndex];
+          resDataEm.splice(this.editedIndex, 1, {
+            id: detailsEm.id,
+            emp_ID: detailsEm.emp_ID,
             firstName: this.user.firstName,
             lastName: this.user.lastName,
             email: this.user.email,
             password: this.user.password,
+            imgUrl: this.user.imgUrl,
             role: this.user.role,
-            position_id: this.user.position_id,
             depart_id: this.user.depart_id,
             depart_name: this.user.depart_name,
+            position_id: this.user.position_id,
             address: this.user.address,
-            imgUrl: this.user.imgUrl,
             phoneNumber: this.user.phoneNumber,
             birthday: this.user.birthday,
             gender: this.user.gender,
@@ -756,10 +781,90 @@ export default {
             educationalLevel: this.user.educationalLevel,
             academicLevel: this.user.academicLevel,
           });
-          this.employee = resEm;
-          localStorage.setItem("employee", JSON.stringify(resEm));
+          localStorage.setItem("employee", JSON.stringify(resDataEm));
+          this.employee = resDataEm;
+          //User
+          const detailsUser = resDataUser[this.editedIndex];
+          resDataUser.splice(this.editedIndex, 1, {
+            id: detailsUser.id,
+            email: detailsUser.email,
+            password: detailsUser.password,
+            role: this.user.role,
+            timeLogin: detailsUser.timeLogin,
+          });
+          localStorage.setItem("user", JSON.stringify(resDataUser));
+          //Payment
+          let detailsIndex = resDataPay.findIndex(
+            (el) => el.emp_ID === detailsEm.emp_ID
+          );
+          const detailsPay = resDataPay.find((el) => el.emp_ID === detailsEm.emp_ID);
+          if (detailsPay) {
+            resDataPay.splice(detailsIndex, 1, {
+              id: detailsPay.id,
+              payment_ID: detailsPay.payment_ID,
+              emp_ID: detailsPay.emp_ID,
+              email: detailsPay.email,
+              fullName: this.user.lastName + " " + this.user.firstName,
+              amount: detailsPay.amount,
+              allowance: detailsPay.allowance,
+              amount_total: Number(detailsPay.amount) + Number(detailsPay.allowance),
+              role: this.user.role,
+              description: detailsPay.description,
+            });
+            localStorage.setItem("payment", JSON.stringify(resDataPay));
+          }
+          this.showDialogUpdate = true;
           this.dialog = false;
-          this.showDialogCreateSuccess = true;
+        }
+      } else {
+        let result = Object.values(this.user);
+        if (result.length < 16) {
+          this.showDialogCreateRequired = true;
+          this.dialog = false;
+        } else {
+          if (this.userExists(this.user.email) == true) {
+            this.showDialogDuplicateEmail = true;
+            this.dialog = false;
+          } else {
+            const resUser = JSON.parse(localStorage.getItem("user"));
+            const detailsIdUser = resUser[resUser.length - 1];
+            resUser.push({
+              id: detailsIdUser.id + 1,
+              email: this.user.email,
+              password: "12345678",
+              role: this.user.role,
+            });
+            localStorage.setItem("user", JSON.stringify(resUser));
+            const resEm = JSON.parse(localStorage.getItem("employee"));
+            const detailsIdEm = resEm[resEm.length - 1];
+            resEm.push({
+              id: detailsIdEm.id + 1,
+              emp_ID: `NV${detailsIdEm.id + 1}`,
+              firstName: this.user.firstName,
+              lastName: this.user.lastName,
+              email: this.user.email,
+              password: "12345678",
+              role: this.user.role,
+              position_id: this.user.position_id,
+              depart_id: this.user.depart_id,
+              depart_name: this.user.depart_name,
+              address: this.user.address,
+              imgUrl: this.user.imgUrl,
+              phoneNumber: this.user.phoneNumber,
+              birthday: this.user.birthday,
+              gender: this.user.gender,
+              numberCard: this.user.numberCard,
+              nationality: this.user.nationality,
+              ethnic: this.user.ethnic,
+              religion: this.user.religion,
+              educationalLevel: this.user.educationalLevel,
+              academicLevel: this.user.academicLevel,
+            });
+            this.employee = resEm;
+            localStorage.setItem("employee", JSON.stringify(resEm));
+            this.dialog = false;
+            this.showDialogCreateSuccess = true;
+          }
         }
       }
     },
@@ -774,6 +879,10 @@ export default {
       this.showDialogCreateRequired = false;
       this.showDialogCreateSuccess = false;
       this.showDialogDuplicateEmail = false;
+      this.showDialogUpdate = false;
+    },
+    showPassword() {
+      this.$store.dispatch("actionSetShowPassword");
     },
   },
   async mounted() {
@@ -790,6 +899,17 @@ export default {
     let resultDe = resDe.map((a) => a.depart_name);
     this.listDepartment = resultDe;
   },
+  computed: {
+    ...mapState({
+      choose: (state) => state.choose,
+      visibility: (state) => state.visibility,
+    }),
+    formTitle() {
+      return this.editedIndex === -1
+        ? "Thêm mới nhân viên"
+        : "Sửa thông tin nhân viên";
+    },
+  },
 };
 </script>
 <style scoped>
@@ -805,5 +925,17 @@ h1 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.input-container {
+  position: relative;
+}
+.material-icons {
+  margin: 0 10px;
+  color: #aaa;
+  cursor: default;
+  position: absolute;
+  content: "";
+  top: 16px;
+  right: -8px;
 }
 </style>
