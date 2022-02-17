@@ -34,17 +34,17 @@ const routes = [
       },
 
       {
-        path: "/changepassword",
-        component: () => import("../views/ChangePassword"),
-        name: "changepassword",
+        path: "/userInfo",
+        name: "userInfo",
+        component: () => import("../components/Infomation"),
         meta: {
           requiredAuth: true,
         },
       },
       {
-        path: "/userInfo",
-        name: "userInfo",
-        component: () => import("../components/Infomation"),
+        path: "/changepassword",
+        name: "changepassword",
+        component: () => import("./../views/ChangePassword"),
         meta: {
           requiredAuth: true,
         },

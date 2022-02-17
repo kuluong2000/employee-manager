@@ -194,7 +194,13 @@
                             Hoặc đăng nhập bằng
                           </h5>
                           <div
-                            class="d-flex justify-space-between align-center mx-10 mb-16"
+                            class="
+                              d-flex
+                              justify-space-between
+                              align-center
+                              mx-10
+                              mb-16
+                            "
                           >
                             <v-btn depressed outlined color="grey">
                               <v-icon color="red">mdi-google</v-icon>
@@ -348,7 +354,13 @@
                             Hoặc đăng ký bằng
                           </h5>
                           <div
-                            class="d-flex justify-space-between align-center mx-10 mb-11"
+                            class="
+                              d-flex
+                              justify-space-between
+                              align-center
+                              mx-10
+                              mb-11
+                            "
                           >
                             <v-btn depressed outlined color="grey">
                               <v-icon color="red">mdi-google</v-icon>
