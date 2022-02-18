@@ -73,6 +73,7 @@
                     <input
                       :type="choose"
                       @input="input"
+                      ref="itemInput"
                       placeholder="Nhập mật khẩu mới"
                       class="form-input__item"
                       v-model="newPassword"
