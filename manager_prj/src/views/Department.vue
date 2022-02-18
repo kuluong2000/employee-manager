@@ -90,12 +90,12 @@
                 <img
                   v-if="item.depart_image"
                   :src="item.depart_image"
-                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px"
+                  style="width: 70px; height: 50px; object-fit:cover; margin: 3px 0 -2px"
                 />
                 <img
                   v-else
                   src="https://png.pngtree.com/png-clipart/20190925/original/pngtree-office-icon-for-your-project-png-image_4897910.jpg"
-                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px;"
+                  style="width: 70px; height: 50px; object-fit:cover; margin: 3px 0 -2px;"
                 />
               </template>
               <template v-slot:[`item.actions`]="{ item }">

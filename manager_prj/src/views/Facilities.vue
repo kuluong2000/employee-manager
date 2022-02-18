@@ -124,7 +124,7 @@
                 <img
                   v-if="item.image"
                   :src="item.image"
-                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px"
+                  style="width: 70px; height: 50px; object-fit:cover; margin: 3px 0 -2px"
                 />
                 <img
                   v-else

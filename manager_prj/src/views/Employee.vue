@@ -211,12 +211,12 @@
                 <img
                   v-if="item.imgUrl"
                   :src="item.imgUrl"
-                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px"
+                  style="width: 60px; height: 50px; object-fit:cover; margin: 3px 0 -2px"
                 />
                 <img
                   v-else
                   src="http://ativn.edu.vn/wp-content/uploads/2018/03/user-male-icon-300x300.png"
-                  style="width: 50px; height: 50px; object-fit:cover; margin: 3px 0 -2px;"
+                  style="width: 60px; height: 50px; object-fit:cover; margin: 3px 0 -2px;"
                 />
               </template>
               <template v-slot:[`item.actions`]="{ item }">

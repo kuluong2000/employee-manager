@@ -66,15 +66,20 @@
                     class="form-input__item"
                     v-model="oldPassword"
                   />
+                  <span class="error__oldPass" :style="showOldPassword">{{
+                    oldPasswordText
+                  }}</span>
                   <div class="form-input__list">
                     <input
                       :type="choose"
                       @input="input"
-                      ref="itemInput"
                       placeholder="Nhập mật khẩu mới"
                       class="form-input__item"
                       v-model="newPassword"
                     />
+                    <span class="error__oldPass" :style="showNewPassword">{{
+                      newPasswordText
+                    }}</span>
                   </div>
                   <input
                     :type="choose"
@@ -82,9 +87,12 @@
                     class="form-input__item"
                     v-model="confirmPassword"
                   />
+                  <span class="error__oldPass" :style="showConfirmPassword">{{
+                    confirmPasswordText
+                  }}</span>
                   <v-checkbox
                     label="Hiện mật khẩu"
-                    class="mt-3"
+                    class="mt-0 pt-0"
                     color="rgb(16, 37, 158)"
                     v-model="checkBox"
                     @click="showPassword"
@@ -104,36 +112,12 @@
         </div>
       </div>
       <popup
-        :show="showDialogRequired"
-        :cancel="close"
-        :confirm="confirm"
-        title="Thông báo?"
-        text="Oke ^^"
-        description="Vui lòng điền đầy đủ thông tin!!!"
-      ></popup>
-      <popup
         :show="showDialogSuccess"
         :cancel="close"
         :confirm="success"
         title="Thông báo?"
         text="Oke ^^"
         description="Đổi mật khẩu thành công!!! Hãy thử đăng nhập lại"
-      ></popup>
-      <popup
-        :show="showDialogOldFail"
-        :cancel="close"
-        :confirm="confirm"
-        title="Thông báo?"
-        text="Oke ^^"
-        description="Mật khẩu cũ không đúng!!! Hãy kiểm tra lại"
-      ></popup>
-      <popup
-        :show="showDialogConfirmFail"
-        :cancel="close"
-        :confirm="confirm"
-        title="Thông báo?"
-        text="Oke ^^"
-        description="Mật khẩu xác nhận không đúng!!! Vui lòng thử lại"
       ></popup>
     </div>
   </transition>
@@ -161,21 +145,18 @@ export default {
       colorIconUpper: "#aaa",
       colorIconNumber: "#aaa",
       colorIconSpecial: "#aaa",
-      showDialogRequired: false,
-      showDialogOldFail: false,
-      showDialogConfirmFail: false,
       showDialogSuccess: false,
+      showOldPassword: "visibility: hidden",
+      showConfirmPassword: "visibility: hidden",
+      showNewPassword: "visibility: hidden",
+      oldPasswordText: "* Không được bỏ trống ô này",
+      newPasswordText: "* Không được bỏ trống ô này",
+      confirmPasswordText: "* Không được bỏ trống ô này",
     };
   },
   methods: {
     close() {
-      this.showDialogRequired = false;
-    },
-    confirm() {
-      this.showDialogRequired = false;
-      this.showDialogOldFail = false;
-      this.showDialogConfirmFail = false;
-      this.showPopupChange = true;
+      console.log(123);
     },
     success() {
       this.showDialogSuccess = false;
@@ -184,6 +165,18 @@ export default {
     cancel() {
       this.$router.push("/");
     },
+    // checkInputRequired(errorText, errorShow) {
+    //   errorText = "* Không được bỏ trống ô này";
+    //   errorShow = "visibility: unset";
+    // },
+    // checkEmpty(value) {
+    //   if (value == "") {
+    //     this.oldPasswordText = "* Không được bỏ trống ô này";
+    //     this.showOldPassword = "visibility: unset";
+    //   } else {
+    //     this.showOldPassword = "visibility: hidden";
+    //   }
+    // },
     save() {
       const oldPass = this.oldPassword;
       const data = JSON.parse(localStorage.getItem("user-info"));
@@ -194,58 +187,110 @@ export default {
       const newPass = this.newPassword;
       const confirmPass = this.confirmPassword;
       if (
+        this.oldPassword === "" &&
+        this.newPassword === "" &&
+        this.confirmPassword === ""
+      ) {
+        this.oldPasswordText = "* Không được bỏ trống ô này";
+        this.showOldPassword = "visibility: unset";
+        this.newPasswordText = "* Không được bỏ trống ô này";
+        this.showNewPassword = "visibility: unset";
+        this.confirmPasswordText = "* Không được bỏ trống ô này";
+        this.showConfirmPassword = "visibility: unset";
+      } else if (
         this.oldPassword === "" ||
         this.newPassword === "" ||
         this.confirmPassword === ""
       ) {
-        this.showDialogRequired = true;
-        this.showPopupChange = false;
-      } else {
-        if (newPass === confirmPass) {
-          if (oldPass === data.password) {
-            user.splice(indexUser, 1, {
-              id: data.id,
-              email: data.email,
-              password: newPass,
-              role: data.role,
-              timeLogin: data.timeLogin,
-            });
-            localStorage.setItem("user-info", JSON.stringify(user[indexUser]));
-            localStorage.setItem("user", JSON.stringify(user));
-            //
-            employee.splice(indexUser, 1, {
-              id: findEmp.id,
-              emp_ID: findEmp.emp_ID,
-              firstName: findEmp.firstName,
-              lastName: findEmp.lastName,
-              email: findEmp.email,
-              password: newPass,
-              imgUrl: findEmp.imgUrl,
-              role: findEmp.role,
-              depart_id: findEmp.depart_id,
-              depart_name: findEmp.depart_name,
-              position_id: findEmp.position_id,
-              address: findEmp.address,
-              phoneNumber: findEmp.phoneNumber,
-              birthday: findEmp.birthday,
-              gender: findEmp.gender,
-              numberCard: findEmp.numberCard,
-              nationality: findEmp.nationality,
-              ethnic: findEmp.ethnic,
-              religion: findEmp.religion,
-              educationalLevel: findEmp.educationalLevel,
-              academicLevel: findEmp.academicLevel,
-            });
-            localStorage.setItem("employee", JSON.stringify(employee));
-            this.showDialogSuccess = true;
-            this.showPopupChange = false;
-          } else {
-            this.showDialogOldFail = true;
-            this.showPopupChange = false;
-          }
+        if (this.oldPassword === "") {
+          this.oldPasswordText = "* Không được bỏ trống ô này";
+          this.showOldPassword = "visibility: unset";
         } else {
-          this.showDialogConfirmFail = true;
-          this.showPopupChange = false;
+          this.showOldPassword = "visibility: hidden";
+        }
+        if (this.newPassword === "") {
+          this.newPasswordText = "* Không được bỏ trống ô này";
+          this.showNewPassword = "visibility: unset";
+        } else {
+          this.showNewPassword = "visibility: hidden";
+        }
+        if (this.confirmPassword === "") {
+          this.confirmPasswordText = "* Không được bỏ trống ô này";
+          this.showConfirmPassword = "visibility: unset";
+        } else {
+          this.showConfirmPassword = "visibility: hidden";
+        }
+      } else if (this.oldPassword === "") {
+        this.oldPasswordText = "* Không được bỏ trống ô này";
+        this.showOldPassword = "visibility: unset";
+      } else if (this.newPassword === "") {
+        this.newPasswordText = "* Không được bỏ trống ô này";
+        this.showNewPassword = "visibility: unset";
+      } else if (this.confirmPassword === "") {
+        this.confirmPasswordText = "* Không được bỏ trống ô này";
+        this.showConfirmPassword = "visibility: unset";
+      } else {
+        this.showOldPassword = "visibility: hidden";
+        this.showNewPassword = "visibility: hidden";
+        this.showConfirmPassword = "visibility: hidden";
+        if (oldPass === data.password) {
+          if (
+            this.checkLength == "unvalid" ||
+            this.checkUpper == "unvalid" ||
+            this.checkNumber == "unvalid" ||
+            this.checkSpecial == "unvalid"
+          ) {
+            this.showNewPassword = "visibility: unset";
+            this.newPasswordText = "* Mật khẩu bảo mật kém !";
+          } else {
+            if (newPass === confirmPass) {
+              user.splice(indexUser, 1, {
+                id: data.id,
+                email: data.email,
+                password: newPass,
+                role: data.role,
+                timeLogin: data.timeLogin,
+              });
+              localStorage.setItem("user-info", JSON.stringify(user[indexUser]));
+              localStorage.setItem("user", JSON.stringify(user));
+              //
+              employee.splice(indexUser, 1, {
+                id: findEmp.id,
+                emp_ID: findEmp.emp_ID,
+                firstName: findEmp.firstName,
+                lastName: findEmp.lastName,
+                email: findEmp.email,
+                password: newPass,
+                imgUrl: findEmp.imgUrl,
+                role: findEmp.role,
+                depart_id: findEmp.depart_id,
+                depart_name: findEmp.depart_name,
+                position_id: findEmp.position_id,
+                address: findEmp.address,
+                phoneNumber: findEmp.phoneNumber,
+                birthday: findEmp.birthday,
+                gender: findEmp.gender,
+                numberCard: findEmp.numberCard,
+                nationality: findEmp.nationality,
+                ethnic: findEmp.ethnic,
+                religion: findEmp.religion,
+                educationalLevel: findEmp.educationalLevel,
+                academicLevel: findEmp.academicLevel,
+              });
+              localStorage.setItem("employee", JSON.stringify(employee));
+              this.showDialogSuccess = true;
+              this.showPopupChange = false;
+              this.showConfirmPassword = "visibility: hidden";
+            } else {
+              this.showConfirmPassword = "visibility: unset";
+              this.confirmPasswordText = "* Mật khẩu xác nhận không chính xác !";
+            }
+            this.showNewPassword = "visibility: hidden";
+          }
+          this.showOldPassword = "visibility: hidden";
+        } else {
+          this.showOldPassword = "visibility: unset";
+          this.oldPasswordText = "* Mật khẩu cũ không chính xác !";
         }
       }
     },

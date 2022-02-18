@@ -35,9 +35,9 @@
                             v-model="user.email"
                             @input="inputEmail"
                           />
-                          <span class="error__email" v-show="emailShow"
-                            >* Vui lòng nhập đúng cú pháp email</span
-                          >
+                          <span class="error__email" v-show="emailShow">{{
+                            emailErrorText
+                          }}</span>
 
                           <div class="input-container">
                             <v-text-field
@@ -56,9 +56,9 @@
                               >{{ visibility }}</v-icon
                             >
                           </div>
-                          <span class="error_password" v-show="passShow"
-                            >* Mật khẩu phải lớn hơn hoặc bằng 8 kí tự</span
-                          >
+                          <span class="error_password" v-show="passShow">{{
+                            passwordErrorText
+                          }}</span>
                           <v-row>
                             <v-col cols="12" sm="7">
                               <v-checkbox
@@ -382,14 +382,6 @@
       description="Email hoặc mật khẩu không đúng!!!"
     ></popup>
     <popup
-      :show="showDialogSignUp"
-      :cancel="cancel"
-      :confirm="confirm"
-      title="Thông báo?"
-      text="Oke ^^"
-      description="Vui lòng điền đầy đủ thông tin !!!"
-    ></popup>
-    <popup
       :show="showDialogPassword"
       :cancel="cancel"
       :confirm="confirm"
@@ -432,7 +424,6 @@ export default {
       },
       userSignUp: {},
       showDialog: false,
-      showDialogSignUp: false,
       showDialogPassword: false,
       showDialogSuccess: false,
       showDialogExistEmail: false,
@@ -450,6 +441,8 @@ export default {
       emailShow: false,
       passShow: false,
       showBtn: false,
+      emailErrorText: "* Vui lòng nhập đúng cú pháp email",
+      passwordErrorText: "* Mật khẩu phải lớn hơn hoặc bằng 8 kí tự",
     };
   },
   computed: {
@@ -519,6 +512,7 @@ export default {
       } else {
         this.emailShow = true;
         this.colorEmail = "red";
+        this.emailErrorText = "* Vui lòng nhập đúng cú pháp email";
         this.showBtn = true;
       }
       if (dataInput.length === 0) {
@@ -531,6 +525,7 @@ export default {
       let dataPassword = this.user.password;
       if (dataPassword.length < 8) {
         this.colorPassword = "red";
+        this.passwordErrorText = "* Mật khẩu phải lớn hơn hoặc bằng 8 kí tự";
         this.passShow = true;
         this.showBtn = true;
       } else {
@@ -546,53 +541,67 @@ export default {
     },
     login() {
       // using localStorage
-      const datalocal = JSON.parse(localStorage.getItem("user"));
-      const resEmail = datalocal.find((el) => el.email === this.user.email);
-      const resPass = this.user.password;
-      if (resEmail && resPass === resEmail.password) {
-        setTimeout(() => this.$store.dispatch("actionSetDialog", true), 200);
-        localStorage.setItem("user-info", JSON.stringify(resEmail));
-        this.$router.push("/");
-        let today = new Date();
-        const resDataInf = JSON.parse(localStorage.getItem("user-info"));
-        const resDataUser = JSON.parse(localStorage.getItem("user"));
-        const resDataEm = JSON.parse(localStorage.getItem("employee"));
-        const index = resDataUser.findIndex((el) => el.email === resDataInf.email);
-        const detailsEm = resDataEm.find((el) => el.email === resDataInf.email);
-        resDataUser.splice(index, 1, {
-          id: resDataInf.id,
-          email: resDataInf.email,
-          password: resDataInf.password,
-          role: resDataInf.role,
-          timeLogin: today.toLocaleString(),
-        });
-        localStorage.setItem("user", JSON.stringify(resDataUser));
-        resDataEm.splice(index, 1, {
-          id: detailsEm.id,
-          emp_ID: detailsEm.emp_ID,
-          firstName: detailsEm.firstName,
-          lastName: detailsEm.lastName,
-          email: detailsEm.email,
-          password: resDataInf.password,
-          imgUrl: detailsEm.imgUrl,
-          role: detailsEm.role,
-          depart_id: detailsEm.depart_id,
-          depart_name: detailsEm.depart_name,
-          position_id: detailsEm.position_id,
-          address: detailsEm.address,
-          phoneNumber: detailsEm.phoneNumber,
-          birthday: detailsEm.birthday,
-          gender: detailsEm.gender,
-          numberCard: detailsEm.numberCard,
-          nationality: detailsEm.nationality,
-          ethnic: detailsEm.ethnic,
-          religion: detailsEm.religion,
-          educationalLevel: detailsEm.educationalLevel,
-          academicLevel: detailsEm.academicLevel,
-        });
-        localStorage.setItem("employee", JSON.stringify(resDataEm));
+      if (this.user.email === "" && this.user.password === "") {
+        this.emailErrorText = "* Không được bỏ trống ô này";
+        this.passwordErrorText = "* Không được bỏ trống ô này";
+        this.emailShow = true;
+        this.passShow = true;
+      }
+      if (this.user.email === "") {
+        this.emailErrorText = "* Không được bỏ trống ô này";
+        this.emailShow = true;
+      } else if (this.user.password === "") {
+        this.passwordErrorText = "* Không được bỏ trống ô này";
+        this.passShow = true;
       } else {
-        this.showDialog = true;
+        const datalocal = JSON.parse(localStorage.getItem("user"));
+        const resEmail = datalocal.find((el) => el.email === this.user.email);
+        const resPass = this.user.password;
+        if (resEmail && resPass === resEmail.password) {
+          setTimeout(() => this.$store.dispatch("actionSetDialog", true), 200);
+          localStorage.setItem("user-info", JSON.stringify(resEmail));
+          this.$router.push("/");
+          let today = new Date();
+          const resDataInf = JSON.parse(localStorage.getItem("user-info"));
+          const resDataUser = JSON.parse(localStorage.getItem("user"));
+          const resDataEm = JSON.parse(localStorage.getItem("employee"));
+          const index = resDataUser.findIndex((el) => el.email === resDataInf.email);
+          const detailsEm = resDataEm.find((el) => el.email === resDataInf.email);
+          resDataUser.splice(index, 1, {
+            id: resDataInf.id,
+            email: resDataInf.email,
+            password: resDataInf.password,
+            role: resDataInf.role,
+            timeLogin: today.toLocaleString(),
+          });
+          localStorage.setItem("user", JSON.stringify(resDataUser));
+          resDataEm.splice(index, 1, {
+            id: detailsEm.id,
+            emp_ID: detailsEm.emp_ID,
+            firstName: detailsEm.firstName,
+            lastName: detailsEm.lastName,
+            email: detailsEm.email,
+            password: resDataInf.password,
+            imgUrl: detailsEm.imgUrl,
+            role: detailsEm.role,
+            depart_id: detailsEm.depart_id,
+            depart_name: detailsEm.depart_name,
+            position_id: detailsEm.position_id,
+            address: detailsEm.address,
+            phoneNumber: detailsEm.phoneNumber,
+            birthday: detailsEm.birthday,
+            gender: detailsEm.gender,
+            numberCard: detailsEm.numberCard,
+            nationality: detailsEm.nationality,
+            ethnic: detailsEm.ethnic,
+            religion: detailsEm.religion,
+            educationalLevel: detailsEm.educationalLevel,
+            academicLevel: detailsEm.academicLevel,
+          });
+          localStorage.setItem("employee", JSON.stringify(resDataEm));
+        } else {
+          this.showDialog = true;
+        }
       }
     },
     // async signup() {
@@ -629,13 +638,11 @@ export default {
     cancel() {
       console.log("cancel");
       this.showDialog = false;
-      this.showDialogSignUp = false;
       this.showDialogPassword = false;
       this.showDialogSuccess = false;
     },
     confirm() {
       this.showDialog = false;
-      this.showDialogSignUp = false;
       this.showDialogPassword = false;
       this.showDialogSuccess = false;
       this.showDialogExistEmail = false;

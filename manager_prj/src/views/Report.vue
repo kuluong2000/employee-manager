@@ -213,7 +213,7 @@
           <v-card style="padding-bottom:9px">
             <v-app-bar flat color="rgba(0,0,0,0)" class="pb-0">
               <v-toolbar-title class="title black--text pl-0 ml-2">
-                Activity
+                Cơ Sở Vật Chất gần đây
               </v-toolbar-title>
             </v-app-bar>
             <v-app-bar flat color="rgba(0,0,0,0)" style="margin-top:-8px">
@@ -228,11 +228,11 @@
                 <v-icon color="red">fab fa-bitcoin</v-icon>
               </v-btn>
               <v-toolbar-title class="title black--text ml-2">
-                Sent Bitcoin <span class="caption"><br />To Bitcoin Address</span>
+                Bàn Gỗ <span class="caption"><br />Số Lượng: 10</span>
               </v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-title class="subtitle-1 black--text ml-2">
-                -0.00257 BTC
+                -10.000.000đ
               </v-toolbar-title>
               <v-icon color="green" class="ml-2">fas fa-long-arrow-alt-up</v-icon>
             </v-app-bar>
@@ -248,11 +248,11 @@
                 <v-icon color="yellow">fas fa-yen-sign</v-icon>
               </v-btn>
               <v-toolbar-title class="title black--text ml-2">
-                Receive Lightcoin <span class="caption"><br />Pending</span>
+                Máy Chiếu Xiaomi <span class="caption"><br />Số Lượng: 20</span>
               </v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-title class="subtitle-1 black--text ml-2">
-                -0.0133643 LTC
+                -40.000.000đ
               </v-toolbar-title>
               <v-icon color="red" class="ml-2">fas fa-long-arrow-alt-down</v-icon>
             </v-app-bar>
@@ -268,11 +268,11 @@
                 <v-icon color="green">fas fa-yen-sign</v-icon>
               </v-btn>
               <v-toolbar-title class="title black--text ml-2">
-                Receive Lightcoin <span class="caption"><br />Pending</span>
+                LapTop M1 Pro <span class="caption"><br />Số Lượng: 10</span>
               </v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-title class="subtitle-1 black--text ml-2">
-                -0.0133643 LTC
+                -300.000.000đ
               </v-toolbar-title>
               <v-icon color="red" class="ml-2">fas fa-long-arrow-alt-down</v-icon>
             </v-app-bar>
@@ -284,12 +284,12 @@
               <v-col cols="12" sm="4">
                 <v-list-item three-line>
                   <v-list-item-content>
-                    <div class="mb-4">Bitcoin</div>
+                    <div class="mb-4">Hiệu Suất Công Việc</div>
                     <v-list-item-title class="headline mb-1 black--text">
-                      2.5578 BTC
+                      Doanh số tăng 20%
                     </v-list-item-title>
                     <v-list-item-subtitle class="grey--text"
-                      >$2500 USD</v-list-item-subtitle
+                      >so với tháng 1</v-list-item-subtitle
                     >
                   </v-list-item-content>
                 </v-list-item>
